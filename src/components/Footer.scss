@@ -1,0 +1,23 @@
+.Footer {
+  width: 100%;
+  padding-top: 20px;
+  justify-content: center;
+  .Footer__main {
+    width: 100%;
+    display: flex;
+    color: $half-color;
+    a {
+      flex: 1;
+      text-align: center;
+
+      i {
+        font-size: 30px;
+        padding-bottom: 15px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+    }
+  }
+}
