@@ -12,7 +12,7 @@ const Nav = ({ network }) => (
           <img src="images/logo.png" alt="Kepler-452b" />
         </a>
       </h1>
-      <h1>Daily Evol</h1>
+      <h1>Kevernance</h1>
       <div
         className={cx("Nav__network", {
           "Nav__network--error": isNull(network),

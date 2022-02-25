@@ -1,12 +1,12 @@
 import React from "react";
-import KeplerEvolPage from "pages/KeplerEvolPage";
+import KeplerGovernancePage from "pages/KeplerGovernancePage";
 
 import "./App.scss";
 
 const App = () => {
   return (
     <div className="App">
-      <KeplerEvolPage />
+      <KeplerGovernancePage />
     </div>
   );
 };

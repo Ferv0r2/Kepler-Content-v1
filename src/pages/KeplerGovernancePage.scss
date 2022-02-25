@@ -1,12 +1,12 @@
-.KeplerEvolPage {
+.KeplerGovernancePage {
   width: 100%;
   height: 100%;
 }
 
-.KeplerEvolPage__main {
+.KeplerGovernancePage__main {
   width: 100%;
   min-height: 100%;
-  max-width: 720px;
+  max-width: 1280px;
   margin: 0 auto;
   padding-top: 70px;
   padding: 60px 10px;
@@ -16,6 +16,7 @@
   }
 }
 
-.KeplerEvolPage__content {
+.KeplerGovernancePage__content {
+  display: flex;
   padding: 40px 0;
 }
