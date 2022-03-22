@@ -1,28 +1,4 @@
 @font-face {
-  font-family: "GongGothicBold";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicBold.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "GongGothicMedium";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "GongGothicLight";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicLight.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
   font-family: "GmarketSansBold";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff")
     format("woff");
@@ -52,7 +28,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: $bg-color;
-  font-family: "NanumSquareExtraBold";
+  font-family: "GmarketSansBold";
   font-size: 14px;
   line-height: 18px;
   color: $dark-brown;
