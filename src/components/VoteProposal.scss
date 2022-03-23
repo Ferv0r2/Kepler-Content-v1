@@ -1,0 +1,94 @@
+// .VoteProposal {
+//   padding: 4rem;
+//   border: 2px solid fuchsia;
+//   border-radius: 1rem;
+// }
+
+.VoteProposal {
+  margin: 20px;
+  width: 100rem;
+  height: 100%;
+  color: $white;
+  background: $header-color;
+  border-radius: 4rem;
+  padding: 4rem;
+}
+
+.VoteProposal__title {
+  display: flex;
+  justify-content: space-between;
+  padding: 3rem;
+  .voteTitle {
+    font-size: 4.5rem;
+    text-shadow: 0 0 7px #ac01b4, 0 0 10px #ac01b4, 0 0 21px #ac01b4;
+  }
+
+  .voteStatus {
+    display: flex;
+    font-size: 2.5rem;
+
+    .voteAgree {
+      margin: 1rem;
+      color: green;
+
+      &::before {
+        content: "찬성 : ";
+      }
+    }
+    .voteDegree {
+      margin: 1rem;
+      color: red;
+
+      &::before {
+        content: "반대 : ";
+      }
+    }
+  }
+}
+
+.VoteProposal__infoBox {
+  margin: 0.5rem;
+  font-size: 2rem;
+  padding: 0 1rem 3rem 1rem;
+}
+
+.VoteProposal__status {
+  display: flex;
+  justify-content: space-between;
+  margin: 3rem;
+  background-color: rgba($color: $faq-color, $alpha: 0.5);
+  border-radius: 2em;
+
+  div {
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 2rem;
+    margin: 3rem;
+
+    label {
+      padding: 3rem;
+    }
+
+    p {
+      padding: 3rem;
+    }
+  }
+}
+
+.VoteProposal__contents {
+  padding: 4rem;
+  border: 2px solid fuchsia;
+  border-radius: 1rem;
+  line-height: 5rem;
+
+  label {
+    font-size: 2.5rem;
+  }
+
+  p {
+    font-family: "GmarketSansMedium";
+    font-size: 2rem;
+    padding: 5rem;
+  }
+}

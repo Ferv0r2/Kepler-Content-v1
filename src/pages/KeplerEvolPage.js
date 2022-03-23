@@ -55,79 +55,36 @@ class KeplerEvolPage extends Component {
     }
   };
 
-  // getUrl = async (address) => {
-  //   const promises = [];
-  //   const urls = [];
-
-  //   const len = address.length;
-  //   for (let id = 0; id < len; id++) {
-  //     const promise = async (index) => {
-  //       await fetch(address[index]),
-  //         {
-  //           headers: {
-  //             "Access-Control-Allow-Origin": "http://localhost:8888/",
-  //             "Access-Control-Allow-Credentials": "true",
-  //           },
-  //         }
-  //           .then((res) => {
-  //             return res.json();
-  //           })
-  //           .then((res) => {
-  //             const url = pinata + res.image.substring(7);
-  //             urls.push(url);
-  //           });
-  //     };
-  //     promises.push(promise(id));
-  //   }
-  //   await Promise.all(promises);
-
-  //   return urls;
-  // };
-
   setOwner = async () => {
     const { klaytn } = window;
     if (klaytn === undefined) return;
 
     let account = klaytn.selectedAddress;
-
+    let len = await keplerContract.methods.balanceOf(account).call();
     const promises = [];
-    const len = evol.length;
-
     const owners = [];
+
     for (let id = 0; id < len; id++) {
       const promise = async (index) => {
-        let own = await keplerContract.methods.ownerOf(evol[index]).call();
+        let own = await keplerContract.methods
+          .tokenOfOwnerByIndex(account, index)
+          .call();
 
-        own = own.toUpperCase();
-        account = account.toUpperCase();
-
-        if (own === account) {
-          owners.push(evol[index]);
+        if (evol.includes(parseInt(own))) {
+          owners.push(own);
         }
       };
       promises.push(promise(id));
     }
     await Promise.all(promises);
 
-    // const urls = [];
-    // const ownlen = owners.length;
-    // for (let id = 0; id < ownlen; id++) {
-    //   const promise = async (index) => {
-    //     let url = await keplerContract.methods.tokenURI(owners[index]).call();
+    owners.sort((a, b) => {
+      return a - b;
+    });
 
-    //     url = pinata + url.substring(7);
-    //     // url = await this.getUrl(url);
-    //     urls.push(url);
-    //   };
-    //   promises.push(promise(id));
-    // }
-    // await Promise.all(promises);
-
-    // const tokenURIs = await this.getUrl(urls);
     this.setState({
-      data: this.state.data.concat(owners.sort()),
+      data: this.state.data.concat(owners),
       isLoading: false,
-      // tokenURI: this.state.tokenURI.concat(tokenURIs),
     });
   };
 
@@ -154,25 +111,25 @@ class KeplerEvolPage extends Component {
   };
 
   render() {
-    const { account, balance, network, data } = this.state;
-
-    // if (this.state.isLoading) return <Loading />;
+    const { account, data, isLoading } = this.state;
 
     return (
       <div className="KeplerEvolPage">
-        <Nav network={network} />
+        <Nav address={account} load={isLoading} />
         <div className="KeplerEvolPage__main">
-          <WalletInfo address={account} balance={balance} />
           <div className="KeplerEvolPage__contents">
-            {/* <EvolTable data={data} tokenURI={tokenURI}></EvolTable> */}
             <TotalEvolTable></TotalEvolTable>
             {this.state.isLoading ? (
-              <Loading></Loading>
+              <div className="KeplerEvolPage_loading">
+                <Loading></Loading>
+                <p>내 진화 번호를 불러오는 중입니다...</p>
+                <p>* 카이카스 연결이 필요합니다 :)</p>
+              </div>
             ) : (
               <EvolTable data={data}></EvolTable>
             )}
           </div>
-          {this.state.isLoading ? <div></div> : <Footer></Footer>}
+          {this.state.isLoading || <Footer></Footer>}
         </div>
       </div>
     );

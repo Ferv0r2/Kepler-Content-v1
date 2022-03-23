@@ -8,7 +8,7 @@ const Nav = ({ address }) => (
     <div className="Nav__inner">
       <h1 className="Nav__logo">
         <Link to="/">
-          <img src="images/logo.png" alt="Kepler-452b" />
+          <img src="../images/logo.png" alt="Kepler-452b" />
         </Link>
       </h1>
       <div className="Nav__address">

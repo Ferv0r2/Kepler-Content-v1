@@ -4,9 +4,8 @@ import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
 
 import Loading from "components/Loading";
-import Nav from "components/Nav";
-import WalletInfo from "components/WalletInfo";
-import ProposalsBox from "components/ProposalsBox";
+import Nav from "components/SubNav";
+import VoteProposal from "components/VoteProposal";
 import Token from "components/Token";
 import Footer from "components/Footer";
 
@@ -35,10 +34,8 @@ class KeplerProposalPage extends Component {
       try {
         await klaytn.enable();
         this.setAccountInfo(klaytn);
-        this.setOwner(klaytn);
         klaytn.on("accountsChanged", () => {
           this.setAccountInfo(klaytn);
-          this.setOwner(klaytn);
         });
       } catch (error) {
         // console.log(error);
@@ -74,15 +71,13 @@ class KeplerProposalPage extends Component {
   };
 
   render() {
-    const { account, balance, network } = this.state;
+    const { account, balance, isLoading } = this.state;
     return (
       <div className="KeplerProposalPage">
-        <Nav network={network} />
+        <Nav address={account} load={isLoading} />
         <div className="KeplerProposalPage__main">
-          <WalletInfo address={account} balance={balance} />
           <div className="KeplerProposalPage__contents">
-            <ProposalsBox />
-            <Token />
+            <VoteProposal />
           </div>
           <Footer></Footer>
         </div>

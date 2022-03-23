@@ -352,7 +352,7 @@ contract KeplerGovernance is Ownable, IKeplerGovernance {
     mapping(address => bool) public nftAllowed;
     uint256 public minProposePeriod = 86400;
     uint256 public maxProposePeriod = 604800;
-    uint256 public proposeKeplerCount = 30;
+    uint256 public proposeKeplerCount = 50;
 
     struct Proposal {
         address proposer;

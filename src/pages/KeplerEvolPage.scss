@@ -25,3 +25,24 @@
 .KeplerEvolPage__content {
   padding: 40px 0;
 }
+
+.KeplerEvolPage_loading {
+  display: flex;
+
+  p {
+    margin: 0.5em;
+    color: $white;
+    font-size: 1.3em;
+    vertical-align: middle;
+    justify-items: baseline;
+
+    &:last-child {
+      margin: 0.8em;
+      font-size: 0.9em;
+    }
+  }
+}
+
+a:hover {
+  color: $hover-color;
+}

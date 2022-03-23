@@ -2,8 +2,10 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import KeplerMainPage from "pages/KeplerMainPage";
 import KeplerEvolPage from "pages/KeplerEvolPage";
+import KeplerGovernanceListPage from "pages/KeplerGovernanceListPage";
 import KeplerGovernancePage from "pages/KeplerGovernancePage";
 import KeplerProposalPage from "pages/KeplerProposalPage";
+import ErrorPage from "pages/Page404";
 
 import "./App.scss";
 
@@ -14,8 +16,11 @@ const App = () => {
         <Routes>
           <Route path="/" element={<KeplerMainPage />} />
           <Route path="/evol" element={<KeplerEvolPage />} />
-          <Route path="/governance" element={<KeplerGovernancePage />} />
-          <Route path="/governance/1" element={<KeplerProposalPage />} />
+          {/* <Route path="/governance" element={<KeplerGovernanceListPage />} /> */}
+          <Route path="/governance" element={<ErrorPage />} />
+          <Route path="/governance/0" element={<KeplerGovernancePage />} />
+          {/* <Route path="/governance/proposal" element={<KeplerProposalPage />} /> */}
+          <Route path="/governance/proposal" element={<ErrorPage />} />
         </Routes>
       </div>
     </Router>

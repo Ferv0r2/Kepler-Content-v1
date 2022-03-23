@@ -1,6 +1,67 @@
 .Token {
-  float: right;
-  width: 30%;
-  height: 500px;
-  background-color: brown;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 40rem;
+  height: 60rem;
+  color: $white;
+}
+
+.Token__balance {
+  label {
+    font-size: 2rem;
+  }
+}
+
+.Token__box {
+  position: relative;
+  margin-top: 2.5rem;
+  height: 100%;
+  color: $white;
+  background-color: rgba($color: $faq-color, $alpha: 0.5);
+  border-radius: 4rem;
+  padding: 4rem;
+  text-align: center;
+}
+
+.Token__img {
+  vertical-align: middle;
+  text-align: center;
+  img {
+    padding: 2rem;
+    width: 30rem;
+    border-radius: 3em;
+  }
+}
+
+.Token__agree {
+  cursor: pointer;
+  position: absolute;
+  bottom: 10%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  padding: 2rem;
+  border: 3px solid $hover-color;
+  border-radius: 0.7em;
+  font-size: 2.5rem;
+
+  &:hover {
+    color: $hover-color;
+  }
+}
+
+.Token__degree {
+  cursor: pointer;
+  position: absolute;
+  bottom: 10%;
+  left: 70%;
+  transform: translate(-50%, -50%);
+  padding: 2rem;
+  border: 3px solid $hover-color;
+  border-radius: 0.7em;
+  font-size: 2.5rem;
+
+  &:hover {
+    color: $hover-color;
+  }
 }

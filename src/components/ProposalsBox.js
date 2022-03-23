@@ -1,6 +1,6 @@
 import React from "react";
 
-import Proposal from "./Proposal";
+import VoteProposal from "./VoteProposal";
 
 import "./ProposalsBox.scss";
 
@@ -8,12 +8,7 @@ const ProposalsBox = () => {
   return (
     <div className="ProposalBox">
       <div className="ProposalBox__contents">
-        <Proposal />
-        <Proposal />
-        <Proposal />
-        <Proposal />
-        <Proposal />
-        <Proposal />
+        <VoteProposal />
       </div>
     </div>
   );

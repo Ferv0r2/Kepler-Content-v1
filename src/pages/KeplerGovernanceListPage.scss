@@ -1,9 +1,9 @@
-.KeplerGovernancePage {
+.KeplerGovernanceListPage {
   width: 100%;
   height: 100%;
 }
 
-.KeplerGovernancePage__main {
+.KeplerGovernanceListPage__main {
   width: 100%;
   min-height: 100%;
   max-width: 1280px;
@@ -16,9 +16,7 @@
   }
 }
 
-.KeplerGovernancePage__content {
-  position: relative;
+.KeplerGovernanceListPage__content {
   display: flex;
   padding: 40px 0;
-  overflow: auto;
 }

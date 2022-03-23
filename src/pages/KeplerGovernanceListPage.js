@@ -4,18 +4,19 @@ import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
 
 import Nav from "components/Nav";
-import ContentTable from "components/ContentTable";
+import ProposalsBox from "components/ProposalsBox";
+import Token from "components/Token";
 import Footer from "components/Footer";
 
-import "./KeplerMainPage.scss";
+import "./KeplerGovernanceListPage.scss";
 
-// const pinata = "https://gateway.pinata.cloud/ipfs/";
-class KeplerMainPage extends Component {
+class KeplerGovernanceListPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       account: "",
       balance: 0,
+      network: null,
       isLoading: true,
     };
   }
@@ -32,8 +33,10 @@ class KeplerMainPage extends Component {
       try {
         await klaytn.enable();
         this.setAccountInfo(klaytn);
+        this.setOwner(klaytn);
         klaytn.on("accountsChanged", () => {
           this.setAccountInfo(klaytn);
+          this.setOwner(klaytn);
         });
       } catch (error) {
         // console.log(error);
@@ -54,7 +57,6 @@ class KeplerMainPage extends Component {
     const balance = await caver.klay.getBalance(account);
     this.setState({
       account,
-      isLoading: false,
       balance: caver.utils.fromPeb(balance, "KLAY"),
     });
   };
@@ -71,21 +73,19 @@ class KeplerMainPage extends Component {
 
   render() {
     const { account, balance, isLoading } = this.state;
-
-    // if (this.state.isLoading) return <Loading />;
-
     return (
-      <div className="KeplerEvolPage">
+      <div className="KeplerGovernanceListPage">
         <Nav address={account} load={isLoading} />
-        <div className="KeplerEvolPage__main">
-          <div className="KeplerEvolPage__contents">
-            <ContentTable></ContentTable>
+        <div className="KeplerGovernanceListPage__main">
+          <div className="KeplerGovernanceListPage__contents">
+            <ProposalsBox />
+            <Token />
           </div>
+          <Footer></Footer>
         </div>
-        <Footer></Footer>
       </div>
     );
   }
 }
 
-export default KeplerMainPage;
+export default KeplerGovernanceListPage;
