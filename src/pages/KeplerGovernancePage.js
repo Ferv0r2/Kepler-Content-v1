@@ -108,7 +108,7 @@ class KeplerGovernancePage extends Component {
 
     await fetch(tokenIPFS, {
       headers: {
-        "Access-Control-Allow-Origin": "http://localhost:8888/",
+        "Access-Control-Allow-Origin": "https://nft-kepler-452b.shop/",
         "Access-Control-Allow-Credentials": "true",
       },
     })
