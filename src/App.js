@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import KeplerMainPage from "pages/KeplerMainPage";
 import KeplerEvolPage from "pages/KeplerEvolPage";
 import KeplerGovernanceListPage from "pages/KeplerGovernanceListPage";
@@ -22,6 +22,13 @@ const App = () => {
           {/* <Route path="/governance/proposal" element={<KeplerProposalPage />} /> */}
           <Route path="/governance/proposal" element={<ErrorPage />} />
         </Routes>
+        <Link to="/" />
+        <Link to="/evol" />
+        {/* <Route path="/governance" element={<KeplerGovernanceListPage />} /> */}
+        <Link to="/governance" />
+        <Link to="/governance/0" />
+        {/* <Route path="/governance/proposal" element={<KeplerProposalPage />} /> */}
+        <Link to="/governance/proposal" />
       </div>
     </Router>
   );
