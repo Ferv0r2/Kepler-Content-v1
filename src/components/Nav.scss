@@ -36,6 +36,11 @@
 
 .Nav__loading {
   display: flex;
+
+  @media screen and (max-width: 720px) {
+    display: none;
+  }
+
   &::after {
     content: "Login with Kaikas";
     font-size: 1.4rem;
@@ -46,9 +51,20 @@
 }
 
 .Nav__address {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   width: 200px;
   font-size: 1.5rem;
+
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  img {
+    width: 2rem;
+    margin: 1rem;
+  }
+
+  @media screen and (max-width: 720px) {
+    display: none;
+  }
 }

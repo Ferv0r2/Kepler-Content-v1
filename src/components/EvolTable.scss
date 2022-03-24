@@ -23,6 +23,8 @@
 }
 
 .EvolTable__infoBox {
+  font-family: "GmarketSansMedium";
+
   ul {
     overflow: overlay;
     width: 100%;
@@ -35,23 +37,14 @@
     --webkit-padding-start: 0px;
 
     li {
-      width: 65px;
+      width: 10rem;
+      margin: 2rem;
       justify-content: left;
-      margin: 10px;
       text-align: center;
 
       @media screen and (max-width: 800px) {
-        width: 45px;
+        width: 5rem;
       }
-      @media screen and (max-width: 600px) {
-        width: 40px;
-      }
-    }
-
-    h2 {
-      padding-top: 65px;
-      font-size: 30px;
-      text-shadow: 0 0 7px #ac01b4, 0 0 10px #000, 0 0 21px #ac01b4;
     }
   }
 }

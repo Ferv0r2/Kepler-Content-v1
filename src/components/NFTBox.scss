@@ -1,9 +1,14 @@
 .NFTBox {
   width: 100%;
   margin-top: 20px;
+
   .NFTBox__Name {
-    font-size: 18px;
     text-align: center;
+    font-size: 1.7rem;
+
+    @media screen and (max-width: 800px) {
+      font-size: 1.5rem;
+    }
   }
   .NFTBox__Img {
     width: 180px;

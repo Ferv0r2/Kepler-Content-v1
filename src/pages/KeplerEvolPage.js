@@ -129,7 +129,8 @@ class KeplerEvolPage extends Component {
               <EvolTable data={data}></EvolTable>
             )}
           </div>
-          {this.state.isLoading || <Footer></Footer>}
+          {/* {this.state.isLoading || } */}
+          <Footer></Footer>
         </div>
       </div>
     );
