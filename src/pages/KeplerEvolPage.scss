@@ -37,9 +37,14 @@
     vertical-align: middle;
     justify-items: baseline;
 
-    &:last-child {
+    &::after {
+      content: "* 카이카스 연결이 필요합니다 :)";
       margin: 0.8em;
-      font-size: 0.9em;
+      font-size: 0.7em;
+
+      @media screen and (max-width: 720px) {
+        display: none;
+      }
     }
   }
 }

@@ -123,7 +123,6 @@ class KeplerEvolPage extends Component {
               <div className="KeplerEvolPage_loading">
                 <Loading></Loading>
                 <p>내 진화 번호를 불러오는 중입니다...</p>
-                <p>* 카이카스 연결이 필요합니다 :)</p>
               </div>
             ) : (
               <EvolTable data={data}></EvolTable>
