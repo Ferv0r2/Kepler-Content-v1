@@ -300,6 +300,7 @@ class KeplerGovernancePage extends Component {
             />
           </div>
         </div>
+        <Footer></Footer>
       </div>
     );
   }

@@ -6,22 +6,45 @@ const Footer = () => {
   return (
     <footer className="Footer">
       <div className="Footer__main">
-        <a href="https://open.kakao.com/o/gTLz1aTd">
-          <i className="fas fa-comment" aria-hidden="true"></i>
-          <h2>KakaoTalk</h2>
-        </a>
-        <a href="https://twitter.com/Kepler_NFT">
-          <i className="fab fa-twitter" aria-hidden="true"></i>
-          <h2>Twitter</h2>
-        </a>
-        <a href="https://www.instagram.com/kepler452b_nft/">
-          <i className="fab fa-instagram" aria-hidden="true"></i>
-          <h2>Instagram</h2>
-        </a>
-        <a href="https://klu.bs/pfp/0xf1919F40af70394762bed30E98d95DdFbac79080">
-          <i className="fab fa-kickstarter-k" aria-hidden="true"></i>
-          <h2>KLUBS</h2>
-        </a>
+        <div className="Footer__contents">
+          <div className="Footer__logo">
+            <img src="images/logo.png" />
+          </div>
+          <div className="Footer__info">
+            <p>
+              CEO. Keplin <br />
+              Addr. 서울특별시 중구 을지로 1가 케플러연구소 (가상) <br />
+              COPYRIGHTⓒ 2022. K452. ALL RIGHT RESERVED.
+            </p>
+          </div>
+          <div className="Footer__icons">
+            <li>
+              <a href="https://open.kakao.com/o/gTLz1aTd">
+                <i className="fas fa-comment" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/Kepler_NFT">
+                <i className="fab fa-twitter" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/kepler452b_nft/">
+                <i className="fab fa-instagram" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://klu.bs/pfp/0xf1919F40af70394762bed30E98d95DdFbac79080">
+                <i className="fab fa-kickstarter-k" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://kepler-452b.net">
+                <img src="images/logo.png" />
+              </a>
+            </li>
+          </div>
+        </div>
       </div>
     </footer>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import KeplerMainPage from "pages/KeplerMainPage";
+import KeplerBoxPage from "pages/KeplerBoxPage";
 import KeplerEvolPage from "pages/KeplerEvolPage";
 import KeplerGovernanceListPage from "pages/KeplerGovernanceListPage";
 import KeplerGovernancePage from "pages/KeplerGovernancePage";
@@ -14,7 +15,8 @@ const App = () => {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<KeplerMainPage />} />
+          <Route path="/" element={<KeplerBoxPage />} />
+          {/* <Route path="/" element={<KeplerMainPage />} /> */}
           <Route path="/evol" element={<KeplerEvolPage />} />
           {/* <Route path="/governance" element={<KeplerGovernanceListPage />} /> */}
           <Route path="/governance" element={<ErrorPage />} />

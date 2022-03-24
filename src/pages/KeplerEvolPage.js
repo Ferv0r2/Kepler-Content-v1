@@ -129,8 +129,8 @@ class KeplerEvolPage extends Component {
             )}
           </div>
           {/* {this.state.isLoading || } */}
-          <Footer></Footer>
         </div>
+        <Footer></Footer>
       </div>
     );
   }

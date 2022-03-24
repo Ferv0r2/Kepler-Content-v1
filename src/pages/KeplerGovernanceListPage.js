@@ -81,8 +81,8 @@ class KeplerGovernanceListPage extends Component {
             <ProposalsBox />
             <Token />
           </div>
-          <Footer></Footer>
         </div>
+        <Footer></Footer>
       </div>
     );
   }

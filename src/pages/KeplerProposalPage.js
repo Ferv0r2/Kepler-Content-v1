@@ -79,8 +79,8 @@ class KeplerProposalPage extends Component {
           <div className="KeplerProposalPage__contents">
             <VoteProposal />
           </div>
-          <Footer></Footer>
         </div>
+        <Footer></Footer>
       </div>
     );
   }

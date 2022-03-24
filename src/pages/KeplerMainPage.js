@@ -75,10 +75,10 @@ class KeplerMainPage extends Component {
     // if (this.state.isLoading) return <Loading />;
 
     return (
-      <div className="KeplerEvolPage">
+      <div className="KeplerMainPage">
         <Nav address={account} load={isLoading} />
-        <div className="KeplerEvolPage__main">
-          <div className="KeplerEvolPage__contents">
+        <div className="KeplerMainPage__main">
+          <div className="KeplerMainPage__contents">
             <ContentTable></ContentTable>
           </div>
         </div>
