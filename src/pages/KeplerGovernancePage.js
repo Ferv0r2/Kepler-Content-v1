@@ -3,6 +3,7 @@ import caver from "klaytn/caver";
 import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
 
+import Layout from "../components/Layout";
 import Nav from "components/SubNav";
 import Token from "components/Token";
 import VoteProposal from "../components/VoteProposal";
@@ -286,22 +287,24 @@ class KeplerGovernancePage extends Component {
       blockNumber,
     } = this.state;
     return (
-      <div className="KeplerGovernancePage">
-        <Nav address={account} load={isLoading} />
-        <Token address={account} balance={balance} tokenURI={tokenURI} />
-        <div className="KeplerGovernancePage__main">
-          <div className="KeplerGovernancePage__contents">
-            <VoteProposal
-              proposal={proposal}
-              agree={agree}
-              degree={degree}
-              result={result}
-              blockNumber={blockNumber}
-            />
+      <Layout>
+        <div className="KeplerGovernancePage">
+          <Nav address={account} load={isLoading} />
+          <Token address={account} balance={balance} tokenURI={tokenURI} />
+          <div className="KeplerGovernancePage__main">
+            <div className="KeplerGovernancePage__contents">
+              <VoteProposal
+                proposal={proposal}
+                agree={agree}
+                degree={degree}
+                result={result}
+                blockNumber={blockNumber}
+              />
+            </div>
           </div>
+          <Footer></Footer>
         </div>
-        <Footer></Footer>
-      </div>
+      </Layout>
     );
   }
 }

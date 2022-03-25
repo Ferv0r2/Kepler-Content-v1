@@ -1,6 +1,7 @@
 .KeplerBoxPage {
   width: 100%;
   height: 100%;
+  background: linear-gradient($bg-gradtion-top, $bg-gradtion-bottom);
 }
 
 .KeplerBoxPage__main {
@@ -8,7 +9,6 @@
   min-height: 100%;
   max-width: 720px;
   margin: 0 auto;
-  padding-top: 70px;
   padding: 60px 10px;
 
   @media screen and (max-width: 800px) {
@@ -22,6 +22,42 @@
   }
 }
 
-.KeplerBoxPage__content {
+.KeplerBoxPage__contents {
   padding: 40px 0;
+  margin: auto;
+  text-align: center;
+  color: $box-text-color;
+}
+
+.KeplerBoxPage__boxs {
+  video {
+    width: 20rem;
+  }
+  p {
+    font-style: italic;
+    text-shadow: 3px 0 10px #fff;
+    font-family: "GMarketSans";
+  }
+}
+
+.KeplerBoxPage__payable {
+  display: flex;
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+  background-color: #190021;
+  border-radius: 5em;
+
+  .box_price {
+    flex: 2;
+    margin: 2rem;
+    padding: 2rem;
+    border-right-style: solid;
+  }
+
+  .klay_balance {
+    flex: 3;
+    margin: 2rem;
+    padding: 2rem;
+  }
 }

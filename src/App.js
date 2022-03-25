@@ -15,8 +15,8 @@ const App = () => {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<KeplerBoxPage />} />
-          {/* <Route path="/" element={<KeplerMainPage />} /> */}
+          {/* <Route path="/" element={<KeplerBoxPage />} /> */}
+          <Route path="/" element={<KeplerMainPage />} />
           <Route path="/evol" element={<KeplerEvolPage />} />
           {/* <Route path="/governance" element={<KeplerGovernanceListPage />} /> */}
           <Route path="/governance" element={<ErrorPage />} />

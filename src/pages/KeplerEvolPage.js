@@ -5,11 +5,11 @@ import keplerContract from "klaytn/KeplerContract";
 
 import evol from "./evol-log.json";
 import Loading from "components/Loading";
+import Layout from "../components/Layout";
 import Nav from "components/Nav";
-import WalletInfo from "components/WalletInfo";
+import Footer from "components/Footer";
 import TotalEvolTable from "components/TotalEvolTable";
 import EvolTable from "components/EvolTable";
-import Footer from "components/Footer";
 
 import "./KeplerEvolPage.scss";
 
@@ -114,24 +114,26 @@ class KeplerEvolPage extends Component {
     const { account, data, isLoading } = this.state;
 
     return (
-      <div className="KeplerEvolPage">
-        <Nav address={account} load={isLoading} />
-        <div className="KeplerEvolPage__main">
-          <div className="KeplerEvolPage__contents">
-            <TotalEvolTable></TotalEvolTable>
-            {this.state.isLoading ? (
-              <div className="KeplerEvolPage_loading">
-                <Loading></Loading>
-                <p>내 진화 번호를 불러오는 중입니다...</p>
-              </div>
-            ) : (
-              <EvolTable data={data}></EvolTable>
-            )}
+      <Layout>
+        <div className="KeplerEvolPage">
+          <Nav address={account} load={isLoading} />
+          <div className="KeplerEvolPage__main">
+            <div className="KeplerEvolPage__contents">
+              <TotalEvolTable></TotalEvolTable>
+              {this.state.isLoading ? (
+                <div className="KeplerEvolPage_loading">
+                  <Loading></Loading>
+                  <p>내 진화 번호를 불러오는 중입니다...</p>
+                </div>
+              ) : (
+                <EvolTable data={data}></EvolTable>
+              )}
+            </div>
+            {/* {this.state.isLoading || } */}
           </div>
-          {/* {this.state.isLoading || } */}
+          <Footer></Footer>
         </div>
-        <Footer></Footer>
-      </div>
+      </Layout>
     );
   }
 }

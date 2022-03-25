@@ -3,6 +3,7 @@ import caver from "klaytn/caver";
 import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
 
+import Layout from "../components/Layout";
 import Nav from "components/Nav";
 import ProposalsBox from "components/ProposalsBox";
 import Token from "components/Token";
@@ -74,16 +75,18 @@ class KeplerGovernanceListPage extends Component {
   render() {
     const { account, balance, isLoading } = this.state;
     return (
-      <div className="KeplerGovernanceListPage">
-        <Nav address={account} load={isLoading} />
-        <div className="KeplerGovernanceListPage__main">
-          <div className="KeplerGovernanceListPage__contents">
-            <ProposalsBox />
-            <Token />
+      <Layout>
+        <div className="KeplerGovernanceListPage">
+          <Nav address={account} load={isLoading} />
+          <div className="KeplerGovernanceListPage__main">
+            <div className="KeplerGovernanceListPage__contents">
+              <ProposalsBox />
+              <Token />
+            </div>
           </div>
+          <Footer></Footer>
         </div>
-        <Footer></Footer>
-      </div>
+      </Layout>
     );
   }
 }

@@ -3,6 +3,7 @@ import caver from "klaytn/caver";
 import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
 
+import Layout from "../components/Layout";
 import Nav from "components/Nav";
 import ContentTable from "components/ContentTable";
 import Footer from "components/Footer";
@@ -74,15 +75,48 @@ class KeplerBoxPage extends Component {
     // if (this.state.isLoading) return <Loading />;
 
     return (
-      <div className="KeplerBoxPage">
-        <Nav address={account} load={isLoading} />
-        <div className="KeplerBoxPage__main">
-          <div className="KeplerBoxPage__contents">
-            <ContentTable></ContentTable>
+      <Layout>
+        <div className="KeplerBoxPage">
+          <Nav address={account} load={isLoading} />
+          <div className="KeplerBoxPage__main">
+            <div className="KeplerBoxPage__contents">
+              <div className="KeplerBoxPage__boxs">
+                <video
+                  muted="muted"
+                  loop="0"
+                  autoPlay="autoPlay"
+                  src="images/box/box_unique.mp4"
+                />
+                <p>Nomal Box</p>
+              </div>
+              <div className="KeplerBoxPage__payable">
+                <div className="box_price">
+                  <label>Price</label>
+                  <p>1 box = 10 klay</p>
+                </div>
+                <div className="klay_balance">
+                  <label>Your Klay</label>
+                  <p>your klay balance = 100 klay</p>
+                </div>
+              </div>
+              <div className="KeplerBoxPage__table">
+                <div className="table_title">Percentage Table</div>
+                <div className="table_contents">
+                  <div>
+                    <div className="content_potion"></div>
+                    <div className="content_potion_mix"></div>
+                  </div>
+                  <div>
+                    <div className="content_pick"></div>
+                    <div className="content_stone"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+          <Footer></Footer>
         </div>
-        <Footer></Footer>
-      </div>
+      </Layout>
     );
   }
 }

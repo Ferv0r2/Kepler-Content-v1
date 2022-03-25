@@ -4,6 +4,7 @@ import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
 
 import Loading from "components/Loading";
+import Layout from "../components/Layout";
 import Nav from "components/SubNav";
 import VoteProposal from "components/VoteProposal";
 import Token from "components/Token";
@@ -73,15 +74,17 @@ class KeplerProposalPage extends Component {
   render() {
     const { account, balance, isLoading } = this.state;
     return (
-      <div className="KeplerProposalPage">
-        <Nav address={account} load={isLoading} />
-        <div className="KeplerProposalPage__main">
-          <div className="KeplerProposalPage__contents">
-            <VoteProposal />
+      <Layout>
+        <div className="KeplerProposalPage">
+          <Nav address={account} load={isLoading} />
+          <div className="KeplerProposalPage__main">
+            <div className="KeplerProposalPage__contents">
+              <VoteProposal />
+            </div>
           </div>
+          <Footer></Footer>
         </div>
-        <Footer></Footer>
-      </div>
+      </Layout>
     );
   }
 }
