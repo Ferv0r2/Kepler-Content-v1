@@ -7,7 +7,6 @@
   color: $white;
   font-family: "NanumSquareBold";
   @media screen and (max-width: 720px) {
-    padding-top: 2rem;
     height: 35rem;
   }
 }
@@ -83,6 +82,10 @@
 
       h2 {
         font-size: 1.5rem;
+
+        @media screen and (max-width: 720px) {
+          font-size: 1.3rem;
+        }
       }
     }
   }
