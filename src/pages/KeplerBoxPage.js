@@ -89,6 +89,11 @@ class KeplerBoxPage extends Component {
                 />
                 <p>Nomal Box</p>
               </div>
+              <div className="KeplerBoxPage__mint">
+                <div className="mint_btn">OPEN BOX</div>
+                <p>Limit : 50 / 200</p>
+              </div>
+
               <div className="KeplerBoxPage__payable">
                 <div className="box_price">
                   <label>Price</label>
@@ -103,12 +108,60 @@ class KeplerBoxPage extends Component {
                 <div className="table_title">Percentage Table</div>
                 <div className="table_contents">
                   <div>
-                    <div className="content_potion"></div>
-                    <div className="content_potion_mix"></div>
+                    <div className="content_potion">
+                      <label>기존 포션</label>
+                      <li>
+                        <p>대형 5종류 각 0.5%</p>
+                        <p>총 2.5%</p>
+                      </li>
+                      <li>
+                        <p>중형 5종류 각 0.5%</p>
+                        <p>총 7.5%</p>
+                      </li>
+                      <li>
+                        <p>소형 5종류 각 0.5%</p>
+                        <p>총 22.5%</p>
+                      </li>
+                    </div>
+                    <div className="content_potion_mix">
+                      <label>믹스종 포션</label>
+                      <li>
+                        <p>대형 5종류 각 0.5%</p>
+                        <p>총 2.5%</p>
+                      </li>
+                      <li>
+                        <p>중형 5종류 각 0.5%</p>
+                        <p>총 7.5%</p>
+                      </li>
+                      <li>
+                        <p>소형 5종류 각 0.5%</p>
+                        <p>총 22.5%</p>
+                      </li>
+                    </div>
                   </div>
                   <div>
-                    <div className="content_pick"></div>
-                    <div className="content_stone"></div>
+                    <div className="content_pick">
+                      <label>곡괭이</label>
+                      <li>
+                        <p>상급 곡괭이</p>
+                        <p>총 2.5%</p>
+                      </li>
+                      <li>
+                        <p>중급 곡괭이</p>
+                        <p>총 7.5%</p>
+                      </li>
+                      <li>
+                        <p>하급 곡괭이</p>
+                        <p>총 22.5%</p>
+                      </li>
+                    </div>
+                    <div className="content_stone">
+                      <label>믹스 스톤</label>
+                      <li>
+                        <p>믹스 스톤 각 0.5%</p>
+                        <p>총 2.5%</p>
+                      </li>
+                    </div>
                   </div>
                 </div>
               </div>

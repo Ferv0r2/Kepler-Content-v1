@@ -20,7 +20,7 @@ const EvolTable = ({ data }) => {
             datas.map((v, i) => {
               return (
                 <li key={i}>
-                  {/* <NFTBox data={datas[i]} tokenURI={tokenURIs[i]}></NFTBox> */}
+                  {/* <NFTBox data={datas[i]} tokenURI={urls[i]}></NFTBox> */}
                   <NFTBox data={datas[i]}></NFTBox>
                 </li>
               );

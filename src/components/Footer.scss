@@ -66,6 +66,7 @@
         font-size: 2.5rem;
 
         &:hover {
+          color: $white;
           -webkit-transform: scale(1.3);
           transform: scale(1.3);
         }

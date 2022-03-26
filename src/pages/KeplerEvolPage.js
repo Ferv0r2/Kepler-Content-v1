@@ -13,7 +13,7 @@ import EvolTable from "components/EvolTable";
 
 import "./KeplerEvolPage.scss";
 
-// const pinata = "https://gateway.pinata.cloud/ipfs/";
+const ipfs = "https://ipfs.infura.io/ipfs/";
 class KeplerEvolPage extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +23,7 @@ class KeplerEvolPage extends Component {
       network: null,
       data: [],
       isLoading: true,
-      // tokenURI: [],
+      tokenURI: [],
     };
   }
 
@@ -55,6 +55,27 @@ class KeplerEvolPage extends Component {
     }
   };
 
+  setURI = async (array) => {
+    const promises = [];
+    const urls = [];
+
+    const len = array.length;
+    for (let id = 0; id < len; id++) {
+      const promise = async (index) => {
+        const res = await fetch(array[index]);
+        let posts = await res.json();
+        posts = ipfs + posts.image.substring(7);
+        console.log(posts);
+
+        urls.push(posts);
+      };
+      promises.push(promise(id));
+    }
+    await Promise.all(promises);
+
+    return urls;
+  };
+
   setOwner = async () => {
     const { klaytn } = window;
     if (klaytn === undefined) return;
@@ -63,6 +84,7 @@ class KeplerEvolPage extends Component {
     let len = await keplerContract.methods.balanceOf(account).call();
     const promises = [];
     const owners = [];
+    // const tokenLinks = [];
 
     for (let id = 0; id < len; id++) {
       const promise = async (index) => {
@@ -71,12 +93,18 @@ class KeplerEvolPage extends Component {
           .call();
 
         if (evol.includes(parseInt(own))) {
+          // let url = await keplerContract.methods.tokenURI(index).call();
+          // url = ipfs + url.substring(7);
+
           owners.push(own);
+          // tokenLinks.push(url);
         }
       };
       promises.push(promise(id));
     }
     await Promise.all(promises);
+
+    // const tokenURIs = await this.setURI(tokenLinks);
 
     owners.sort((a, b) => {
       return a - b;
@@ -84,6 +112,7 @@ class KeplerEvolPage extends Component {
 
     this.setState({
       data: this.state.data.concat(owners),
+      // tokenURI: this.state.tokenURI.concat(tokenURIs),
       isLoading: false,
     });
   };
@@ -127,6 +156,7 @@ class KeplerEvolPage extends Component {
                 </div>
               ) : (
                 <EvolTable data={data}></EvolTable>
+                // <EvolTable data={data} tokenURI={tokenURI}></EvolTable>
               )}
             </div>
             {/* {this.state.isLoading || } */}
