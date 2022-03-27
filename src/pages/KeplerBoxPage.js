@@ -6,6 +6,8 @@ import keplerContract from "klaytn/KeplerContract";
 import Layout from "../components/Layout";
 import Nav from "components/Nav";
 
+import items from "./item.json";
+
 import "./KeplerBoxPage.scss";
 
 class KeplerBoxPage extends Component {
@@ -91,13 +93,6 @@ class KeplerBoxPage extends Component {
     const { account, balance, isLoading, currentIdx } = this.state;
     // if (this.state.isLoading) return <Loading />;
     const boxs = ["Normal Box", "Rare Box", "Unique Box"];
-    const large_potion = [0.5, 1.5, 2.5];
-    const medium_potion = [1.5, 1.5, 2.5];
-    const small_potion = [4.5, 1.5, 2.5];
-    const advanced_pickaxe = [2.5, 4.5, 7.5];
-    const intermediate_pickaxe = [7.5, 12.5, 22.5];
-    const low_pickaxe = [22.5, 1.5, 4.5];
-    const stone = [0.5, 1.5, 4.5];
 
     return (
       <Layout>
@@ -155,31 +150,37 @@ class KeplerBoxPage extends Component {
                     <div className="content_potion">
                       <label>기존 포션</label>
                       <li>
-                        <p>대형 5종류 각 {large_potion[currentIdx]}%</p>
-                        <p>총 {large_potion[currentIdx] * 5}%</p>
+                        <p>대형 5종류 각 {items.large_potion[currentIdx]}%</p>
+                        <p>총 {items.large_potion[currentIdx] * 5}%</p>
                       </li>
                       <li>
-                        <p>중형 5종류 각 {medium_potion[currentIdx]}%</p>
-                        <p>총 {medium_potion[currentIdx] * 5}%</p>
+                        <p>중형 5종류 각 {items.medium_potion[currentIdx]}%</p>
+                        <p>총 {items.medium_potion[currentIdx] * 5}%</p>
                       </li>
                       <li>
-                        <p>소형 5종류 각 {small_potion[currentIdx]}%</p>
-                        <p>총 {small_potion[currentIdx] * 5}%</p>
+                        <p>소형 5종류 각 {items.small_potion[currentIdx]}%</p>
+                        <p>총 {items.small_potion[currentIdx] * 5}%</p>
                       </li>
                     </div>
                     <div className="content_potion_mix">
                       <label>믹스종 포션</label>
                       <li>
-                        <p>대형 5종류 각 {large_potion[currentIdx]}%</p>
-                        <p>총 {large_potion[currentIdx] * 5}%</p>
+                        <p>
+                          대형 5종류 각 {items.large_mix_potion[currentIdx]}%
+                        </p>
+                        <p>총 {items.large_mix_potion[currentIdx] * 5}%</p>
                       </li>
                       <li>
-                        <p>중형 5종류 각 {medium_potion[currentIdx]}%</p>
-                        <p>총 {medium_potion[currentIdx] * 5}%</p>
+                        <p>
+                          중형 5종류 각 {items.medium_mix_potion[currentIdx]}%
+                        </p>
+                        <p>총 {items.medium_mix_potion[currentIdx] * 5}%</p>
                       </li>
                       <li>
-                        <p>소형 5종류 각 {small_potion[currentIdx]}%</p>
-                        <p>총 {small_potion[currentIdx] * 5}%</p>
+                        <p>
+                          소형 5종류 각 {items.small_mix_potion[currentIdx]}%
+                        </p>
+                        <p>총 {items.small_mix_potion[currentIdx] * 5}%</p>
                       </li>
                     </div>
                   </div>
@@ -188,22 +189,22 @@ class KeplerBoxPage extends Component {
                       <label>곡괭이</label>
                       <li>
                         <p>상급 곡괭이</p>
-                        <p>총 {advanced_pickaxe[currentIdx]}%</p>
+                        <p>총 {items.advanced_pickaxe[currentIdx]}%</p>
                       </li>
                       <li>
                         <p>중급 곡괭이</p>
-                        <p>총 {intermediate_pickaxe[currentIdx]}%</p>
+                        <p>총 {items.intermediate_pickaxe[currentIdx]}%</p>
                       </li>
                       <li>
                         <p>하급 곡괭이</p>
-                        <p>총 {low_pickaxe[currentIdx]}%</p>
+                        <p>총 {items.low_pickaxe[currentIdx]}%</p>
                       </li>
                     </div>
                     <div className="content_stone">
                       <label>믹스 스톤</label>
                       <li>
-                        <p>믹스 스톤 각 {stone[currentIdx]}%</p>
-                        <p>총 {stone[currentIdx] * 5}%</p>
+                        <p>믹스 스톤 각 {items.stone[currentIdx]}%</p>
+                        <p>총 {items.stone[currentIdx] * 5}%</p>
                       </li>
                     </div>
                   </div>
