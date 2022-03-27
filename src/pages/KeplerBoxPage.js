@@ -5,7 +5,6 @@ import keplerContract from "klaytn/KeplerContract";
 
 import Layout from "../components/Layout";
 import Nav from "components/Nav";
-import Footer from "components/Footer";
 
 import "./KeplerBoxPage.scss";
 
@@ -72,7 +71,7 @@ class KeplerBoxPage extends Component {
 
   moveSlide = (num) => {
     const { currentIdx } = this.state;
-    this.ref.current.style.left = -num * 400 + "px";
+    this.ref.current.style.left = -num * 600 + "px";
 
     this.setState({ currentIdx: num });
   };
@@ -117,16 +116,14 @@ class KeplerBoxPage extends Component {
                       </video>
                     </li>
                   </ul>
-                  <p className="controller">
-                    <span className="prev">
-                      <img src="images/left.png" onClick={this.prevSlide} />
-                    </span>
-                    <span className="next">
-                      <img src="images/right.png" onClick={this.nextSlide} />
-                    </span>
-                  </p>
+                  <span className="prev">
+                    <img src="images/left.png" onClick={this.prevSlide} />
+                  </span>
+                  <span className="next">
+                    <img src="images/right.png" onClick={this.nextSlide} />
+                  </span>
+                  <p>{boxs[currentIdx]}</p>
                 </div>
-                <p>{boxs[currentIdx]}</p>
               </div>
               <div className="KeplerBoxPage__mint">
                 <div className="mint_btn">OPEN BOX</div>
@@ -206,7 +203,6 @@ class KeplerBoxPage extends Component {
               </div>
             </div>
           </div>
-          <Footer></Footer>
         </div>
       </Layout>
     );

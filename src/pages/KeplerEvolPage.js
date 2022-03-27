@@ -7,7 +7,6 @@ import evol from "./evol-log.json";
 import Loading from "components/Loading";
 import Layout from "../components/Layout";
 import Nav from "components/Nav";
-import Footer from "components/Footer";
 import TotalEvolTable from "components/TotalEvolTable";
 import EvolTable from "components/EvolTable";
 
@@ -161,7 +160,6 @@ class KeplerEvolPage extends Component {
             </div>
             {/* {this.state.isLoading || } */}
           </div>
-          <Footer></Footer>
         </div>
       </Layout>
     );

@@ -5,7 +5,7 @@ import keplerContract from "klaytn/KeplerContract";
 
 import Nav from "components/Nav";
 import ContentTable from "components/ContentTable";
-import Footer from "components/Footer";
+import Layout from "../components/Layout";
 
 import "./KeplerMainPage.scss";
 
@@ -75,15 +75,16 @@ class KeplerMainPage extends Component {
     // if (this.state.isLoading) return <Loading />;
 
     return (
-      <div className="KeplerMainPage">
-        <Nav address={account} load={isLoading} />
-        <div className="KeplerMainPage__main">
-          <div className="KeplerMainPage__contents">
-            <ContentTable></ContentTable>
+      <Layout>
+        <div className="KeplerMainPage">
+          <Nav address={account} load={isLoading} />
+          <div className="KeplerMainPage__main">
+            <div className="KeplerMainPage__contents">
+              <ContentTable></ContentTable>
+            </div>
           </div>
         </div>
-        <Footer></Footer>
-      </div>
+      </Layout>
     );
   }
 }

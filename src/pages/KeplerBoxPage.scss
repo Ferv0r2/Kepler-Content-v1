@@ -31,10 +31,14 @@
 
 .KeplerBoxPage__boxs {
   video {
-    width: 30rem;
+    width: 50rem;
     border-radius: 4em;
   }
   p {
+    position: absolute;
+    left: 58%;
+    bottom: 0;
+    transform: translate(-50%, -50%);
     padding: 2rem;
     font-style: italic;
     text-shadow: 3px 0 10px #fff;
@@ -43,22 +47,37 @@
   }
 
   img {
-    width: 10rem;
+    width: 4rem;
+  }
+
+  .prev {
+    position: absolute;
+    left: 20%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
+  .next {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
   }
 }
 
 #slideShow {
-  width: 500px;
-  height: 300px;
+  width: 600px;
+  height: 500px;
   position: relative;
-  margin: 50px auto;
+  // margin: 0 auto;
   overflow: hidden; /*리스트 형식으로 이미지를 일렬로 정렬할 것이기 때문에, 500px 밖으로 튀어 나간 이미지들은 hidden으로 숨겨줘야됨*/
 
   .slides {
     position: absolute;
     left: 0;
     top: 0;
-    width: 1500px; /* 슬라이드할 사진과 마진 총 넓이 */
+    width: 1800px; /* 슬라이드할 사진과 마진 총 넓이 */
     transition: left 0.5s ease-out; /*ease-out: 처음에는 느렸다가 점점 빨라짐*/
   }
   /* 첫 번째 슬라이드 가운데에 정렬하기위해 첫번째 슬라이드만 margin-left조정 */
@@ -73,21 +92,6 @@
 
   .slides li {
     float: left;
-  }
-
-  .controller {
-    .prev {
-      position: absolute;
-      left: 0;
-      top: 30%;
-      cursor: pointer;
-    }
-    .next {
-      position: absolute;
-      right: 0;
-      top: 30%;
-      cursor: pointer;
-    }
   }
 }
 

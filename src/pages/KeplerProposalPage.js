@@ -8,7 +8,6 @@ import Layout from "../components/Layout";
 import Nav from "components/SubNav";
 import VoteProposal from "components/VoteProposal";
 import Token from "components/Token";
-import Footer from "components/Footer";
 
 import "./KeplerProposalPage.scss";
 
@@ -82,7 +81,6 @@ class KeplerProposalPage extends Component {
               <VoteProposal />
             </div>
           </div>
-          <Footer></Footer>
         </div>
       </Layout>
     );

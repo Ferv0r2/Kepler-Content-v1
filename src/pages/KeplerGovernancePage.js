@@ -7,7 +7,6 @@ import Layout from "../components/Layout";
 import Nav from "components/SubNav";
 import Token from "components/Token";
 import VoteProposal from "../components/VoteProposal";
-import Footer from "components/Footer";
 
 import "./KeplerGovernancePage.scss";
 
@@ -302,7 +301,6 @@ class KeplerGovernancePage extends Component {
               />
             </div>
           </div>
-          <Footer></Footer>
         </div>
       </Layout>
     );
