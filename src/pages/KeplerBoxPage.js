@@ -1,11 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, useRef } from "react";
 import caver from "klaytn/caver";
 import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
 
 import Layout from "../components/Layout";
 import Nav from "components/Nav";
-import ContentTable from "components/ContentTable";
 import Footer from "components/Footer";
 
 import "./KeplerBoxPage.scss";
@@ -17,7 +16,9 @@ class KeplerBoxPage extends Component {
       account: "",
       balance: 0,
       isLoading: true,
+      currentIdx: 0,
     };
+    this.ref = React.createRef();
   }
 
   componentDidMount() {
@@ -69,11 +70,28 @@ class KeplerBoxPage extends Component {
     );
   };
 
+  moveSlide = (num) => {
+    const { currentIdx } = this.state;
+    this.ref.current.style.left = -num * 400 + "px";
+
+    this.setState({ currentIdx: num });
+  };
+
+  prevSlide = () => {
+    const { currentIdx } = this.state;
+    if (currentIdx !== 0) this.moveSlide(currentIdx - 1);
+  };
+
+  nextSlide = () => {
+    const { currentIdx } = this.state;
+    const slideCount = 3;
+    if (currentIdx !== slideCount - 1) this.moveSlide(currentIdx + 1);
+  };
+
   render() {
-    const { account, balance, isLoading } = this.state;
-
+    const { account, balance, isLoading, currentIdx } = this.state;
     // if (this.state.isLoading) return <Loading />;
-
+    const boxs = ["Normal Box", "Rare Box", "Unique Box"];
     return (
       <Layout>
         <div className="KeplerBoxPage">
@@ -81,13 +99,34 @@ class KeplerBoxPage extends Component {
           <div className="KeplerBoxPage__main">
             <div className="KeplerBoxPage__contents">
               <div className="KeplerBoxPage__boxs">
-                <video
-                  muted="muted"
-                  loop="0"
-                  autoPlay="autoPlay"
-                  src="images/box/box_unique.mp4"
-                />
-                <p>Nomal Box</p>
+                <div id="slideShow">
+                  <ul className="slides" ref={this.ref}>
+                    <li>
+                      <video muted="muted">
+                        <source src="images/box/box_normal.mov"></source>
+                      </video>
+                    </li>
+                    <li>
+                      <video muted="muted">
+                        <source src="images/box/box_rare.mov"></source>
+                      </video>
+                    </li>
+                    <li>
+                      <video muted="muted">
+                        <source src="images/box/box_unique.mov"></source>
+                      </video>
+                    </li>
+                  </ul>
+                  <p className="controller">
+                    <span className="prev">
+                      <img src="images/left.png" onClick={this.prevSlide} />
+                    </span>
+                    <span className="next">
+                      <img src="images/right.png" onClick={this.nextSlide} />
+                    </span>
+                  </p>
+                </div>
+                <p>{boxs[currentIdx]}</p>
               </div>
               <div className="KeplerBoxPage__mint">
                 <div className="mint_btn">OPEN BOX</div>

@@ -15,6 +15,9 @@ const ContentTable = () => {
             <Link to="/evol">일일 진화 보러가기</Link>
           </li>
           <li>
+            <Link to="/box">랜덤 박스 보러가기</Link>
+          </li>
+          <li>
             <Link to="/governance">거버넌스 의제 보러가기</Link>
           </li>
         </div>

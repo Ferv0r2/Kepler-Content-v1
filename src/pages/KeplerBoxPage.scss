@@ -1,7 +1,7 @@
 .KeplerBoxPage {
   width: 100%;
   height: 100%;
-  background: linear-gradient($bg-gradtion-top, $bg-gradtion-bottom);
+  background: $bg-gradtion-bottom;
 }
 
 .KeplerBoxPage__main {
@@ -32,6 +32,7 @@
 .KeplerBoxPage__boxs {
   video {
     width: 30rem;
+    border-radius: 4em;
   }
   p {
     padding: 2rem;
@@ -39,6 +40,54 @@
     text-shadow: 3px 0 10px #fff;
     font-family: "GMarketSans";
     font-size: 3rem;
+  }
+
+  img {
+    width: 10rem;
+  }
+}
+
+#slideShow {
+  width: 500px;
+  height: 300px;
+  position: relative;
+  margin: 50px auto;
+  overflow: hidden; /*리스트 형식으로 이미지를 일렬로 정렬할 것이기 때문에, 500px 밖으로 튀어 나간 이미지들은 hidden으로 숨겨줘야됨*/
+
+  .slides {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1500px; /* 슬라이드할 사진과 마진 총 넓이 */
+    transition: left 0.5s ease-out; /*ease-out: 처음에는 느렸다가 점점 빨라짐*/
+  }
+  /* 첫 번째 슬라이드 가운데에 정렬하기위해 첫번째 슬라이드만 margin-left조정 */
+  .slides li:first-child {
+    margin-left: 100px;
+  }
+  /* 슬라이드들 옆으로 정렬 */
+  .slides li:not(:last-child) {
+    float: left;
+    margin-right: 100px;
+  }
+
+  .slides li {
+    float: left;
+  }
+
+  .controller {
+    .prev {
+      position: absolute;
+      left: 0;
+      top: 30%;
+      cursor: pointer;
+    }
+    .next {
+      position: absolute;
+      right: 0;
+      top: 30%;
+      cursor: pointer;
+    }
   }
 }
 
@@ -54,6 +103,7 @@
     font-family: "GmarketSansBold";
     color: $white;
     font-size: 2rem;
+    cursor: pointer;
   }
 
   p {
