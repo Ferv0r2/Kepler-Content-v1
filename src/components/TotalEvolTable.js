@@ -13,7 +13,7 @@ const TotalEvolTable = () => {
     <div className="TotalEvolTable">
       <h2 className="TotalEvolTable__title">Today's Evolution</h2>
       <h3 className="TotalEvolTable__date">
-        [ 2022-03-28 PM 21:00 : 날씨 - 맑음 ]
+        [ 2022-03-29 PM 21:00 : 날씨 - 맑음 ]
       </h3>
       <div className="TotalEvolTable__infoBox">
         <div className="TotalEvolTable__token">
