@@ -3,7 +3,7 @@ import NFTBox from "./NFTBox";
 
 import "./EvolTable.scss";
 
-const url = "https://klu.bs/pfp/0xf1919F40af70394762bed30E98d95DdFbac79080/";
+const url = "https://klu.bs/pfp/0x928267e7db3d173898553ff593a78719bb16929f/";
 
 const EvolTable = ({ data }) => {
   const datas = data;
