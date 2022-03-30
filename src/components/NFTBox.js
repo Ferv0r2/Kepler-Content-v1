@@ -2,7 +2,7 @@ import React from "react";
 
 import "./NFTBox.scss";
 
-const url = "https://klu.bs/pfp/0xf1919F40af70394762bed30E98d95DdFbac79080/";
+const url = "https://klu.bs/pfp/0x928267E7dB3d173898553Ff593A78719Bb16929F/";
 
 const NFTBox = ({ data }) => {
   return (
