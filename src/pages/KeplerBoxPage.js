@@ -5,6 +5,7 @@ import keplerContract from "klaytn/KeplerContract";
 
 import Layout from "../components/Layout";
 import Nav from "components/Nav";
+import Modal from "components/Modal";
 
 import items from "./item.json";
 
@@ -18,6 +19,7 @@ class KeplerBoxPage extends Component {
       balance: 0,
       isLoading: true,
       currentIdx: 0,
+      modalOpen: false,
     };
     this.ref = React.createRef();
   }
@@ -89,9 +91,63 @@ class KeplerBoxPage extends Component {
     if (currentIdx !== slideCount - 1) this.moveSlide(currentIdx + 1);
   };
 
+  //   sendTx = () => {
+  //     const { from,counter, gas, valueName} = this.state
+
+  //     const data = caver.klay.abi.encodeFunctionCall(
+  //       {
+  //         name: 'mintSingle',
+  //         type: 'function',
+  //         inputs: [
+  //           {
+  //             type: 'address',
+  //             name: '_to'
+  //           },
+  //           {
+  //             type: 'string',
+  //             name: '_tokenURI'
+  //           }
+  //         ]
+  //       },["0x105cb1540D2CC934b03A9bC41D541E9495742929", valueName]
+  //     )
+
+  //     caver.klay
+  //       .sendTransaction({
+  //         from,
+  //         to: "0xd13747aedffd4c9be34f66c09f32146800754df4",
+  //         data,
+  //         gas,
+  // //caver.utils.toBN(price * counter)
+
+  //       })
+  //       .on('transactionHash', transactionHash => {
+  //         console.log('txHash', transactionHash)
+  //         this.setState({ txHash: transactionHash })
+  //       })
+  //       .on('receipt', receipt => {
+  //         console.log('receipt', receipt)
+  //         alert('신청이 정상적으로 완료되었습니다.')
+  //         this.setState({ receipt: JSON.stringify(receipt) })
+  //       })
+  //       .on('error', error => {
+  //         console.log('error', error)
+  //         this.setState({ error: error.message })
+  //       })
+
+  //   }
+
+  sendTx = () => {
+    console.log("btn click");
+
+    this.setState({ modalOpen: true });
+  };
+
+  closeModal = () => {
+    this.setState({ modalOpen: false });
+  };
+
   render() {
-    const { account, balance, isLoading, currentIdx } = this.state;
-    // if (this.state.isLoading) return <Loading />;
+    const { account, balance, isLoading, currentIdx, modalOpen } = this.state;
     const boxs = ["Normal Box", "Rare Box", "Unique Box"];
 
     return (
@@ -104,21 +160,31 @@ class KeplerBoxPage extends Component {
                 <div id="slideShow">
                   <ul className="slides" ref={this.ref}>
                     <li>
-                      <video muted="muted">
-                        <source src="images/box/box_normal.mov"></source>
+                      <video muted="muted" autoPlay="autoPlay">
+                        <source src="images/box/box_normal.mov" />
                       </video>
                     </li>
                     <li>
                       <video muted="muted">
-                        <source src="images/box/box_rare.mov"></source>
+                        <source src="images/box/box_rare.mov" />
                       </video>
                     </li>
                     <li>
                       <video muted="muted">
-                        <source src="images/box/box_unique.mov"></source>
+                        <source src="images/box/box_unique.mov" />
                       </video>
                     </li>
                   </ul>
+                  <Modal
+                    open={modalOpen}
+                    close={this.closeModal}
+                    title="Create a chat room">
+                    리액트 클래스형 모달 팝업창입니다. 쉽게 만들 수 있어요. 같이
+                    만들어봐요!
+                  </Modal>
+                  {/* <div className="KeplerBoxPage__item">
+                    <img src="images/items/1L.png" />
+                  </div> */}
                   <span className="prev">
                     <img src="images/left.png" onClick={this.prevSlide} />
                   </span>
@@ -129,7 +195,9 @@ class KeplerBoxPage extends Component {
                 </div>
               </div>
               <div className="KeplerBoxPage__mint">
-                <div className="mint_btn">OPEN BOX</div>
+                <div className="mint_btn" onClick={this.sendTx}>
+                  OPEN BOX
+                </div>
                 <p>Limit : 50 / 200</p>
               </div>
 

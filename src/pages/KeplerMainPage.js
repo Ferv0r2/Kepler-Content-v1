@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import caver from "klaytn/caver";
 import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
 
 import Nav from "components/Nav";
-import ContentTable from "components/ContentTable";
 import Layout from "../components/Layout";
 
 import "./KeplerMainPage.scss";
@@ -79,8 +79,22 @@ class KeplerMainPage extends Component {
         <div className="KeplerMainPage">
           <Nav address={account} load={isLoading} />
           <div className="KeplerMainPage__main">
+            <h2 className="KeplerMainPage__title">Kepler Contents</h2>
             <div className="KeplerMainPage__contents">
-              <ContentTable></ContentTable>
+              <div className="KeplerMainPage__infoBox">
+                <img src="images/main_icon.png" />
+                <div className="KeplerMainPage__link">
+                  <li>
+                    <Link to="/evol">일일 진화 보러가기</Link>
+                  </li>
+                  {/* <li>
+                    <Link to="/box">랜덤 박스 보러가기</Link>
+                  </li> */}
+                  <li>
+                    <Link to="/governance">거버넌스 의제 보러가기</Link>
+                  </li>
+                </div>
+              </div>
             </div>
           </div>
         </div>
