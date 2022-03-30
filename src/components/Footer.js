@@ -34,7 +34,12 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="https://klu.bs/pfp/0xf1919F40af70394762bed30E98d95DdFbac79080">
+              <a href="https://opensea.io/collection/kepler-452b-official">
+                <img src="images/opensea.png" />
+              </a>
+            </li>
+            <li>
+              <a href="https://klu.bs/pfp/0x928267E7dB3d173898553Ff593A78719Bb16929F">
                 <i className="fab fa-kickstarter-k" aria-hidden="true"></i>
               </a>
             </li>
