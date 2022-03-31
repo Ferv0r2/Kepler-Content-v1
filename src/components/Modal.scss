@@ -17,45 +17,42 @@
 
 .modal > section {
   width: 90%;
-  max-width: 450px;
+  max-width: 600px;
+  height: 70%;
   margin: 0 auto;
-  border-radius: 0.3rem;
+  padding: 2rem;
+  border-radius: 0.5rem;
   background: $bg-gradtion-bottom;
-  /* 팝업이 열릴때 스르륵 열리는 효과 */
   animation: modal-show 0.3s;
   overflow: hidden;
+
+  animation: flicker 1.5s infinite alternate;
+  -webkit-animation: flicker 1.5s infinite alternate;
 }
 .modal > section > header {
   position: relative;
-  padding: 16px 64px 16px 16px;
-  background-color: #f1f1f1;
-  font-weight: 700;
 }
 .modal > section > header button {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 10px;
+  right: 10px;
   width: 30px;
-  font-size: 21px;
+  font-size: 3.5rem;
   font-weight: 700;
   text-align: center;
-  color: #999;
+  color: $white;
   background-color: transparent;
+  z-index: 3;
+
+  &:hover {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+  }
 }
 .modal > section > main {
   padding: 16px;
 }
-.modal > section > footer {
-  padding: 12px 16px;
-  text-align: center;
-}
-.modal > section > footer button {
-  padding: 6px 12px;
-  color: #26003a;
-  background-color: #dfcce4;
-  border-radius: 0.7em;
-  font-size: 1.3rem;
-}
+
 .modal.openModal {
   display: flex;
   align-items: center;
@@ -68,39 +65,84 @@
 }
 
 .Openbox {
+  text-align: center;
+
   video {
-    width: 40rem;
+    padding-top: 3rem;
+    width: 50rem;
+  }
+  p {
+    margin-top: -5rem;
+    font-size: 3rem;
+
+    animation: modal-bg-show 1s infinite alternate;
+    -webkit-animation: modal-bg-show 1s infinite alternate;
   }
 }
 
 .Item {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 5%;
+  left: 15%;
+  transform: translate(-50%, -50%);
   background: linear-gradient(#220127, #490b53);
-  border-radius: 1em;
-  border-color: #7e5486;
-  animation: modal-bg-show 0.3s;
-  animation-delay: 3s;
+  border-radius: 2em;
+  border: 8px solid #7e5486;
+  transform: scale(0);
+  -webkit-transform: scale(0);
+  animation: item-show 0.5s;
+  animation-delay: 3.5s;
+  -webkit-animation: item-show 0.5s;
+  -webkit-animation-delay: 3.5s; /* Safari 4.0 - 8.0 */
+  animation-fill-mode: forwards;
+}
 
-  -webkit-animation: modal-bg-show 0.3s;
-  -webkit-animation-delay: 2s; /* Safari 4.0 - 8.0 */
-
+.Item__img {
+  text-align: center;
   img {
-    width: 30rem;
+    width: 35rem;
   }
 }
 
 .Item__content {
+  width: 90%;
   color: $white;
+  margin: 0 auto;
+  border-radius: 0.3em;
+  background: #752f80;
+  padding: 2rem;
+  margin-top: -4rem;
+  font-family: "GmarketSansBold";
 
   .Item__name {
-    font-family: "GmarketSansBold";
     font-size: 2rem;
+    padding: 1rem;
   }
 
   .Item__effect {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
+    color: #fbd9ff;
+    padding: 1rem;
+  }
+}
+
+.Item__close {
+  padding: 3rem;
+
+  button {
+    padding: 1rem 1.8rem;
+    color: #26003a;
+    background-color: #dfcce4;
+    border: 1px solid #26003a;
+    border-radius: 0.7em;
+    font-size: 1.8rem;
+    font-style: italic;
+
+    &:hover {
+      color: #dfcce4;
+      background-color: #26003a;
+      border: 1px solid #dfcce4;
+    }
   }
 }
 
@@ -114,11 +156,41 @@
     margin-top: 0;
   }
 }
+
 @keyframes modal-bg-show {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes item-show {
+  from {
+    opacity: 0;
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  18%,
+  22%,
+  100% {
+    box-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff,
+      0 0 40px $hover-color, 0 0 80px $hover-color, 0 0 90px $hover-color,
+      0 0 100px $hover-color, 0 0 150px $hover-color;
+  }
+  55% {
+    box-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 10px #fff, 0 0 20px $hover-color,
+      0 0 40px $hover-color, 0 0 45px $hover-color, 0 0 50px $hover-color,
+      0 0 75px $hover-color;
   }
 }

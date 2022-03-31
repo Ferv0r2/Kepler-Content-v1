@@ -30,11 +30,7 @@
 }
 
 .KeplerBoxPage__boxs {
-  img {
-    width: 50rem;
-    border-radius: 4em;
-  }
-  p {
+  > p {
     position: absolute;
     left: 58%;
     bottom: 0;
@@ -52,14 +48,14 @@
 
   .prev {
     position: absolute;
-    left: 20%;
+    left: 14%;
     top: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
   }
   .next {
     position: absolute;
-    right: 0;
+    right: -4%;
     top: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
@@ -72,6 +68,19 @@
   position: relative;
   // margin: 0 auto;
   overflow: hidden; /*리스트 형식으로 이미지를 일렬로 정렬할 것이기 때문에, 500px 밖으로 튀어 나간 이미지들은 hidden으로 숨겨줘야됨*/
+
+  > p {
+    position: absolute;
+    left: 58%;
+    bottom: 0;
+    transform: translate(-50%, -50%);
+    padding: 2rem;
+    font-style: italic;
+    text-shadow: 3px 0 10px #fff;
+    font-family: "GmarketSans";
+    font-size: 3rem;
+    font-weight: 550;
+  }
 
   .slides {
     position: absolute;
@@ -92,6 +101,11 @@
 
   .slides li {
     float: left;
+
+    > img {
+      width: 50rem;
+      border-radius: 4em;
+    }
   }
 }
 

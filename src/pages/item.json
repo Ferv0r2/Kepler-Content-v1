@@ -5,8 +5,8 @@
   "large_mix_potion": [0.2, 0.4, 1],
   "medium_mix_potion": [0.6, 0.8, 1],
   "small_mix_potion": [1.8, 1.6, 1],
+  "stone": [0.5, 1.1, 2],
   "advanced_pickaxe": [3.5, 5.5, 10],
   "intermediate_pickaxe": [10.5, 11, 10],
-  "low_pickaxe": [22.5, 22, 10],
-  "stone": [0.5, 1.1, 2]
+  "low_pickaxe": [22.5, 22, 10]
 }

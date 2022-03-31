@@ -1,6 +1,5 @@
 import React, { Component, useRef } from "react";
 import caver from "klaytn/caver";
-import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
 
 import Layout from "../components/Layout";
@@ -11,6 +10,8 @@ import items from "./item.json";
 
 import "./KeplerBoxPage.scss";
 
+const mintCA = "0xd2eaa75D2060c932Cb03F50e7369bcaEEb388941";
+
 class KeplerBoxPage extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +20,11 @@ class KeplerBoxPage extends Component {
       balance: 0,
       isLoading: true,
       currentIdx: 0,
+      limit: 0,
       modalOpen: false,
+      txHash: "",
+      receipt: false,
+      error: false,
     };
     this.ref = React.createRef();
   }
@@ -36,8 +41,10 @@ class KeplerBoxPage extends Component {
       try {
         await klaytn.enable();
         this.setAccountInfo(klaytn);
+        this.setLimit(0);
         klaytn.on("accountsChanged", () => {
           this.setAccountInfo(klaytn);
+          this.setLimit(0);
         });
       } catch (error) {
         // console.log(error);
@@ -55,11 +62,13 @@ class KeplerBoxPage extends Component {
     if (klaytn === undefined) return;
 
     const account = klaytn.selectedAddress;
-    const balance = await caver.klay.getBalance(account);
+    let balance = await caver.klay.getBalance(account);
+    balance = (balance / 1000000000000000000).toFixed(2);
+
     this.setState({
       account,
       isLoading: false,
-      balance: caver.utils.fromPeb(balance, "KLAY"),
+      balance: balance,
     });
   };
 
@@ -76,80 +85,176 @@ class KeplerBoxPage extends Component {
   moveSlide = (num) => {
     const { currentIdx } = this.state;
     this.ref.current.style.left = -num * 600 + "px";
-
     this.setState({ currentIdx: num });
   };
 
   prevSlide = () => {
     const { currentIdx } = this.state;
-    if (currentIdx !== 0) this.moveSlide(currentIdx - 1);
+    if (currentIdx !== 0) {
+      this.moveSlide(currentIdx - 1);
+      this.setLimit(currentIdx - 1);
+    }
   };
 
   nextSlide = () => {
     const { currentIdx } = this.state;
     const slideCount = 3;
-    if (currentIdx !== slideCount - 1) this.moveSlide(currentIdx + 1);
+    if (currentIdx !== slideCount - 1) {
+      this.moveSlide(currentIdx + 1);
+      this.setLimit(currentIdx + 1);
+    }
   };
 
-  //   sendTx = () => {
-  //     const { from,counter, gas, valueName} = this.state
+  setLimit = async (idx) => {
+    const minterContract = new caver.klay.Contract(
+      [
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "limit",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      mintCA
+    );
 
-  //     const data = caver.klay.abi.encodeFunctionCall(
-  //       {
-  //         name: 'mintSingle',
-  //         type: 'function',
-  //         inputs: [
-  //           {
-  //             type: 'address',
-  //             name: '_to'
-  //           },
-  //           {
-  //             type: 'string',
-  //             name: '_tokenURI'
-  //           }
-  //         ]
-  //       },["0x105cb1540D2CC934b03A9bC41D541E9495742929", valueName]
-  //     )
+    const boxLimit = await minterContract.methods.limit(idx).call();
+    console.log(boxLimit);
+    this.setState({ limit: boxLimit });
+  };
 
-  //     caver.klay
-  //       .sendTransaction({
-  //         from,
-  //         to: "0xd13747aedffd4c9be34f66c09f32146800754df4",
-  //         data,
-  //         gas,
-  // //caver.utils.toBN(price * counter)
+  gachaId = async () => {
+    const { currentIdx } = this.state;
 
-  //       })
-  //       .on('transactionHash', transactionHash => {
-  //         console.log('txHash', transactionHash)
-  //         this.setState({ txHash: transactionHash })
-  //       })
-  //       .on('receipt', receipt => {
-  //         console.log('receipt', receipt)
-  //         alert('신청이 정상적으로 완료되었습니다.')
-  //         this.setState({ receipt: JSON.stringify(receipt) })
-  //       })
-  //       .on('error', error => {
-  //         console.log('error', error)
-  //         this.setState({ error: error.message })
-  //       })
+    const itemGacha = Math.random() * 100;
+    const itemNum = Math.floor(Math.random() * 5);
 
-  //   }
+    const largeP = items.large_potion[currentIdx] * 5;
+    const largeMP = items.large_mix_potion[currentIdx] * 5 + largeP;
+    const mediumP = items.medium_potion[currentIdx] * 5 + largeMP;
+    const mediumMP = items.medium_mix_potion[currentIdx] * 5 + mediumP;
+    const smallP = items.small_potion[currentIdx] * 5 + mediumMP;
+    const smallMP = items.small_mix_potion[currentIdx] * 5 + smallP;
+    const stoneM = items.stone[currentIdx] * 5 + smallMP;
+    const pickA = items.advanced_pickaxe[currentIdx] + stoneM;
+    const pickB = items.intermediate_pickaxe[currentIdx] + pickA;
+    const pickC = items.low_pickaxe[currentIdx] + pickB;
 
-  sendTx = () => {
-    console.log("btn click");
+    console.log(pickC);
+    console.log(itemNum);
 
-    this.setState({ modalOpen: true });
+    let pointer = 0;
+    if (itemGacha < largeP) {
+      pointer = itemNum;
+    } else if (itemGacha < largeMP) {
+      pointer = itemNum + 5;
+    } else if (itemGacha < mediumP) {
+      pointer = itemNum + 10;
+    } else if (itemGacha < mediumMP) {
+      pointer = itemNum + 15;
+    } else if (itemGacha < smallP) {
+      pointer = itemNum + 20;
+    } else if (itemGacha < smallMP) {
+      pointer = itemNum + 25;
+    } else if (itemGacha < stoneM) {
+      pointer = itemNum + 30;
+    } else if (itemGacha < pickA) {
+      pointer = 36;
+    } else if (itemGacha < pickB) {
+      pointer = 37;
+    } else if (itemGacha < pickC) {
+      pointer = 38;
+    } else {
+      console.log("error");
+    }
+
+    return pointer;
+  };
+
+  sendTx = async () => {
+    const { account, currentIdx } = this.state;
+    const minterContract = new caver.klay.Contract(
+      [
+        {
+          constant: false,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_boxId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_count",
+              type: "uint256",
+            },
+          ],
+          name: "mintOfKlay",
+          outputs: [],
+          payable: true,
+          stateMutability: "payable",
+          type: "function",
+        },
+      ],
+      mintCA
+    );
+
+    const num = await this.gachaId();
+    console.log(num);
+    const mintWithKlay = await minterContract.methods
+      .mintOfKlay(currentIdx, num, 1)
+      .send({
+        from: account,
+        gas: 2500000,
+      })
+      .on("transactionHash", (transactionHash) => {
+        console.log("txHash", transactionHash);
+        this.setState({ txHash: transactionHash });
+      })
+      .on("receipt", (receipt) => {
+        console.log("receipt", receipt);
+        // alert('신청이 정상적으로 완료되었습니다.')
+        this.setState({
+          receipt: JSON.stringify(receipt),
+          modalOpen: true,
+        });
+      })
+      .on("error", (error) => {
+        console.log("error", error);
+        alert("취소되었습니다.");
+        this.setState({ error: error.message });
+      });
   };
 
   closeModal = () => {
-    console.log("close");
     this.setState({ modalOpen: false });
   };
 
   render() {
-    const { account, balance, isLoading, currentIdx, modalOpen } = this.state;
+    const { account, balance, isLoading, limit, currentIdx, modalOpen } =
+      this.state;
     const boxs = ["Normal Box", "Rare Box", "Unique Box"];
+    const boxPrice = [3, 4, 5];
 
     return (
       <Layout>
@@ -184,17 +289,17 @@ class KeplerBoxPage extends Component {
                 <div className="mint_btn" onClick={this.sendTx}>
                   OPEN BOX
                 </div>
-                <p>Limit : 50 / 200</p>
+                <p>Limit : {limit} / 200</p>
               </div>
 
               <div className="KeplerBoxPage__payable">
                 <div className="box_price">
                   <label>Price</label>
-                  <p>1 box = 10 klay</p>
+                  <p>1 box = {boxPrice[currentIdx]} klay</p>
                 </div>
                 <div className="klay_balance">
                   <label>Your Klay</label>
-                  <p>your klay balance = 100 klay</p>
+                  <p>your klay balance = {balance} klay</p>
                 </div>
               </div>
               <div className="KeplerBoxPage__table">

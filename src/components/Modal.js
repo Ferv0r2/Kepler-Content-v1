@@ -28,21 +28,22 @@ const Modal = ({ open, close, header }) => {
                 >
                   <source src="../video/box_normal.mov" />
                 </video>
+                <p>상자 여는중 ...</p>
               </div>
               <div className="Item">
-                <img src="images/items/1L.png" />
+                <div className="Item__img">
+                  <img src="images/items/1L.png" />
+                </div>
                 <div className="Item__content">
                   <p className="Item__name">'1종 대형 포션'</p>
                   <p className="Item__effect">진화 확률 50% 증가</p>
                 </div>
+                <div className="Item__close">
+                  <button onClick={close}>확인</button>
+                </div>
               </div>
             </div>
           </main>
-          <footer>
-            <button className="close" onClick={close}>
-              확인
-            </button>
-          </footer>
         </section>
       ) : null}
     </div>
