@@ -30,7 +30,7 @@
 }
 
 .KeplerBoxPage__boxs {
-  video {
+  img {
     width: 50rem;
     border-radius: 4em;
   }
@@ -46,7 +46,7 @@
     font-size: 3rem;
   }
 
-  img {
+  span > img {
     width: 4rem;
   }
 

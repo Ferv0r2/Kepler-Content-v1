@@ -143,6 +143,7 @@ class KeplerBoxPage extends Component {
   };
 
   closeModal = () => {
+    console.log("close");
     this.setState({ modalOpen: false });
   };
 
@@ -160,31 +161,16 @@ class KeplerBoxPage extends Component {
                 <div id="slideShow">
                   <ul className="slides" ref={this.ref}>
                     <li>
-                      <video muted="muted" autoPlay="autoPlay">
-                        <source src="images/box/box_normal.mov" />
-                      </video>
+                      <img src="images/box/box_normal.png" />
                     </li>
                     <li>
-                      <video muted="muted">
-                        <source src="images/box/box_rare.mov" />
-                      </video>
+                      <img src="images/box/box_rare.png" />
                     </li>
                     <li>
-                      <video muted="muted">
-                        <source src="images/box/box_unique.mov" />
-                      </video>
+                      <img src="images/box/box_unique.png" />
                     </li>
                   </ul>
-                  <Modal
-                    open={modalOpen}
-                    close={this.closeModal}
-                    title="Create a chat room">
-                    리액트 클래스형 모달 팝업창입니다. 쉽게 만들 수 있어요. 같이
-                    만들어봐요!
-                  </Modal>
-                  {/* <div className="KeplerBoxPage__item">
-                    <img src="images/items/1L.png" />
-                  </div> */}
+                  <Modal open={modalOpen} close={this.closeModal} />
                   <span className="prev">
                     <img src="images/left.png" onClick={this.prevSlide} />
                   </span>
