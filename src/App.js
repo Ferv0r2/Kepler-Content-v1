@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
 import KeplerMainPage from "pages/KeplerMainPage";
 import KeplerBoxPage from "pages/KeplerBoxPage";
 import KeplerEvolPage from "pages/KeplerEvolPage";
@@ -14,7 +14,7 @@ const App = () => {
   return (
     <Router>
       <div className="App">
-        <Routes basename={process.env.PUBLIC_URL}>
+        <Routes basename="/">
           <Route path="/" element={<KeplerMainPage />} />
           <Route path="/box" element={<KeplerBoxPage />} />
           <Route path="/evol" element={<KeplerEvolPage />} />
