@@ -1,5 +1,5 @@
 {
-  "homepage": "https://nft-kepler-452b.shop/",
+  "homepage": "https://nft-kepler-452b.shop",
   "scripts": {
     "build": "webpack --config ./webpack.prod.js",
     "start": "serve ./docs -p 5555",

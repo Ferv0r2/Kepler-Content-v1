@@ -14,7 +14,7 @@ const App = () => {
   return (
     <Router>
       <div className="App">
-        <Routes basename={"https://nft-kepler-452b.shop"}>
+        <Routes basename={process.env.PUBLIC_URL}>
           <Route path="/" element={<KeplerMainPage />} />
           <Route path="/box" element={<KeplerBoxPage />} />
           <Route path="/evol" element={<KeplerEvolPage />} />
