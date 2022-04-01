@@ -151,11 +151,11 @@ class KeplerBoxPage extends Component {
     const smallP = items.small_potion[currentIdx] * 5 + mediumMP;
     const smallMP = items.small_mix_potion[currentIdx] * 5 + smallP;
     const stoneM = items.stone[currentIdx] * 5 + smallMP;
-    const pickA = items.advanced_pickaxe[currentIdx] + stoneM;
+    const pickA = items.low_pickaxe[currentIdx] + stoneM;
     const pickB = items.intermediate_pickaxe[currentIdx] + pickA;
-    const pickC = items.low_pickaxe[currentIdx] + pickB;
+    const pickC = items.advanced_pickaxe[currentIdx] + pickB;
 
-    console.log(pickC);
+    console.log(itemGacha);
     console.log(itemNum);
 
     let pointer = 0;
