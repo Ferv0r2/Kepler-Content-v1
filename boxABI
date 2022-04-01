@@ -4,6 +4,11 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
+				"name": "_keyId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
 				"name": "_price",
 				"type": "uint256"
 			},
@@ -23,13 +28,13 @@
 		"constant": false,
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "_boxId",
-				"type": "uint256"
+				"internalType": "address",
+				"name": "_account",
+				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "_keyId",
+				"name": "_boxId",
 				"type": "uint256"
 			},
 			{
@@ -112,6 +117,26 @@
 			}
 		],
 		"name": "setFeeTo",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_boxId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_keyId",
+				"type": "uint256"
+			}
+		],
+		"name": "setKeyId",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -211,6 +236,27 @@
 				"internalType": "bool",
 				"name": "",
 				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "keyIds",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
