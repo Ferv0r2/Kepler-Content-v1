@@ -387,7 +387,7 @@ class KeplerBoxPage extends Component {
           <div className="KeplerBoxPage__main">
             <div className="KeplerBoxPage__contents">
               <div className="KeplerBoxPage__boxs">
-                <div id="slideShow">
+                <div id="slideShow_box">
                   <ul className="slides" ref={this.ref}>
                     <li>
                       <img src="images/box/box_normal.png" />

@@ -2,6 +2,7 @@ import React from "react";
 import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
 import KeplerMainPage from "pages/KeplerMainPage";
 import KeplerBoxPage from "pages/KeplerBoxPage";
+import KeplerMiningPage from "pages/KeplerMiningPage";
 import KeplerEvolPage from "pages/KeplerEvolPage";
 import KeplerGovernanceListPage from "pages/KeplerGovernanceListPage";
 import KeplerGovernancePage from "pages/KeplerGovernancePage";
@@ -17,6 +18,7 @@ const App = () => {
         <Routes basename="/">
           <Route path="/" element={<KeplerMainPage />} />
           <Route path="/box" element={<KeplerBoxPage />} />
+          <Route path="/mining" element={<KeplerMiningPage />} />
           <Route path="/evol" element={<KeplerEvolPage />} />
           {/* <Route path="/governance" element={<KeplerGovernanceListPage />} /> */}
           <Route path="/governance" element={<ErrorPage />} />
@@ -24,13 +26,6 @@ const App = () => {
           {/* <Route path="/governance/proposal" element={<KeplerProposalPage />} /> */}
           <Route path="/governance/proposal" element={<ErrorPage />} />
         </Routes>
-        <Link to="/" />
-        <Link to="/evol" />
-        {/* <Route path="/governance" element={<KeplerGovernanceListPage />} /> */}
-        <Link to="/governance" />
-        <Link to="/governance/0" />
-        {/* <Route path="/governance/proposal" element={<KeplerProposalPage />} /> */}
-        <Link to="/governance/proposal" />
       </div>
     </Router>
   );
