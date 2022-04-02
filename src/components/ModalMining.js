@@ -1,16 +1,16 @@
 import React from "react";
-import tokenImg from "../pages/tokenImg.json";
+import miningImg from "../pages/miningImg.json";
 
-import "./modal.scss";
+import "./ModalMining.scss";
 
-const Modal = ({ open, close, header, currentIdx, gachaItem }) => {
+const ModalMining = ({ open, close, header, currentIdx, gachaItem }) => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
 
   const box_Type = ["box_normal", "box_rare", "box_unique"];
   console.log("item", gachaItem);
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
-    <div className={open ? "openModal modal" : "modal"}>
+    <div className={open ? "openModal modal_Mining" : "modal_Mining"}>
       {open ? (
         <section>
           <header>
@@ -21,8 +21,8 @@ const Modal = ({ open, close, header, currentIdx, gachaItem }) => {
           </header>
           <main>
             {/* {props.children} */}
-            <div className="Box_modal">
-              <div className="Openbox">
+            <div className="Box_modal_Mining">
+              <div className="MiningStone">
                 <video
                   muted="muted"
                   autoPlay="autoPlay"
@@ -30,21 +30,19 @@ const Modal = ({ open, close, header, currentIdx, gachaItem }) => {
                 >
                   <source src={`../video/${box_Type[currentIdx]}.mov`} />
                 </video>
-                <p>상자 여는중 ...</p>
+                <p>믹스스톤 채굴 중 입니다...</p>
               </div>
-              <div className="Item">
-                <div className="Item__img">
+              <div className="Mining">
+                <div className="Mining_result">채굴 결과</div>
+                <div className="Mining__img">
                   <img
-                    src={`images/items/${tokenImg["code"][gachaItem]}.png`}
+                    src={`images/items/${miningImg["code"][gachaItem]}.png`}
                   />
                 </div>
-                <div className="Item__content">
-                  <p className="Item__name">'{tokenImg["name"][gachaItem]}'</p>
-                  <p className="Item__effect">
-                    {tokenImg["effect"][gachaItem]}
-                  </p>
+                <div className="Mining__content">
+                  <p className="Mining__name">{miningImg["name"][gachaItem]}</p>
                 </div>
-                <div className="Item__close">
+                <div className="Mining__close">
                   <button onClick={close}>확인</button>
                 </div>
               </div>
@@ -56,4 +54,4 @@ const Modal = ({ open, close, header, currentIdx, gachaItem }) => {
   );
 };
 
-export default Modal;
+export default ModalMining;

@@ -4,13 +4,13 @@ import caver from "klaytn/caver";
 
 import Layout from "../components/Layout";
 import Nav from "components/Nav";
-import Modal from "components/Modal";
+import ModalMining from "components/ModalMining";
 
 import items from "./item.json";
 
 import "./KeplerMiningPage.scss";
 
-const mintCA = "0xB3cF638A1fC987D55b27c74303e93cf8acD0023A";
+const miningCA = "0xc9eF79f42453211cB462fa4934B28166f8BB1E2E";
 const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
 
 class KeplerMiningPage extends Component {
@@ -22,7 +22,6 @@ class KeplerMiningPage extends Component {
       isLoading: true,
       currentIdx: 0,
       limit: 0,
-      mintPrice: 0,
       gachaItem: 0,
       modalOpen: false,
       txHash: "",
@@ -182,41 +181,6 @@ class KeplerMiningPage extends Component {
     });
   };
 
-  setMintPrice = async (idx) => {
-    const minterContract = new caver.klay.Contract(
-      [
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "mintPrice",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      mintCA
-    );
-
-    let mintPrice = await minterContract.methods.mintPrice(idx).call();
-    mintPrice = mintPrice / 1000000000000000000;
-    this.setState({
-      mintPrice,
-    });
-  };
-
   gachaId = async () => {
     const { currentIdx } = this.state;
 
@@ -252,7 +216,7 @@ class KeplerMiningPage extends Component {
 
   sendTxItem = async () => {
     const { account, currentIdx } = this.state;
-    const minterContract = new caver.klay.Contract(
+    const miningContract = new caver.klay.Contract(
       [
         {
           constant: false,
@@ -264,8 +228,38 @@ class KeplerMiningPage extends Component {
             },
             {
               internalType: "uint256",
-              name: "_boxId",
+              name: "_id",
               type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_mixId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_mixCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_destructCount",
+              type: "uint256",
+            },
+          ],
+          name: "mining",
+          outputs: [],
+          payable: false,
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          constant: false,
+          inputs: [
+            {
+              internalType: "address",
+              name: "_account",
+              type: "address",
             },
             {
               internalType: "uint256",
@@ -274,46 +268,65 @@ class KeplerMiningPage extends Component {
             },
             {
               internalType: "uint256",
-              name: "_count",
+              name: "_mixId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_useCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256[]",
+              name: "_mixCount",
+              type: "uint256[]",
+            },
+            {
+              internalType: "uint256",
+              name: "_destructCount",
               type: "uint256",
             },
           ],
-          name: "mintOfItem",
+          name: "miningMany",
           outputs: [],
           payable: false,
           stateMutability: "nonpayable",
           type: "function",
         },
       ],
-      mintCA
+      miningCA
     );
 
     const num = await this.gachaId();
     console.log(num);
-    const mintWithItem = await minterContract.methods
-      .mintOfItem(account, currentIdx + 36, num, 1)
-      .send({
-        from: account,
-        gas: 7500000,
-      })
-      .on("transactionHash", (transactionHash) => {
-        console.log("txHash", transactionHash);
-        this.setState({ txHash: transactionHash });
-      })
-      .on("receipt", (receipt) => {
-        console.log("receipt", receipt);
-        // alert('신청이 정상적으로 완료되었습니다.')
-        this.setState({
-          receipt: JSON.stringify(receipt),
-          modalOpen: true,
-        });
-      })
-      .on("error", (error) => {
-        console.log("error", error);
-        alert("취소되었습니다.");
-        this.setState({ error: error.message });
-      });
-    // this.setState({ modalOpen: true });
+    // const miningStone = await miningContract.methods
+    //   .mining(account, currentIdx, num, 1, 1)
+    //   .send({
+    //     from: account,
+    //     gas: 7500000,
+    //   })
+    //   .on("transactionHash", (transactionHash) => {
+    //     console.log("txHash", transactionHash);
+    //     this.setState({ txHash: transactionHash });
+    //   })
+    //   .on("receipt", (receipt) => {
+    //     console.log("receipt", receipt);
+    //     // alert('신청이 정상적으로 완료되었습니다.')
+    //     this.setState({
+    //       receipt: JSON.stringify(receipt),
+    //       modalOpen: true,
+    //       gachaItem: num,
+    //     });
+    //   })
+    //   .on("error", (error) => {
+    //     console.log("error", error);
+    //     alert("믹스스톤 채굴이 취소되었습니다.");
+    //     this.setState({ error: error.message });
+    //   });
+    this.setState({
+      modalOpen: true,
+      gachaItem: num,
+    });
   };
 
   closeModal = () => {
@@ -321,18 +334,11 @@ class KeplerMiningPage extends Component {
   };
 
   render() {
-    const {
-      account,
-      balance,
-      isLoading,
-      limit,
-      currentIdx,
-      gachaItem,
-      modalOpen,
-    } = this.state;
+    const { account, balance, isLoading, currentIdx, gachaItem, modalOpen } =
+      this.state;
     const boxs = ["하급 곡괭이", "중급 곡괭이", "상급 곡괭이"];
 
-    console.log("box", gachaItem);
+    console.log("pickaxe", gachaItem);
     return (
       <Layout>
         <div className="KeplerMiningPage">
@@ -348,7 +354,7 @@ class KeplerMiningPage extends Component {
               </div>
 
               <div className="KeplerMiningPage__mint">
-                <div className="mint_btn" onClick={this.sendTx}>
+                <div className="mint_btn" onClick={this.sendTxItem}>
                   START
                 </div>
                 <p>
@@ -369,7 +375,7 @@ class KeplerMiningPage extends Component {
                       <img src="images/items/3PK.png" />
                     </li>
                   </ul>
-                  <Modal
+                  <ModalMining
                     open={modalOpen}
                     currentIdx={currentIdx}
                     gachaItem={gachaItem}
