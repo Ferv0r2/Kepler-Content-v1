@@ -6,7 +6,8 @@ import "./ModalMining.scss";
 const ModalMining = ({ open, close, header, currentIdx, gachaItem }) => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
 
-  const box_Type = ["box_normal", "box_rare", "box_unique"];
+  const mining_Type = ["mining_normal", "mining_rare", "mining_unique"];
+  console.log("cid", currentIdx);
   console.log("item", gachaItem);
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
@@ -26,15 +27,21 @@ const ModalMining = ({ open, close, header, currentIdx, gachaItem }) => {
                 <video
                   muted="muted"
                   autoPlay="autoPlay"
-                  poster={`../video/${box_Type[currentIdx]}.png`}
+                  poster={`../video/mining.png`}
                 >
-                  <source src={`../video/${box_Type[currentIdx]}.mov`} />
+                  <source src={`../video/${mining_Type[currentIdx]}.mov`} />
                 </video>
                 <p>믹스스톤 채굴 중 입니다...</p>
               </div>
               <div className="Mining">
                 <div className="Mining_result">채굴 결과</div>
                 <div className="Mining__img">
+                  <img
+                    src={`images/items/${miningImg["code"][gachaItem]}.png`}
+                  />
+                  <img
+                    src={`images/items/${miningImg["code"][gachaItem]}.png`}
+                  />
                   <img
                     src={`images/items/${miningImg["code"][gachaItem]}.png`}
                   />
@@ -49,6 +56,42 @@ const ModalMining = ({ open, close, header, currentIdx, gachaItem }) => {
             </div>
           </main>
         </section>
+      ) : null}
+      {currentIdx == 0 ? (
+        <div className="crack">
+          <div className="crack1">
+            <img src={`images/items/${miningImg["code"][gachaItem]}.png`} />
+            {miningImg["name"][gachaItem]}
+          </div>
+        </div>
+      ) : null}
+      {currentIdx == 1 ? (
+        <div className="crack">
+          <div className="crack1">
+            <img src={`images/items/${miningImg["code"][gachaItem]}.png`} />
+            {miningImg["name"][gachaItem]}
+          </div>
+          <div className="crack2">
+            <img src={`images/items/${miningImg["code"][gachaItem]}.png`} />
+            {miningImg["name"][gachaItem]}
+          </div>
+        </div>
+      ) : null}
+      {currentIdx == 2 ? (
+        <div className="crack">
+          <div className="crack1">
+            <img src={`images/items/${miningImg["code"][gachaItem]}.png`} />
+            {miningImg["name"][gachaItem]}
+          </div>
+          <div className="crack2">
+            <img src={`images/items/${miningImg["code"][gachaItem]}.png`} />
+            {miningImg["name"][gachaItem]}
+          </div>
+          <div className="crack3">
+            <img src={`images/items/${miningImg["code"][gachaItem]}.png`} />
+            {miningImg["name"][gachaItem]}
+          </div>
+        </div>
       ) : null}
     </div>
   );
