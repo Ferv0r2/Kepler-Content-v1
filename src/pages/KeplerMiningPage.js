@@ -6,8 +6,6 @@ import Layout from "../components/Layout";
 import Nav from "components/Nav";
 import ModalMining from "components/ModalMining";
 
-import items from "./item.json";
-
 import "./KeplerMiningPage.scss";
 
 const miningCA = "0xc9eF79f42453211cB462fa4934B28166f8BB1E2E";
@@ -22,7 +20,9 @@ class KeplerMiningPage extends Component {
       isLoading: true,
       currentIdx: 0,
       limit: 0,
-      gachaItem: 0,
+      gachaItem: [],
+      mix: 0,
+      destroy: 0,
       modalOpen: false,
       txHash: "",
       receipt: false,
@@ -117,7 +117,9 @@ class KeplerMiningPage extends Component {
   moveSlide = (num) => {
     const { currentIdx } = this.state;
     this.ref.current.style.left = -num * 650 + "px";
-    this.setState({ currentIdx: num });
+    this.setState({
+      currentIdx: num,
+    });
   };
 
   prevSlide = () => {
@@ -125,7 +127,6 @@ class KeplerMiningPage extends Component {
     if (currentIdx !== 0) {
       this.moveSlide(currentIdx - 1);
       this.setBalance(currentIdx - 1);
-      this.setMintPrice(currentIdx - 1);
     }
   };
 
@@ -135,7 +136,6 @@ class KeplerMiningPage extends Component {
     if (currentIdx !== slideCount - 1) {
       this.moveSlide(currentIdx + 1);
       this.setBalance(currentIdx + 1);
-      this.setMintPrice(currentIdx + 1);
     }
   };
 
@@ -184,34 +184,78 @@ class KeplerMiningPage extends Component {
   gachaId = async () => {
     const { currentIdx } = this.state;
 
-    const itemGacha = Math.random() * 100; // 0 ~ 99 실수
-    const itemNum = Math.floor(Math.random() * 6); // 0 ~ 4
+    const pointer = [];
+    let counter = 0;
+    let status = 0;
 
-    if (currentIdx == 0) {
-      if (itemGacha < 20) {
-        console.log("채굴 성공");
+    const destruct = Math.random() * 100; // 0 ~ 99 실수
+
+    const itemGacha = Math.random() * 100; // 0 ~ 99 실수
+    const itemNum = Math.floor(Math.random() * 5) + 30; // 0 ~ 4
+
+    console.log(itemGacha);
+
+    if (currentIdx == 2) {
+      if (destruct < 40) {
+        status = 1;
+      }
+      if (itemGacha < 0.8) {
+        pointer.push(itemNum);
+        pointer.push(itemNum);
+        pointer.push(itemNum);
+        counter = 3;
+      } else if (itemGacha < 10.4) {
+        pointer.push(itemNum);
+        pointer.push(itemNum);
+        pointer.push(35);
+        counter = 2;
+      } else if (itemGacha < 48.8) {
+        pointer.push(itemNum);
+        pointer.push(35);
+        pointer.push(35);
+        counter = 1;
       } else {
-        console.log("채굴 실패");
+        pointer.push(35);
+        pointer.push(35);
+        pointer.push(35);
       }
     } else if (currentIdx == 1) {
-      if (itemGacha < 40) {
-        console.log("채굴 성공");
-      } else {
-        console.log("채굴 실패");
+      if (destruct < 55) {
+        status = 1;
       }
-    } else if (currentIdx == 2) {
-      if (itemGacha < 60) {
-        console.log("채굴 성공");
+      if (itemGacha < 4) {
+        pointer.push(itemNum);
+        pointer.push(itemNum);
+        counter = 2;
+      } else if (itemGacha < 32) {
+        pointer.push(itemNum);
+        pointer.push(35);
+        counter = 1;
       } else {
-        console.log("채굴 실패");
+        pointer.push(35);
+        pointer.push(35);
+      }
+    } else if (currentIdx == 0) {
+      if (destruct < 70) {
+        status = 1;
+      }
+      if (itemGacha < 20) {
+        pointer.push(itemNum);
+        counter = 1;
+      } else {
+        pointer.push(35);
+        counter = 0;
       }
     } else {
       console.log("error");
     }
 
-    const pointer = itemNum + 30;
-
-    return pointer;
+    this.setState({
+      gachaItem: pointer,
+      mix: counter,
+      destroy: status,
+    });
+    return [itemNum, counter, status];
   };
 
   sendTxItem = async () => {
@@ -298,9 +342,13 @@ class KeplerMiningPage extends Component {
     );
 
     const num = await this.gachaId();
-    console.log(num);
+    console.log(account);
+    console.log(currentIdx);
+    console.log(num[0]);
+    console.log(num[1]);
+    console.log(num[2]);
     // const miningStone = await miningContract.methods
-    //   .mining(account, currentIdx, num, 1, 1)
+    //   .mining(account, currentIdx, num[0], num[1], num[2])
     //   .send({
     //     from: account,
     //     gas: 7500000,
@@ -315,7 +363,6 @@ class KeplerMiningPage extends Component {
     //     this.setState({
     //       receipt: JSON.stringify(receipt),
     //       modalOpen: true,
-    //       gachaItem: num,
     //     });
     //   })
     //   .on("error", (error) => {
@@ -323,9 +370,11 @@ class KeplerMiningPage extends Component {
     //     alert("믹스스톤 채굴이 취소되었습니다.");
     //     this.setState({ error: error.message });
     //   });
+    // this.setState({
+    //   modalOpen: true,
+    // });
     this.setState({
       modalOpen: true,
-      gachaItem: num,
     });
   };
 
@@ -334,11 +383,18 @@ class KeplerMiningPage extends Component {
   };
 
   render() {
-    const { account, balance, isLoading, currentIdx, gachaItem, modalOpen } =
-      this.state;
+    const {
+      account,
+      balance,
+      isLoading,
+      currentIdx,
+      mix,
+      destroy,
+      gachaItem,
+      modalOpen,
+    } = this.state;
     const boxs = ["하급 곡괭이", "중급 곡괭이", "상급 곡괭이"];
 
-    console.log("pickaxe", gachaItem);
     return (
       <Layout>
         <div className="KeplerMiningPage">
@@ -349,8 +405,8 @@ class KeplerMiningPage extends Component {
             </div>
             <div className="KeplerMiningPage__contents">
               <div className="KeplerMiningPage__mining">
-                <img src="images/mining/7.png" />
-                <p>믹스스톤 채굴이 진행 중 입니다.</p>
+                <img src="video/mining.png" />
+                <p>믹스스톤 채굴</p>
               </div>
 
               <div className="KeplerMiningPage__mint">
@@ -379,6 +435,7 @@ class KeplerMiningPage extends Component {
                     open={modalOpen}
                     currentIdx={currentIdx}
                     gachaItem={gachaItem}
+                    destroy={destroy}
                     close={this.closeModal}
                   />
                   <span className="prev">

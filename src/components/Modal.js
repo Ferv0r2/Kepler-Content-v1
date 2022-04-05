@@ -35,7 +35,7 @@ const Modal = ({ open, close, header, currentIdx, gachaItem }) => {
               <div className="Item">
                 <div className="Item__img">
                   <img
-                    src={`images/items/${tokenImg["code"][gachaItem]}.png`}
+                    src={`../images/items/${tokenImg["code"][gachaItem]}.png`}
                   />
                 </div>
                 <div className="Item__content">
