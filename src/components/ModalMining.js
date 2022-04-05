@@ -41,100 +41,15 @@ const ModalMining = ({
               </div>
               <div className="Mining">
                 <div className="Mining_result">채굴 결과</div>
+                <div className="Mining__img">
+                  <img
+                    src={`../images/items/${miningImg["code"][gachaItem]}.png`}
+                  />
+                </div>
+                <div className="Mining__content">
+                  <p className="Mining__name">{miningImg["name"][gachaItem]}</p>
+                </div>
 
-                {/* {gachaItem.map((v, i) => {
-                    <img
-                      src={`../images/items/${
-                        miningImg["code"][gachaItem[i]]
-                      }.png`}
-                    />;
-                  })} */}
-
-                {currentIdx == 0 ? (
-                  <div className="Mining__img">
-                    <img
-                      className="item3"
-                      src={`images/items/${
-                        miningImg["code"][gachaItem[0]]
-                      }.png`}
-                    />
-                  </div>
-                ) : null}
-
-                {currentIdx == 1 ? (
-                  <div className="Mining__img">
-                    <img
-                      className="item2"
-                      src={`images/items/${
-                        miningImg["code"][gachaItem[0]]
-                      }.png`}
-                    />
-                    <img
-                      className="item4"
-                      src={`images/items/${
-                        miningImg["code"][gachaItem[1]]
-                      }.png`}
-                    />
-                  </div>
-                ) : null}
-
-                {currentIdx == 2 ? (
-                  <div className="Mining__img">
-                    <img
-                      className="item1"
-                      src={`images/items/${
-                        miningImg["code"][gachaItem[0]]
-                      }.png`}
-                    />
-                    <img
-                      className="item3"
-                      src={`images/items/${
-                        miningImg["code"][gachaItem[1]]
-                      }.png`}
-                    />
-                    <img
-                      className="item5"
-                      src={`images/items/${
-                        miningImg["code"][gachaItem[2]]
-                      }.png`}
-                    />
-                  </div>
-                ) : null}
-                {/* {gachaItem.map((v, i) => {
-                    <p className="Mining__name">
-                      {miningImg["name"][gachaItem[i]]}
-                    </p>;
-                  })} */}
-                {currentIdx == 0 ? (
-                  <div className="Mining__content">
-                    <p className="Mining__name">
-                      {miningImg["name"][gachaItem[0]]}
-                    </p>
-                  </div>
-                ) : null}
-                {currentIdx == 1 ? (
-                  <div className="Mining__content">
-                    <p className="Mining__name">
-                      {miningImg["name"][gachaItem[0]]}
-                    </p>
-                    <p className="Mining__name">
-                      {miningImg["name"][gachaItem[1]]}
-                    </p>
-                  </div>
-                ) : null}
-                {currentIdx == 2 ? (
-                  <div className="Mining__content">
-                    <p className="Mining__name">
-                      {miningImg["name"][gachaItem[0]]}
-                    </p>
-                    <p className="Mining__name">
-                      {miningImg["name"][gachaItem[1]]}
-                    </p>
-                    <p className="Mining__name">
-                      {miningImg["name"][gachaItem[2]]}
-                    </p>
-                  </div>
-                ) : null}
                 <div className="Mining__close">
                   <button onClick={close}>확인</button>
                 </div>
@@ -143,52 +58,10 @@ const ModalMining = ({
           </main>
         </section>
       ) : null}
-      {currentIdx == 0 && open ? (
+      {open ? (
         <div className="crack">
-          <div className="crack3">
-            <img
-              src={`../images/items/${miningImg["code"][gachaItem[0]]}.png`}
-            />
-            {miningImg["name"][gachaItem[0]]}
-          </div>
-        </div>
-      ) : null}
-      {currentIdx == 1 && open ? (
-        <div className="crack">
-          <div className="crack3">
-            <img
-              src={`../images/items/${miningImg["code"][gachaItem[0]]}.png`}
-            />
-            {miningImg["name"][gachaItem[0]]}
-          </div>
-          <div className="crack2">
-            <img
-              src={`../images/items/${miningImg["code"][gachaItem[1]]}.png`}
-            />
-            {miningImg["name"][gachaItem[1]]}
-          </div>
-        </div>
-      ) : null}
-      {currentIdx == 2 && open ? (
-        <div className="crack">
-          <div className="crack3">
-            <img
-              src={`../images/items/${miningImg["code"][gachaItem[0]]}.png`}
-            />
-            {miningImg["name"][gachaItem[0]]}
-          </div>
-          <div className="crack2">
-            <img
-              src={`../images/items/${miningImg["code"][gachaItem[1]]}.png`}
-            />
-            {miningImg["name"][gachaItem[1]]}
-          </div>
-          <div className="crack1">
-            <img
-              src={`../images/items/${miningImg["code"][gachaItem[2]]}.png`}
-            />
-            {miningImg["name"][gachaItem[2]]}
-          </div>
+          <img src={`../images/items/${miningImg["code"][gachaItem]}.png`} />
+          {miningImg["name"][gachaItem]}
         </div>
       ) : null}
     </div>

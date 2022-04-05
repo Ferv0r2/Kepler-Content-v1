@@ -187,6 +187,7 @@ class KeplerBoxPage extends Component {
 
     const itemGacha = Math.random() * 100; // 0 ~ 99 실수
     const itemNum = Math.floor(Math.random() * 5); // 0 ~ 4
+
     const largeP = items.large_potion[currentIdx] * 5;
     const largeMP = items.large_mix_potion[currentIdx] * 5 + largeP;
     const mediumP = items.medium_potion[currentIdx] * 5 + largeMP;
@@ -264,36 +265,36 @@ class KeplerBoxPage extends Component {
 
     const num = await this.gachaId();
     console.log(num);
-    // const mintWithKlay = await minterContract.methods
-    //   .mintOfKlay(currentIdx, num, 1)
-    //   .send({
-    //     type: "SMART_CONTRACT_EXECUTION",
-    //     from: account,
-    //     gas: 7500000,
-    //     value: caver.utils.toPeb(mintPrice, "KLAY"),
-    //   })
-    //   .on("transactionHash", (transactionHash) => {
-    //     console.log("txHash", transactionHash);
-    //     this.setState({ txHash: transactionHash });
-    //   })
-    //   .on("receipt", (receipt) => {
-    //     console.log("receipt", receipt);
-    //     // alert('신청이 정상적으로 완료되었습니다.')
-    //     this.setState({
-    //       receipt: JSON.stringify(receipt),
-    //       modalOpen: true,
-    //       gachaItem: num,
-    //     });
-    //   })
-    //   .on("error", (error) => {
-    //     console.log("error", error);
-    //     alert("취소되었습니다.");
-    //     this.setState({ error: error.message });
-    //   });
-    this.setState({
-      modalOpen: true,
-      gachaItem: num,
-    });
+    const mintWithKlay = await minterContract.methods
+      .mintOfKlay(currentIdx, num, 1)
+      .send({
+        type: "SMART_CONTRACT_EXECUTION",
+        from: account,
+        gas: 7500000,
+        value: caver.utils.toPeb(mintPrice, "KLAY"),
+      })
+      .on("transactionHash", (transactionHash) => {
+        console.log("txHash", transactionHash);
+        this.setState({ txHash: transactionHash });
+      })
+      .on("receipt", (receipt) => {
+        console.log("receipt", receipt);
+        // alert('신청이 정상적으로 완료되었습니다.')
+        this.setState({
+          receipt: JSON.stringify(receipt),
+          modalOpen: true,
+          gachaItem: num,
+        });
+      })
+      .on("error", (error) => {
+        console.log("error", error);
+        alert("취소되었습니다.");
+        this.setState({ error: error.message });
+      });
+    // this.setState({
+    //   modalOpen: true,
+    //   gachaItem: num,
+    // });
   };
 
   sendTxItem = async () => {
