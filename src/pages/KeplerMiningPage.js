@@ -199,6 +199,7 @@ class KeplerMiningPage extends Component {
       if (destruct < 40) {
         status = 1;
       }
+      // if (itemGacha < 80) {
       if (itemGacha < 0.8) {
         pointer.push(itemNum);
         pointer.push(itemNum);
@@ -347,35 +348,32 @@ class KeplerMiningPage extends Component {
     console.log(num[0]);
     console.log(num[1]);
     console.log(num[2]);
-    // const miningStone = await miningContract.methods
-    //   .mining(account, currentIdx, num[0], num[1], num[2])
-    //   .send({
-    //     from: account,
-    //     gas: 7500000,
-    //   })
-    //   .on("transactionHash", (transactionHash) => {
-    //     console.log("txHash", transactionHash);
-    //     this.setState({ txHash: transactionHash });
-    //   })
-    //   .on("receipt", (receipt) => {
-    //     console.log("receipt", receipt);
-    //     // alert('신청이 정상적으로 완료되었습니다.')
-    //     this.setState({
-    //       receipt: JSON.stringify(receipt),
-    //       modalOpen: true,
-    //     });
-    //   })
-    //   .on("error", (error) => {
-    //     console.log("error", error);
-    //     alert("믹스스톤 채굴이 취소되었습니다.");
-    //     this.setState({ error: error.message });
-    //   });
+    const miningStone = await miningContract.methods
+      .mining(account, currentIdx, num[0], num[1], num[2])
+      .send({
+        from: account,
+        gas: 7500000,
+      })
+      .on("transactionHash", (transactionHash) => {
+        console.log("txHash", transactionHash);
+        this.setState({ txHash: transactionHash });
+      })
+      .on("receipt", (receipt) => {
+        console.log("receipt", receipt);
+        // alert('신청이 정상적으로 완료되었습니다.')
+        this.setState({
+          receipt: JSON.stringify(receipt),
+          modalOpen: true,
+        });
+      })
+      .on("error", (error) => {
+        console.log("error", error);
+        alert("믹스스톤 채굴이 취소되었습니다.");
+        this.setState({ error: error.message });
+      });
     // this.setState({
     //   modalOpen: true,
     // });
-    this.setState({
-      modalOpen: true,
-    });
   };
 
   closeModal = () => {
