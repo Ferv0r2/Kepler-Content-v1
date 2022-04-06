@@ -35,7 +35,7 @@
 
   @media screen and (max-width: 640px) {
     width: 80%;
-    // height: 80%;
+    height: 60%;
   }
 }
 .modal > section > header {
@@ -91,8 +91,10 @@
       width: 40rem;
     }
 
-    @media screen and (max-width: 640px) {
+    @media screen and (max-width: 540px) {
+      padding-top: 4rem;
       width: 30rem;
+      transform: scale(1.2);
     }
   }
   p {
@@ -132,8 +134,8 @@
   }
 
   @media screen and (max-width: 640px) {
-    top: 5%;
-    left: 12%;
+    top: 8%;
+    left: 10%;
   }
 }
 
