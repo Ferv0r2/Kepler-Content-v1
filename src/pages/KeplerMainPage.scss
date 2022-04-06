@@ -61,16 +61,22 @@
 }
 
 .KeplerMainPage__link {
-  width: 32rem;
+  // width: 54rem;
+  padding-top: 4rem;
   margin: 0 auto;
 
+  div {
+    display: flex;
+  }
+
   li {
+    flex: 1;
     list-style: none;
     margin: 1em;
-    padding: 2em;
+    padding: 2.5em 2em;
     font-size: 1.3em;
     border: 2px solid #ac01b4;
-    border-radius: 2em;
+    border-radius: 1em;
 
     a:hover {
       color: #ac01b4;

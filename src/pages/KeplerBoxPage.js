@@ -263,27 +263,27 @@ class KeplerBoxPage extends Component {
 
     const num = await this.gachaId();
 
-    const useCoin = await minterContract.methods
-      .useCoin(currentIdx, 1)
-      .send({
-        type: "SMART_CONTRACT_EXECUTION",
-        from: account,
-        gas: 7500000,
-        value: caver.utils.toPeb(mintPrice, "KLAY"),
-      })
-      .on("transactionHash", (transactionHash) => {
-        console.log("txHash", transactionHash);
-        this.setState({ use: true });
-      })
-      .on("receipt", (receipt) => {
-        console.log("receipt", receipt);
-        this.setState({ use: true });
-      })
-      .on("error", (error) => {
-        console.log("error", error);
-        alert("상자깡이 취소되었습니다.");
-        return false;
-      });
+    // const useCoin = await minterContract.methods
+    //   .useCoin(currentIdx, 1)
+    //   .send({
+    //     type: "SMART_CONTRACT_EXECUTION",
+    //     from: account,
+    //     gas: 7500000,
+    //     value: caver.utils.toPeb(mintPrice, "KLAY"),
+    //   })
+    //   .on("transactionHash", (transactionHash) => {
+    //     console.log("txHash", transactionHash);
+    //     this.setState({ use: true });
+    //   })
+    //   .on("receipt", (receipt) => {
+    //     console.log("receipt", receipt);
+    //     this.setState({ use: true });
+    //   })
+    //   .on("error", (error) => {
+    //     console.log("error", error);
+    //     alert("상자깡이 취소되었습니다.");
+    //     return false;
+    //   });
     this.setState({ use: true });
   };
 
@@ -335,41 +335,41 @@ class KeplerBoxPage extends Component {
     const pay = await this.sendTxPay();
     const { use } = this.state;
 
-    if (use) {
-      await new Promise((resolve) => {
-        setTimeout(async () => {
-          await minterContract.methods
-            .mintItem(account, currentIdx, 1)
-            .send({
-              from: account,
-              gas: 7500000,
-            })
-            .on("transactionHash", (transactionHash) => {
-              console.log("txHash", transactionHash);
-              this.setState({ txHash: transactionHash });
-            })
-            .on("receipt", (receipt) => {
-              console.log("receipt", receipt);
-              // alert('신청이 정상적으로 완료되었습니다.')
-              this.setState({
-                receipt: JSON.stringify(receipt),
-                modalOpen: true,
-              });
-            })
-            .on("error", (error) => {
-              console.log("error", error);
-              alert("상자깡이 취소되었습니다.");
-              this.setState({ error: error.message });
-            });
-          resolve();
-        }, 200);
-      });
-    } else {
-      alert("클레이가 지불되지 않았습니다.");
-    }
-    // this.setState({
-    //   modalOpen: true,
-    // });
+    // if (use) {
+    //   await new Promise((resolve) => {
+    //     setTimeout(async () => {
+    //       await minterContract.methods
+    //         .mintItem(account, currentIdx, 1)
+    //         .send({
+    //           from: account,
+    //           gas: 7500000,
+    //         })
+    //         .on("transactionHash", (transactionHash) => {
+    //           console.log("txHash", transactionHash);
+    //           this.setState({ txHash: transactionHash });
+    //         })
+    //         .on("receipt", (receipt) => {
+    //           console.log("receipt", receipt);
+    //           // alert('신청이 정상적으로 완료되었습니다.')
+    //           this.setState({
+    //             receipt: JSON.stringify(receipt),
+    //             modalOpen: true,
+    //           });
+    //         })
+    //         .on("error", (error) => {
+    //           console.log("error", error);
+    //           alert("상자깡이 취소되었습니다.");
+    //           this.setState({ error: error.message });
+    //         });
+    //       resolve();
+    //     }, 200);
+    //   });
+    // } else {
+    //   alert("클레이가 지불되지 않았습니다.");
+    // }
+    this.setState({
+      modalOpen: true,
+    });
   };
 
   closeModal = () => {
