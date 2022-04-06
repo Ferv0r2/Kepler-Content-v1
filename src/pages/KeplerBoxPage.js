@@ -9,7 +9,7 @@ import items from "./item.json";
 
 import "./KeplerBoxPage.scss";
 
-const mintCA = "0xB9D8d1f5b13214c78bea9d657a8933275b11f191";
+const mintCA = "0x1eBA71383290bf924F3FE6f06E7D74572d1C5144";
 const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
 
 class KeplerBoxPage extends Component {
@@ -18,7 +18,7 @@ class KeplerBoxPage extends Component {
     this.state = {
       account: "",
       balance: 0,
-      key: 0,
+      key: 36,
       isLoading: true,
       currentIdx: 0,
       limit: 0,
@@ -46,12 +46,10 @@ class KeplerBoxPage extends Component {
         await klaytn.enable();
         this.setAccountInfo(klaytn);
         this.setLimit(0);
-        this.setOwnKey(0);
         this.setMintPrice(0);
         klaytn.on("accountsChanged", () => {
           this.setAccountInfo(klaytn);
           this.setLimit(0);
-          this.setOwnKey(0);
           this.setMintPrice(0);
         });
       } catch (error) {
@@ -156,9 +154,10 @@ class KeplerBoxPage extends Component {
       ],
       itemCA
     );
-    const keyId = idx + 39;
-    const key = await itemContract.methods.balanceOf(account, keyId).call();
 
+    const key = await itemContract.methods.balanceOf(account, idx + 39).call();
+
+    console.log(key);
     this.setState({
       key,
     });
@@ -480,6 +479,7 @@ class KeplerBoxPage extends Component {
   sendTxKey = async () => {
     const { account, currentIdx, key, limit } = this.state;
 
+    console.log(key);
     if (key == 0) {
       alert("열쇠가 없습니다.");
       return;
