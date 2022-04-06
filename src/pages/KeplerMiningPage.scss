@@ -8,14 +8,14 @@
   margin: 0 auto;
   text-align: center;
   img {
-    width: 82rem;
+    width: 80rem;
 
     @media screen and (max-width: 640px) {
-      width: 52rem;
+      width: 50rem;
     }
 
     @media screen and (max-width: 540px) {
-      width: 42rem;
+      width: 40rem;
     }
   }
 }
@@ -38,14 +38,14 @@
 .KeplerMiningPage__mining {
   padding-bottom: 5rem;
   img {
-    width: 80rem;
+    width: 76rem;
 
     @media screen and (max-width: 640px) {
-      width: 50rem;
+      width: 48rem;
     }
 
     @media screen and (max-width: 540px) {
-      width: 40rem;
+      width: 38rem;
     }
   }
 
@@ -53,6 +53,10 @@
     color: #94889e;
     font-family: "GmarketSansMedium";
     font-size: 1.9rem;
+
+    @media screen and (max-width: 640px) {
+      font-size: 1.4rem;
+    }
   }
 }
 

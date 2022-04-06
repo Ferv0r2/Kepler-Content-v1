@@ -324,10 +324,10 @@ class KeplerMiningPage extends Component {
   sendTxItem = async () => {
     const { account, currentIdx, balance } = this.state;
 
-    if (balance == 0) {
-      alert("곡괭이가 없습니다.");
-      return;
-    }
+    // if (balance == 0) {
+    //   alert("곡괭이가 없습니다.");
+    //   return;
+    // }
 
     const miningContract = new caver.klay.Contract(
       [
@@ -441,7 +441,7 @@ class KeplerMiningPage extends Component {
             <div className="KeplerMiningPage__contents">
               <div className="KeplerMiningPage__mining">
                 <img src="video/mining.png" />
-                <p>믹스스톤 채굴</p>
+                <p>믹스스톤은 케플러 NFT를 합성할 수 있습니다</p>
               </div>
 
               <div className="KeplerMiningPage__mint">
