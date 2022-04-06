@@ -344,10 +344,10 @@ class KeplerBoxPage extends Component {
     const { account, currentIdx, balance, mintPrice, limit } = this.state;
 
     // 클레이 결제용
-    if (balance <= mintPrice) {
-      alert("클레이가 부족합니다.");
-      return;
-    }
+    // if (balance <= mintPrice) {
+    //   alert("클레이가 부족합니다.");
+    //   return;
+    // }
 
     // if (limit == 0) {
     //   alert("남은 상자가 없습니다.");
