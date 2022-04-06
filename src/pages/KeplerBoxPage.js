@@ -1,6 +1,5 @@
 import React, { Component, useRef } from "react";
 import caver from "klaytn/caver";
-// import fetch from "node-fetch";
 
 import Layout from "../components/Layout";
 import Nav from "components/Nav";
@@ -52,7 +51,7 @@ class KeplerBoxPage extends Component {
           this.setMintPrice(0);
         });
       } catch (error) {
-        // console.log(error);
+        console.log(error);
         console.log("User denied account access");
       }
     } else {
@@ -89,8 +88,13 @@ class KeplerBoxPage extends Component {
 
   moveSlide = (num) => {
     const { currentIdx } = this.state;
-    this.ref.current.style.left = -num * 600 + "px";
+    if (window.innerWidth <= 640) {
+      this.ref.current.style.left = -num * 450 + "px";
+    } else {
+      this.ref.current.style.left = -num * 600 + "px";
+    }
     this.setState({ currentIdx: num });
+    console.log(window.innerWidth);
   };
 
   prevSlide = () => {
@@ -296,10 +300,10 @@ class KeplerBoxPage extends Component {
       return;
     }
 
-    if (limit == 0) {
-      alert("남은 상자가 없습니다.");
-      return;
-    }
+    // if (limit == 0) {
+    //   alert("남은 상자가 없습니다.");
+    //   return;
+    // }
 
     const minterContract = new caver.klay.Contract(
       [

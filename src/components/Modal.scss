@@ -28,6 +28,16 @@
 
   animation: flicker 1.5s infinite alternate;
   -webkit-animation: flicker 1.5s infinite alternate;
+
+  @media screen and (max-width: 1600px) {
+    height: 80%;
+  }
+
+  @media screen and (max-width: 640px) {
+    width: 80%;
+    height: 80%;
+  }
+  
 }
 .modal > section > header {
   position: relative;
@@ -70,6 +80,17 @@
   video {
     padding-top: 3rem;
     width: 50rem;
+
+    @media screen and (max-width: 1600px) {
+      padding-top: 0;
+      width: 45rem;
+    }
+    
+    @media screen and (max-width: 640px) {
+      padding-top: 0;
+      width: 40rem;
+     }
+    
   }
   p {
     margin-top: -5rem;
@@ -96,12 +117,28 @@
   -webkit-animation: item-show 0.5s;
   -webkit-animation-delay: 3.5s; /* Safari 4.0 - 8.0 */
   animation-fill-mode: forwards;
+
+  @media screen and (max-width: 1600px) {
+    top:5%;
+    left: 19%;
+  }
+  
+  @media screen and (max-width: 640px) {
+    top:5%;
+    left: 12%;
+  } 
+  
 }
 
 .Item__img {
   text-align: center;
   img {
     width: 35rem;
+
+    @media screen and (max-width: 1600px) {
+      margin-top: -5rem;
+      width: 27rem;
+    }
   }
 }
 
@@ -114,21 +151,38 @@
   padding: 2rem;
   margin-top: -4rem;
   font-family: "GmarketSansBold";
+  
+  @media screen and (max-width: 1600px) {
+    margin-top: -2rem;
+    padding: 1.5rem;
+  }
 
   .Item__name {
     font-size: 2rem;
     padding: 1rem;
+    
+    @media screen and (max-width: 1600px) {
+      font-size: 1.5rem;
+    }
   }
 
   .Item__effect {
     font-size: 1.5rem;
     color: #fbd9ff;
     padding: 1rem;
+    
+    @media screen and (max-width: 1600px) {
+      font-size: 1.2rem;
+    }
   }
 }
 
 .Item__close {
   padding: 3rem;
+  
+  @media screen and (max-width: 1600px) {
+    padding: 2rem;
+  }
 
   button {
     padding: 1rem 1.8rem;
