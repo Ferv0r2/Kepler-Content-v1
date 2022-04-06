@@ -10,6 +10,7 @@ import items from "./item.json";
 import "./KeplerBoxPage.scss";
 
 const mintCA = "0xB9D8d1f5b13214c78bea9d657a8933275b11f191";
+const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
 
 class KeplerBoxPage extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class KeplerBoxPage extends Component {
     this.state = {
       account: "",
       balance: 0,
+      key: 0,
       isLoading: true,
       currentIdx: 0,
       limit: 0,
@@ -44,10 +46,12 @@ class KeplerBoxPage extends Component {
         await klaytn.enable();
         this.setAccountInfo(klaytn);
         this.setLimit(0);
+        this.setOwnKey(0);
         this.setMintPrice(0);
         klaytn.on("accountsChanged", () => {
           this.setAccountInfo(klaytn);
           this.setLimit(0);
+          this.setOwnKey(0);
           this.setMintPrice(0);
         });
       } catch (error) {
@@ -88,13 +92,14 @@ class KeplerBoxPage extends Component {
 
   moveSlide = (num) => {
     const { currentIdx } = this.state;
-    if (window.innerWidth <= 640) {
+    if (window.innerWidth <= 540) {
+      this.ref.current.style.left = -num * 425 + "px";
+    } else if (window.innerWidth <= 640) {
       this.ref.current.style.left = -num * 450 + "px";
     } else {
       this.ref.current.style.left = -num * 600 + "px";
     }
     this.setState({ currentIdx: num });
-    console.log(window.innerWidth);
   };
 
   prevSlide = () => {
@@ -102,6 +107,7 @@ class KeplerBoxPage extends Component {
     if (currentIdx !== 0) {
       this.moveSlide(currentIdx - 1);
       this.setLimit(currentIdx - 1);
+      this.setOwnKey(currentIdx - 1);
       this.setMintPrice(currentIdx - 1);
     }
   };
@@ -112,8 +118,50 @@ class KeplerBoxPage extends Component {
     if (currentIdx !== slideCount - 1) {
       this.moveSlide(currentIdx + 1);
       this.setLimit(currentIdx + 1);
+      this.setOwnKey(currentIdx + 1);
       this.setMintPrice(currentIdx + 1);
     }
+  };
+
+  setOwnKey = async (idx) => {
+    const { account } = this.state;
+    const itemContract = new caver.klay.Contract(
+      [
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+          ],
+          name: "balanceOf",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      itemCA
+    );
+    const keyId = idx + 39;
+    const key = await itemContract.methods.balanceOf(account, keyId).call();
+
+    this.setState({
+      key,
+    });
   };
 
   setLimit = async (idx) => {
@@ -267,31 +315,32 @@ class KeplerBoxPage extends Component {
 
     const num = await this.gachaId();
 
-    // const useCoin = await minterContract.methods
-    //   .useCoin(currentIdx, 1)
-    //   .send({
-    //     type: "SMART_CONTRACT_EXECUTION",
-    //     from: account,
-    //     gas: 7500000,
-    //     value: caver.utils.toPeb(mintPrice, "KLAY"),
-    //   })
-    //   .on("transactionHash", (transactionHash) => {
-    //     console.log("txHash", transactionHash);
-    //     this.setState({ use: true });
-    //   })
-    //   .on("receipt", (receipt) => {
-    //     console.log("receipt", receipt);
-    //     this.setState({ use: true });
-    //   })
-    //   .on("error", (error) => {
-    //     console.log("error", error);
-    //     alert("상자깡이 취소되었습니다.");
-    //     return false;
-    //   });
     this.setState({ use: true });
+    return;
+    const useCoin = await minterContract.methods
+      .useCoin(currentIdx, 1)
+      .send({
+        type: "SMART_CONTRACT_EXECUTION",
+        from: account,
+        gas: 7500000,
+        value: caver.utils.toPeb(mintPrice, "KLAY"),
+      })
+      .on("transactionHash", (transactionHash) => {
+        console.log("txHash", transactionHash);
+        this.setState({ use: true });
+      })
+      .on("receipt", (receipt) => {
+        console.log("receipt", receipt);
+        this.setState({ use: true });
+      })
+      .on("error", (error) => {
+        console.log("error", error);
+        alert("상자깡이 취소되었습니다.");
+        return false;
+      });
   };
 
-  sendTx = async () => {
+  sendTxKlay = async () => {
     const { account, currentIdx, balance, mintPrice, limit } = this.state;
 
     // 클레이 결제용
@@ -300,10 +349,10 @@ class KeplerBoxPage extends Component {
       return;
     }
 
-    if (limit == 0) {
-      alert("남은 상자가 없습니다.");
-      return;
-    }
+    // if (limit == 0) {
+    //   alert("남은 상자가 없습니다.");
+    //   return;
+    // }
 
     const minterContract = new caver.klay.Contract(
       [
@@ -339,38 +388,179 @@ class KeplerBoxPage extends Component {
     const pay = await this.sendTxPay();
     const { use } = this.state;
 
-    // if (use) {
-    //   await new Promise((resolve) => {
-    //     setTimeout(async () => {
-    //       await minterContract.methods
-    //         .mintItem(account, currentIdx, 1)
-    //         .send({
-    //           from: account,
-    //           gas: 7500000,
-    //         })
-    //         .on("transactionHash", (transactionHash) => {
-    //           console.log("txHash", transactionHash);
-    //           this.setState({ txHash: transactionHash });
-    //         })
-    //         .on("receipt", (receipt) => {
-    //           console.log("receipt", receipt);
-    //           // alert('신청이 정상적으로 완료되었습니다.')
-    //           this.setState({
-    //             receipt: JSON.stringify(receipt),
-    //             modalOpen: true,
-    //           });
-    //         })
-    //         .on("error", (error) => {
-    //           console.log("error", error);
-    //           alert("상자깡이 취소되었습니다.");
-    //           this.setState({ error: error.message });
-    //         });
-    //       resolve();
-    //     }, 200);
-    //   });
-    // } else {
-    //   alert("클레이가 지불되지 않았습니다.");
-    // }
+    this.setState({
+      modalOpen: true,
+    });
+    return;
+
+    if (use) {
+      await new Promise((resolve) => {
+        setTimeout(async () => {
+          await minterContract.methods
+            .mintItem(account, currentIdx, 1)
+            .send({
+              from: account,
+              gas: 7500000,
+            })
+            .on("transactionHash", (transactionHash) => {
+              console.log("txHash", transactionHash);
+              this.setState({ txHash: transactionHash });
+            })
+            .on("receipt", (receipt) => {
+              console.log("receipt", receipt);
+              // alert('신청이 정상적으로 완료되었습니다.')
+              this.setState({
+                receipt: JSON.stringify(receipt),
+                modalOpen: true,
+              });
+            })
+            .on("error", (error) => {
+              console.log("error", error);
+              alert("상자깡이 취소되었습니다.");
+              this.setState({ error: error.message });
+            });
+          resolve();
+        }, 200);
+      });
+    } else {
+      alert("클레이가 지불되지 않았습니다.");
+    }
+  };
+
+  sendTxItem = async () => {
+    const { use, account, currentIdx } = this.state;
+    if (use == true) {
+      return;
+    }
+
+    const minterContract = new caver.klay.Contract(
+      [
+        {
+          constant: false,
+          inputs: [
+            {
+              internalType: "address",
+              name: "_account",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_boxId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_count",
+              type: "uint256",
+            },
+          ],
+          name: "useKey",
+          outputs: [],
+          payable: true,
+          stateMutability: "payable",
+          type: "function",
+        },
+      ],
+      mintCA
+    );
+
+    const num = await this.gachaId();
+
+    const useKey = await minterContract.methods
+      .useKey(account, currentIdx, 1)
+      .send({
+        from: account,
+        gas: 7500000,
+      })
+      .on("transactionHash", (transactionHash) => {
+        console.log("txHash", transactionHash);
+        this.setState({ use: true });
+      })
+      .on("receipt", (receipt) => {
+        console.log("receipt", receipt);
+        this.setState({ use: true });
+      })
+      .on("error", (error) => {
+        console.log("error", error);
+        alert("상자깡이 취소되었습니다.");
+        return false;
+      });
+    // this.setState({ use: true });
+  };
+
+  sendTxKey = async () => {
+    const { account, currentIdx, key, limit } = this.state;
+
+    if (key == 0) {
+      alert("열쇠가 없습니다.");
+      return;
+    }
+    const minterContract = new caver.klay.Contract(
+      [
+        {
+          constant: false,
+          inputs: [
+            {
+              internalType: "address",
+              name: "_account",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_count",
+              type: "uint256",
+            },
+          ],
+          name: "mintItem",
+          outputs: [],
+          payable: false,
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      mintCA
+    );
+
+    const pay = await this.sendTxItem();
+    const { use } = this.state;
+
+    if (use) {
+      await new Promise((resolve) => {
+        setTimeout(async () => {
+          await minterContract.methods
+            .mintItem(account, currentIdx, 1)
+            .send({
+              from: account,
+              gas: 7500000,
+            })
+            .on("transactionHash", (transactionHash) => {
+              console.log("txHash", transactionHash);
+              this.setState({ txHash: transactionHash });
+            })
+            .on("receipt", (receipt) => {
+              console.log("receipt", receipt);
+              // alert('신청이 정상적으로 완료되었습니다.')
+              this.setState({
+                receipt: JSON.stringify(receipt),
+                modalOpen: true,
+              });
+            })
+            .on("error", (error) => {
+              console.log("error", error);
+              alert("상자깡이 취소되었습니다.");
+              this.setState({ error: error.message });
+            });
+          resolve();
+        }, 200);
+      });
+    } else {
+      alert("열쇠 사용이 취소되었습니다.");
+    }
     this.setState({
       modalOpen: true,
     });
@@ -432,8 +622,16 @@ class KeplerBoxPage extends Component {
                 </div>
               </div>
               <div className="KeplerBoxPage__mint">
-                <div className="mint_btn" onClick={this.sendTx}>
-                  OPEN BOX
+                <p>HOW TO OPEN THE BOX?</p>
+                <div className="mint_item">
+                  <div></div>
+                  <div className="mint_btn mint_klay" onClick={this.sendTxKlay}>
+                    <img src="images/klaytn_logo.png" />
+                  </div>
+                  <div className="mint_btn mint_key" onClick={this.sendTxKey}>
+                    <img src={`images/items/K${currentIdx + 1}.png`} />
+                  </div>
+                  <div></div>
                 </div>
                 <p>
                   Limit : {limit} / {max[currentIdx]}

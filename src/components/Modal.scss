@@ -35,13 +35,13 @@
 
   @media screen and (max-width: 640px) {
     width: 80%;
-    height: 80%;
+    // height: 80%;
   }
-  
 }
 .modal > section > header {
   position: relative;
 }
+
 .modal > section > header button {
   position: absolute;
   top: 10px;
@@ -85,12 +85,15 @@
       padding-top: 0;
       width: 45rem;
     }
-    
+
     @media screen and (max-width: 640px) {
       padding-top: 0;
       width: 40rem;
-     }
-    
+    }
+
+    @media screen and (max-width: 640px) {
+      width: 30rem;
+    }
   }
   p {
     margin-top: -5rem;
@@ -98,6 +101,11 @@
 
     animation: modal-bg-show 1s infinite alternate;
     -webkit-animation: modal-bg-show 1s infinite alternate;
+
+    @media screen and (max-width: 640px) {
+      margin-top: -3rem;
+      font-size: 2.5rem;
+    }
   }
 }
 
@@ -119,15 +127,14 @@
   animation-fill-mode: forwards;
 
   @media screen and (max-width: 1600px) {
-    top:5%;
+    top: 5%;
     left: 19%;
   }
-  
+
   @media screen and (max-width: 640px) {
-    top:5%;
+    top: 5%;
     left: 12%;
-  } 
-  
+  }
 }
 
 .Item__img {
@@ -138,6 +145,10 @@
     @media screen and (max-width: 1600px) {
       margin-top: -5rem;
       width: 27rem;
+    }
+
+    @media screen and (max-width: 640px) {
+      width: 20rem;
     }
   }
 }
@@ -151,7 +162,7 @@
   padding: 2rem;
   margin-top: -4rem;
   font-family: "GmarketSansBold";
-  
+
   @media screen and (max-width: 1600px) {
     margin-top: -2rem;
     padding: 1.5rem;
@@ -160,9 +171,13 @@
   .Item__name {
     font-size: 2rem;
     padding: 1rem;
-    
+
     @media screen and (max-width: 1600px) {
       font-size: 1.5rem;
+    }
+
+    @media screen and (max-width: 640px) {
+      font-size: 1.3rem;
     }
   }
 
@@ -170,7 +185,7 @@
     font-size: 1.5rem;
     color: #fbd9ff;
     padding: 1rem;
-    
+
     @media screen and (max-width: 1600px) {
       font-size: 1.2rem;
     }
@@ -179,7 +194,7 @@
 
 .Item__close {
   padding: 3rem;
-  
+
   @media screen and (max-width: 1600px) {
     padding: 2rem;
   }

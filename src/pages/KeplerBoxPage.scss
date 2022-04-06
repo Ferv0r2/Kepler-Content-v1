@@ -53,9 +53,13 @@
     top: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
-    
+
     @media screen and (max-width: 640px) {
-     left:27%;
+      left: 27%;
+    }
+
+    @media screen and (max-width: 540px) {
+      left: 20%;
     }
   }
   .next {
@@ -64,6 +68,10 @@
     top: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
+
+    @media screen and (max-width: 540px) {
+      right: 2%;
+    }
   }
 }
 
@@ -73,7 +81,7 @@
   position: relative;
   // margin: 0 auto;
   overflow: hidden; /*리스트 형식으로 이미지를 일렬로 정렬할 것이기 때문에, 500px 밖으로 튀어 나간 이미지들은 hidden으로 숨겨줘야됨*/
-  
+
   @media screen and (max-width: 640px) {
     width: 450px;
     height: 300px;
@@ -91,9 +99,15 @@
     font-family: "GmarketSans";
     font-size: 3rem;
     font-weight: 550;
-    
+
     @media screen and (max-width: 640px) {
       left: 62%;
+      bottom: -3rem;
+      font-size: 2.7rem;
+    }
+
+    @media screen and (max-width: 540px) {
+      left: 52%;
       bottom: -3rem;
       font-size: 2.7rem;
     }
@@ -107,21 +121,29 @@
     transition: left 0.5s ease-out; /*ease-out: 처음에는 느렸다가 점점 빨라짐*/
 
     @media screen and (max-width: 640px) {
-      width: 1650px;
+      width: 1480px;
+    }
+
+    @media screen and (max-width: 540px) {
+      width: 1300px;
     }
   }
   /* 첫 번째 슬라이드 가운데에 정렬하기위해 첫번째 슬라이드만 margin-left조정 */
   .slides li:first-child {
     margin-left: 100px;
-    
-    @media screen and (max-width: 640px) {
-      margin-left: 110px;
+
+    @media screen and (max-width: 540px) {
+      margin-left: 7.5rem;
     }
   }
   /* 슬라이드들 옆으로 정렬 */
   .slides li:not(:last-child) {
     float: left;
     margin-right: 100px;
+
+    @media screen and (max-width: 540px) {
+      margin-right: 7.5rem;
+    }
   }
 
   .slides li {
@@ -142,21 +164,58 @@
   margin: 3rem;
 
   .mint_btn {
-    width: 20rem;
+    width: 15rem;
     padding: 2rem;
     margin: 0 auto;
     background: linear-gradient($btn-gradtion-top, $btn-gradtion-bottom);
     border-radius: 1.2em;
     font-family: "GmarketSansBold";
     color: $white;
-    font-size: 2rem;
+    font-size: 1.5rem;
     cursor: pointer;
+
+    &:hover {
+      color: $btn-gradtion-top;
+      background: $white;
+    }
   }
 
   p {
-    padding: 3rem;
+    padding: 5rem;
     font-family: "NanumSqureBold";
     font-size: 2rem;
+  }
+}
+
+.mint_item {
+  display: flex;
+  > div {
+    margin: 3rem;
+    @media screen and (max-width: 800px) {
+      display: initial;
+      margin: 1rem;
+    }
+  }
+
+  .mint_klay {
+    img {
+      width: 2.5rem;
+    }
+    &::after {
+      content: "KLAY";
+      padding: 1rem;
+    }
+  }
+
+  .mint_key {
+    img {
+      width: 2.5rem;
+      transform: scale(1.4);
+    }
+    &::after {
+      content: "KEY";
+      padding: 1rem;
+    }
   }
 }
 
@@ -166,11 +225,11 @@
   width: 90%;
   margin: 0 auto;
   margin-top: 5rem;
-  background-color: #190021;
+  background: #190021;
   border-radius: 3em;
 
-  
   @media screen and (max-width: 800px) {
+    display: initial;
     width: 80%;
   }
 
@@ -178,11 +237,6 @@
     label {
       font-size: 2rem;
       color: $white;
-
-      
-  @media screen and (max-width: 800px) {
-    font-size: 1.8rem;
-  }
     }
 
     p {
@@ -190,10 +244,6 @@
       font-style: italic;
       font-family: "GmarketSansMedium";
       color: $box-text-color;
-      
-  @media screen and (max-width: 800px) {
-    font-size: 1.2rem;
-  }
     }
   }
 
@@ -203,6 +253,10 @@
     padding: 2rem;
     border-right-style: solid;
     border-color: $bar-color;
+
+    @media screen and (max-width: 800px) {
+      border-right-style: none;
+    }
   }
 
   .klay_balance {
@@ -217,10 +271,9 @@
   margin-top: 5rem;
 
   @media screen and (max-width: 800px) {
-    width: 80%;
+    width: 90%;
     margin: 5rem auto;
   }
-
 
   .table_title {
     width: 80%;
@@ -245,21 +298,22 @@
       // padding: 3rem;
       margin: 3rem;
 
-      
-  @media screen and (max-width: 800px) {
-    display: initial;
-  }
+      @media screen and (max-width: 800px) {
+        display: initial;
+      }
 
       > div {
         flex: 1;
-           
-  @media screen and (max-width: 800px) {
-   padding-top: 2rem;
-  }
+
         label {
           font-family: "GMarketSansMedium";
           font-size: 2.4rem;
           color: $white;
+
+          @media screen and (max-width: 800px) {
+            font-size: 2rem;
+            padding: 2rem;
+          }
         }
 
         li {
@@ -274,6 +328,9 @@
             font-family: "NanumSquareBold";
             font-size: 1.6rem;
             // padding: 1rem;
+            @media screen and (max-width: 800px) {
+              font-size: 1.6rem;
+            }
           }
         }
       }

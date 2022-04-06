@@ -86,18 +86,18 @@ class KeplerMainPage extends Component {
                 <div className="KeplerMainPage__link">
                   <div>
                     <li>
-                      <Link to="/evol">일일 진화 보러가기</Link>
+                      <Link to="/evol">일일 진화</Link>
                     </li>
                     <li>
-                      <Link to="/box">랜덤박스 보러가기</Link>
+                      <Link to="/box">랜덤박스</Link>
                     </li>
                   </div>
                   <div>
                     <li>
-                      <Link to="/mining">믹스스톤 채굴가기</Link>
+                      <Link to="/mining">믹스스톤</Link>
                     </li>
                     <li>
-                      <Link to="/governance">거버넌스 보러가기</Link>
+                      <Link to="/governance">거버넌스</Link>
                     </li>
                   </div>
                 </div>

@@ -17,10 +17,10 @@ const App = () => {
       <div className="App">
         <Routes basename="/">
           <Route path="/" element={<KeplerMainPage />} />
-          <Route path="/box" element={<ErrorPage />} />
-          <Route path="/mining" element={<ErrorPage />} />
-          {/* <Route path="/box" element={<KeplerBoxPage />} />
-          <Route path="/mining" element={<KeplerMiningPage />} /> */}
+          {/* <Route path="/box" element={<ErrorPage />} />
+          <Route path="/mining" element={<ErrorPage />} /> */}
+          <Route path="/box" element={<KeplerBoxPage />} />
+          <Route path="/mining" element={<KeplerMiningPage />} />
           <Route path="/evol" element={<KeplerEvolPage />} />
           {/* <Route path="/governance" element={<KeplerGovernanceListPage />} /> */}
           <Route path="/governance" element={<ErrorPage />} />
