@@ -93,7 +93,7 @@ class KeplerBoxPage extends Component {
   moveSlide = (num) => {
     const { currentIdx } = this.state;
     if (window.innerWidth <= 540) {
-      this.ref.current.style.left = -num * 425 + "px";
+      this.ref.current.style.left = -num * 370 + "px";
     } else if (window.innerWidth <= 640) {
       this.ref.current.style.left = -num * 450 + "px";
     } else {

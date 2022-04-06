@@ -42,6 +42,10 @@
   p {
     font-size: 1.7rem;
     line-height: 2.2rem;
+
+    @media screen and (max-width: 720px) {
+      font-size: 1.4rem;
+    }
   }
 }
 

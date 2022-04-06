@@ -69,6 +69,10 @@
     display: flex;
     width: 70%;
     margin: 0 auto;
+
+    @media screen and (max-width: 640px) {
+      display: initial;
+    }
   }
 
   li {
