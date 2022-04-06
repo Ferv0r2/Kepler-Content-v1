@@ -299,35 +299,35 @@ class KeplerMiningPage extends Component {
       miningCA
     );
 
-    // const useItem = await miningContract.methods
-    //   .usePickaxe(account, currentIdx, 1)
-    //   .send({
-    //     from: account,
-    //     gas: 7500000,
-    //   })
-    //   .on("transactionHash", (transactionHash) => {
-    //     console.log("txHash", transactionHash);
-    //     this.setState({ use: true });
-    //   })
-    //   .on("receipt", (receipt) => {
-    //     console.log("receipt", receipt);
-    //     this.setState({ use: true });
-    //   })
-    //   .on("error", (error) => {
-    //     console.log("error", error);
-    //     alert("믹스스톤 채굴이 취소되었습니다.");
-    //   });
+    const useItem = await miningContract.methods
+      .usePickaxe(account, currentIdx, 1)
+      .send({
+        from: account,
+        gas: 7500000,
+      })
+      .on("transactionHash", (transactionHash) => {
+        console.log("txHash", transactionHash);
+        this.setState({ use: true });
+      })
+      .on("receipt", (receipt) => {
+        console.log("receipt", receipt);
+        this.setState({ use: true });
+      })
+      .on("error", (error) => {
+        console.log("error", error);
+        alert("믹스스톤 채굴이 취소되었습니다.");
+      });
 
-    this.setState({ use: true });
+    // this.setState({ use: true });
   };
 
   sendTxItem = async () => {
     const { account, currentIdx, balance } = this.state;
 
-    // if (balance == 0) {
-    //   alert("곡괭이가 없습니다.");
-    //   return;
-    // }
+    if (balance == 0) {
+      alert("곡괭이가 없습니다.");
+      return;
+    }
 
     const miningContract = new caver.klay.Contract(
       [
@@ -370,36 +370,36 @@ class KeplerMiningPage extends Component {
     const { use, gachaItem, counter, getBack } = this.state;
 
     if (use) {
-      // await new Promise((resolve) => {
-      //   setTimeout(async () => {
-      //     await miningContract.methods
-      //       .mining(currentIdx, gachaItem[0], counter, getBack)
-      //       .send({
-      //         from: account,
-      //         gas: 7500000,
-      //       })
-      //       .on("transactionHash", (transactionHash) => {
-      //         console.log("txHash", transactionHash);
-      //         this.setState({ txHash: transactionHash });
-      //       })
-      //       .on("receipt", (receipt) => {
-      //         console.log("receipt", receipt);
-      //         this.setState({
-      //           receipt: JSON.stringify(receipt),
-      //           modalOpen: true,
-      //           use: false,
-      //         });
-      //       })
-      //       .on("error", (error) => {
-      //         console.log("error", error);
-      //         alert("믹스스톤 채굴이 취소되었습니다.");
-      //         this.setState({
-      //           error: error.message,
-      //         });
-      //       });
-      //     resolve();
-      //   }, 500);
-      // });
+      await new Promise((resolve) => {
+        setTimeout(async () => {
+          await miningContract.methods
+            .mining(currentIdx, gachaItem[0], counter, getBack)
+            .send({
+              from: account,
+              gas: 7500000,
+            })
+            .on("transactionHash", (transactionHash) => {
+              console.log("txHash", transactionHash);
+              this.setState({ txHash: transactionHash });
+            })
+            .on("receipt", (receipt) => {
+              console.log("receipt", receipt);
+              this.setState({
+                receipt: JSON.stringify(receipt),
+                modalOpen: true,
+                use: false,
+              });
+            })
+            .on("error", (error) => {
+              console.log("error", error);
+              alert("믹스스톤 채굴이 취소되었습니다.");
+              this.setState({
+                error: error.message,
+              });
+            });
+          resolve();
+        }, 500);
+      });
       this.setState({
         modalOpen: true,
       });
@@ -412,6 +412,12 @@ class KeplerMiningPage extends Component {
   };
 
   closeModal = () => {
+    const { getBack } = this.state;
+    if (getBack == 1) {
+      alert("곡괭이는 무사합니다!");
+    } else {
+      alert("믹스스톤을 캐던 중 곡괭이가 부서졌습니다..");
+    }
     this.setState({
       modalOpen: false,
       use: false,
