@@ -300,10 +300,10 @@ class KeplerBoxPage extends Component {
       return;
     }
 
-    // if (limit == 0) {
-    //   alert("남은 상자가 없습니다.");
-    //   return;
-    // }
+    if (limit == 0) {
+      alert("남은 상자가 없습니다.");
+      return;
+    }
 
     const minterContract = new caver.klay.Contract(
       [
