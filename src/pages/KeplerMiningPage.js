@@ -8,10 +8,8 @@ import ModalMining from "components/ModalMining";
 
 import "./KeplerMiningPage.scss";
 
-const miningCA = "0x990ecFbd68Bb1a0061A963F6Ff56495ce64352a9";
-const itemCA = "0x0Eb6d62Fd1C550Cf846A73FC9855c2352BB9b012";
-// const miningCA = "0xc9eF79f42453211cB462fa4934B28166f8BB1E2E";
-// const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
+const miningCA = "0x8aa421816B3b003854789ee6bC717DfFF54363aF";
+const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
 
 class KeplerMiningPage extends Component {
   constructor(props) {
@@ -22,8 +20,10 @@ class KeplerMiningPage extends Component {
       isLoading: true,
       currentIdx: 0,
       limit: 0,
-      gachaItem: 0,
-      destroy: 0,
+      use: false,
+      gachaItem: [],
+      counter: 0,
+      getBack: 0,
       modalOpen: false,
       txHash: "",
       receipt: false,
@@ -185,8 +185,9 @@ class KeplerMiningPage extends Component {
   gachaId = async () => {
     const { currentIdx } = this.state;
 
-    let pointer = 35;
-    let status = 0;
+    let pointer = [];
+    let counter = 0;
+    let status = 1;
 
     const destruct = Math.random() * 100; // 0 ~ 99 실수
 
@@ -197,24 +198,53 @@ class KeplerMiningPage extends Component {
 
     if (currentIdx == 2) {
       if (destruct < 40) {
-        status = 1;
+        status = 0;
       }
-      if (itemGacha < 60) {
-        pointer = itemNum;
+      if (itemGacha < 0.8) {
+        pointer.push(itemNum);
+        pointer.push(itemNum);
+        pointer.push(itemNum);
+        counter = 3;
+      } else if (itemGacha < 10.4) {
+        pointer.push(itemNum);
+        pointer.push(itemNum);
+        pointer.push(35);
+        counter = 2;
+      } else if (itemGacha < 48.8) {
+        pointer.push(itemNum);
+        pointer.push(35);
+        pointer.push(35);
+        counter = 1;
+      } else {
+        pointer.push(35);
+        pointer.push(35);
+        pointer.push(35);
       }
     } else if (currentIdx == 1) {
       if (destruct < 55) {
-        status = 1;
+        status = 0;
       }
-      if (itemGacha < 40) {
-        pointer = itemNum;
+      if (itemGacha < 4) {
+        pointer.push(itemNum);
+        pointer.push(itemNum);
+        counter = 2;
+      } else if (itemGacha < 32) {
+        pointer.push(itemNum);
+        pointer.push(35);
+        counter = 1;
+      } else {
+        pointer.push(35);
+        pointer.push(35);
       }
     } else if (currentIdx == 0) {
       if (destruct < 70) {
-        status = 1;
+        status = 0;
       }
-      if (itemGacha < 90) {
-        pointer = itemNum;
+      if (itemGacha < 20) {
+        pointer.push(itemNum);
+        counter = 1;
+      } else {
+        pointer.push(35);
       }
     } else {
       console.log("error");
@@ -222,13 +252,18 @@ class KeplerMiningPage extends Component {
 
     this.setState({
       gachaItem: pointer,
-      destroy: status,
+      counter: counter,
+      getBack: status,
     });
-    return pointer;
   };
 
-  sendTxItem = async () => {
-    const { account, currentIdx } = this.state;
+  sendTxUse = async () => {
+    const { use, account, currentIdx } = this.state;
+    if (use == true) {
+      return;
+    }
+
+    const num = await this.gachaId();
     const miningContract = new caver.klay.Contract(
       [
         {
@@ -246,7 +281,71 @@ class KeplerMiningPage extends Component {
             },
             {
               internalType: "uint256",
+              name: "_destructCount",
+              type: "uint256",
+            },
+          ],
+          name: "usePickaxe",
+          outputs: [],
+          payable: false,
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      miningCA
+    );
+
+    const useItem = await miningContract.methods
+      .usePickaxe(account, currentIdx, 1)
+      .send({
+        from: account,
+        gas: 7500000,
+      })
+      .on("transactionHash", (transactionHash) => {
+        console.log("txHash", transactionHash);
+        this.setState({ use: true });
+      })
+      .on("receipt", (receipt) => {
+        console.log("receipt", receipt);
+        this.setState({ use: true });
+      })
+      .on("error", (error) => {
+        console.log("error", error);
+        alert("믹스스톤 채굴이 취소되었습니다.");
+      });
+  };
+
+  sendTxItem = async () => {
+    const { account, currentIdx, balance } = this.state;
+
+    if (balance == 0) {
+      alert("곡괭이가 없습니다.");
+      return;
+    }
+
+    const miningContract = new caver.klay.Contract(
+      [
+        {
+          constant: false,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
               name: "_mixId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_mixCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_getBackCount",
               type: "uint256",
             },
           ],
@@ -260,40 +359,54 @@ class KeplerMiningPage extends Component {
       miningCA
     );
 
-    const num = await this.gachaId();
-    console.log(account);
-    console.log(currentIdx);
-    console.log(num);
+    const useItem = await this.sendTxUse();
 
-    await miningContract.methods
-      .mining(account, currentIdx, num)
-      .send({
-        from: account,
-        gas: 7500000,
-      })
-      .on("transactionHash", (transactionHash) => {
-        console.log("txHash", transactionHash);
-        this.setState({ txHash: transactionHash });
-      })
-      .on("receipt", (receipt) => {
-        console.log("receipt", receipt);
-        this.setState({
-          receipt: JSON.stringify(receipt),
-          modalOpen: true,
-        });
-      })
-      .on("error", (error) => {
-        console.log("error", error);
-        alert("믹스스톤 채굴이 취소되었습니다.");
-        this.setState({ error: error.message });
+    const { use, gachaItem, counter, getBack } = this.state;
+
+    if (use) {
+      await new Promise((resolve) => {
+        setTimeout(async () => {
+          await miningContract.methods
+            .mining(currentIdx, gachaItem[0], counter, getBack)
+            .send({
+              from: account,
+              gas: 7500000,
+            })
+            .on("transactionHash", (transactionHash) => {
+              console.log("txHash", transactionHash);
+              this.setState({ txHash: transactionHash });
+            })
+            .on("receipt", (receipt) => {
+              console.log("receipt", receipt);
+              this.setState({
+                receipt: JSON.stringify(receipt),
+                modalOpen: true,
+                use: false,
+              });
+            })
+            .on("error", (error) => {
+              console.log("error", error);
+              alert("믹스스톤 채굴이 취소되었습니다.");
+              this.setState({
+                error: error.message,
+              });
+            });
+          resolve();
+        }, 500);
       });
+    } else {
+      alert("믹스스톤 채굴이 취소되었습니다.");
+    }
     // this.setState({
     //   modalOpen: true,
     // });
   };
 
   closeModal = () => {
-    this.setState({ modalOpen: false });
+    this.setState({
+      modalOpen: false,
+      use: false,
+    });
   };
 
   render() {

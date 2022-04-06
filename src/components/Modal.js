@@ -7,7 +7,7 @@ const Modal = ({ open, close, header, currentIdx, gachaItem }) => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
 
   const box_Type = ["box_normal", "box_rare", "box_unique"];
-  console.log("item", gachaItem);
+
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
     <div className={open ? "openModal modal" : "modal"}>

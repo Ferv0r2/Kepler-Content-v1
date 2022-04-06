@@ -10,8 +10,7 @@ import items from "./item.json";
 
 import "./KeplerBoxPage.scss";
 
-const mintCA = "0xB3cF638A1fC987D55b27c74303e93cf8acD0023A";
-// const mintCA = "0x08688C92572627fc43E5E1ca05A6750c7c8B6b8d"; // 테넷
+const mintCA = "0xB9D8d1f5b13214c78bea9d657a8933275b11f191";
 
 class KeplerBoxPage extends Component {
   constructor(props) {
@@ -22,6 +21,7 @@ class KeplerBoxPage extends Component {
       isLoading: true,
       currentIdx: 0,
       limit: 0,
+      use: false,
       mintPrice: 0,
       gachaItem: 0,
       modalOpen: false,
@@ -141,7 +141,6 @@ class KeplerBoxPage extends Component {
     );
 
     const boxLimit = await minterContract.methods.limit(idx).call();
-    console.log(boxLimit);
     this.setState({
       limit: boxLimit,
     });
@@ -183,7 +182,10 @@ class KeplerBoxPage extends Component {
   };
 
   gachaId = async () => {
-    const { currentIdx } = this.state;
+    const { use, currentIdx } = this.state;
+    if (use) {
+      return;
+    }
 
     const itemGacha = Math.random() * 100; // 0 ~ 99 실수
     const itemNum = Math.floor(Math.random() * 5); // 0 ~ 4
@@ -198,9 +200,6 @@ class KeplerBoxPage extends Component {
     const pickA = items.low_pickaxe[currentIdx] + stoneM;
     const pickB = items.intermediate_pickaxe[currentIdx] + pickA;
     const pickC = items.advanced_pickaxe[currentIdx] + pickB;
-
-    console.log(itemGacha);
-    console.log(itemNum);
 
     let pointer = 0;
     if (itemGacha < largeP) {
@@ -227,11 +226,15 @@ class KeplerBoxPage extends Component {
       console.log("error");
     }
 
-    return pointer;
+    this.setState({ gachaItem: pointer });
   };
 
-  sendTx = async () => {
-    const { account, currentIdx, mintPrice } = this.state;
+  sendTxPay = async () => {
+    const { use, account, currentIdx, mintPrice } = this.state;
+    if (use == true) {
+      return;
+    }
+
     const minterContract = new caver.klay.Contract(
       [
         {
@@ -244,16 +247,11 @@ class KeplerBoxPage extends Component {
             },
             {
               internalType: "uint256",
-              name: "_id",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
               name: "_count",
               type: "uint256",
             },
           ],
-          name: "mintOfKlay",
+          name: "useCoin",
           outputs: [],
           payable: true,
           stateMutability: "payable",
@@ -264,9 +262,9 @@ class KeplerBoxPage extends Component {
     );
 
     const num = await this.gachaId();
-    console.log(num);
-    const mintWithKlay = await minterContract.methods
-      .mintOfKlay(currentIdx, num, 1)
+
+    const useCoin = await minterContract.methods
+      .useCoin(currentIdx, 1)
       .send({
         type: "SMART_CONTRACT_EXECUTION",
         from: account,
@@ -275,30 +273,34 @@ class KeplerBoxPage extends Component {
       })
       .on("transactionHash", (transactionHash) => {
         console.log("txHash", transactionHash);
-        this.setState({ txHash: transactionHash });
+        this.setState({ use: true });
       })
       .on("receipt", (receipt) => {
         console.log("receipt", receipt);
-        // alert('신청이 정상적으로 완료되었습니다.')
-        this.setState({
-          receipt: JSON.stringify(receipt),
-          modalOpen: true,
-          gachaItem: num,
-        });
+        this.setState({ use: true });
       })
       .on("error", (error) => {
         console.log("error", error);
-        alert("취소되었습니다.");
-        this.setState({ error: error.message });
+        alert("상자깡이 취소되었습니다.");
+        return false;
       });
-    // this.setState({
-    //   modalOpen: true,
-    //   gachaItem: num,
-    // });
+    this.setState({ use: true });
   };
 
-  sendTxItem = async () => {
-    const { account, currentIdx } = this.state;
+  sendTx = async () => {
+    const { account, currentIdx, balance, mintPrice, limit } = this.state;
+
+    // 클레이 결제용
+    if (balance <= mintPrice) {
+      alert("클레이가 부족합니다.");
+      return;
+    }
+
+    if (limit == 0) {
+      alert("남은 상자가 없습니다.");
+      return;
+    }
+
     const minterContract = new caver.klay.Contract(
       [
         {
@@ -311,11 +313,6 @@ class KeplerBoxPage extends Component {
             },
             {
               internalType: "uint256",
-              name: "_boxId",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
               name: "_id",
               type: "uint256",
             },
@@ -325,7 +322,7 @@ class KeplerBoxPage extends Component {
               type: "uint256",
             },
           ],
-          name: "mintOfItem",
+          name: "mintItem",
           outputs: [],
           payable: false,
           stateMutability: "nonpayable",
@@ -335,36 +332,51 @@ class KeplerBoxPage extends Component {
       mintCA
     );
 
-    const num = await this.gachaId();
-    console.log(num);
-    const mintWithItem = await minterContract.methods
-      .mintOfItem(account, currentIdx, num, 1)
-      .send({
-        from: account,
-        gas: 7500000,
-      })
-      .on("transactionHash", (transactionHash) => {
-        console.log("txHash", transactionHash);
-        this.setState({ txHash: transactionHash });
-      })
-      .on("receipt", (receipt) => {
-        console.log("receipt", receipt);
-        // alert('신청이 정상적으로 완료되었습니다.')
-        this.setState({
-          receipt: JSON.stringify(receipt),
-          modalOpen: true,
-        });
-      })
-      .on("error", (error) => {
-        console.log("error", error);
-        alert("취소되었습니다.");
-        this.setState({ error: error.message });
+    const pay = await this.sendTxPay();
+    const { use } = this.state;
+
+    if (use) {
+      await new Promise((resolve) => {
+        setTimeout(async () => {
+          await minterContract.methods
+            .mintItem(account, currentIdx, 1)
+            .send({
+              from: account,
+              gas: 7500000,
+            })
+            .on("transactionHash", (transactionHash) => {
+              console.log("txHash", transactionHash);
+              this.setState({ txHash: transactionHash });
+            })
+            .on("receipt", (receipt) => {
+              console.log("receipt", receipt);
+              // alert('신청이 정상적으로 완료되었습니다.')
+              this.setState({
+                receipt: JSON.stringify(receipt),
+                modalOpen: true,
+              });
+            })
+            .on("error", (error) => {
+              console.log("error", error);
+              alert("상자깡이 취소되었습니다.");
+              this.setState({ error: error.message });
+            });
+          resolve();
+        }, 200);
       });
-    // this.setState({ modalOpen: true });
+    } else {
+      alert("클레이가 지불되지 않았습니다.");
+    }
+    // this.setState({
+    //   modalOpen: true,
+    // });
   };
 
   closeModal = () => {
-    this.setState({ modalOpen: false });
+    this.setState({
+      modalOpen: false,
+      use: false,
+    });
   };
 
   render() {
@@ -379,8 +391,8 @@ class KeplerBoxPage extends Component {
       modalOpen,
     } = this.state;
     const boxs = ["Normal Box", "Rare Box", "Unique Box"];
+    const max = [100, 50, 30];
 
-    console.log("box", gachaItem);
     return (
       <Layout>
         <div className="KeplerBoxPage">
@@ -419,7 +431,9 @@ class KeplerBoxPage extends Component {
                 <div className="mint_btn" onClick={this.sendTx}>
                   OPEN BOX
                 </div>
-                <p>Limit : {limit} / 200</p>
+                <p>
+                  Limit : {limit} / {max[currentIdx]}
+                </p>
               </div>
 
               <div className="KeplerBoxPage__payable">

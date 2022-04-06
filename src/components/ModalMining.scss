@@ -81,6 +81,52 @@
 }
 
 .crack {
+  img {
+    width: 15rem;
+  }
+}
+
+.crack1 {
+  position: absolute;
+  padding: 1rem 2rem;
+  top: 20%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(#32155f, #120326);
+  border-radius: 2em;
+  border: 8px solid #4b2e78;
+  font-size: 2rem;
+  text-align: center;
+  transform: scale(0);
+  -webkit-transform: scale(0);
+
+  animation: mining-show 1.5s;
+  animation-delay: 1s;
+  -webkit-animation: mining-show 1.5s;
+  -webkit-animation-delay: 1s; /* Safari 4.0 - 8.0 */
+}
+
+.crack2 {
+  position: absolute;
+  padding: 1rem 2rem;
+  top: 22%;
+  left: 53%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(#32155f, #120326);
+  border-radius: 2em;
+  border: 8px solid #4b2e78;
+  font-size: 2rem;
+  text-align: center;
+  transform: scale(0);
+  -webkit-transform: scale(0);
+
+  animation: mining-show 1.5s;
+  animation-delay: 2.5s;
+  -webkit-animation: mining-show 1.5s;
+  -webkit-animation-delay: 2.5s; /* Safari 4.0 - 8.0 */
+}
+
+.crack3 {
   position: absolute;
   padding: 1rem 2rem;
   top: 17%;
@@ -98,9 +144,6 @@
   animation-delay: 4s;
   -webkit-animation: mining-show 1.5s;
   -webkit-animation-delay: 4s; /* Safari 4.0 - 8.0 */
-  img {
-    width: 15rem;
-  }
 }
 
 .Mining {
@@ -134,9 +177,29 @@
 
 .Mining__img {
   text-align: center;
+  width: 35rem;
+  height: 35rem;
 
   img {
     width: 35rem;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 37%;
+  }
+  .item1 {
+    left: 25%;
+  }
+  .item2 {
+    left: 37.5%;
+  }
+  .item3 {
+    left: 50%;
+  }
+  .item4 {
+    left: 62.5%;
+  }
+  .item5 {
+    left: 75%;
   }
 }
 
