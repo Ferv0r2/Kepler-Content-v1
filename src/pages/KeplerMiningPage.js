@@ -117,10 +117,14 @@ class KeplerMiningPage extends Component {
 
   moveSlide = (num) => {
     const { currentIdx } = this.state;
-    this.ref.current.style.left = -num * 650 + "px";
-    this.setState({
-      currentIdx: num,
-    });
+    if (window.innerWidth <= 540) {
+      this.ref.current.style.left = -num * 370 + "px";
+    } else if (window.innerWidth <= 640) {
+      this.ref.current.style.left = -num * 450 + "px";
+    } else {
+      this.ref.current.style.left = -num * 600 + "px";
+    }
+    this.setState({ currentIdx: num });
   };
 
   prevSlide = () => {
@@ -295,24 +299,26 @@ class KeplerMiningPage extends Component {
       miningCA
     );
 
-    const useItem = await miningContract.methods
-      .usePickaxe(account, currentIdx, 1)
-      .send({
-        from: account,
-        gas: 7500000,
-      })
-      .on("transactionHash", (transactionHash) => {
-        console.log("txHash", transactionHash);
-        this.setState({ use: true });
-      })
-      .on("receipt", (receipt) => {
-        console.log("receipt", receipt);
-        this.setState({ use: true });
-      })
-      .on("error", (error) => {
-        console.log("error", error);
-        alert("믹스스톤 채굴이 취소되었습니다.");
-      });
+    // const useItem = await miningContract.methods
+    //   .usePickaxe(account, currentIdx, 1)
+    //   .send({
+    //     from: account,
+    //     gas: 7500000,
+    //   })
+    //   .on("transactionHash", (transactionHash) => {
+    //     console.log("txHash", transactionHash);
+    //     this.setState({ use: true });
+    //   })
+    //   .on("receipt", (receipt) => {
+    //     console.log("receipt", receipt);
+    //     this.setState({ use: true });
+    //   })
+    //   .on("error", (error) => {
+    //     console.log("error", error);
+    //     alert("믹스스톤 채굴이 취소되었습니다.");
+    //   });
+
+    this.setState({ use: true });
   };
 
   sendTxItem = async () => {
@@ -364,35 +370,38 @@ class KeplerMiningPage extends Component {
     const { use, gachaItem, counter, getBack } = this.state;
 
     if (use) {
-      await new Promise((resolve) => {
-        setTimeout(async () => {
-          await miningContract.methods
-            .mining(currentIdx, gachaItem[0], counter, getBack)
-            .send({
-              from: account,
-              gas: 7500000,
-            })
-            .on("transactionHash", (transactionHash) => {
-              console.log("txHash", transactionHash);
-              this.setState({ txHash: transactionHash });
-            })
-            .on("receipt", (receipt) => {
-              console.log("receipt", receipt);
-              this.setState({
-                receipt: JSON.stringify(receipt),
-                modalOpen: true,
-                use: false,
-              });
-            })
-            .on("error", (error) => {
-              console.log("error", error);
-              alert("믹스스톤 채굴이 취소되었습니다.");
-              this.setState({
-                error: error.message,
-              });
-            });
-          resolve();
-        }, 500);
+      // await new Promise((resolve) => {
+      //   setTimeout(async () => {
+      //     await miningContract.methods
+      //       .mining(currentIdx, gachaItem[0], counter, getBack)
+      //       .send({
+      //         from: account,
+      //         gas: 7500000,
+      //       })
+      //       .on("transactionHash", (transactionHash) => {
+      //         console.log("txHash", transactionHash);
+      //         this.setState({ txHash: transactionHash });
+      //       })
+      //       .on("receipt", (receipt) => {
+      //         console.log("receipt", receipt);
+      //         this.setState({
+      //           receipt: JSON.stringify(receipt),
+      //           modalOpen: true,
+      //           use: false,
+      //         });
+      //       })
+      //       .on("error", (error) => {
+      //         console.log("error", error);
+      //         alert("믹스스톤 채굴이 취소되었습니다.");
+      //         this.setState({
+      //           error: error.message,
+      //         });
+      //       });
+      //     resolve();
+      //   }, 500);
+      // });
+      this.setState({
+        modalOpen: true,
       });
     } else {
       alert("믹스스톤 채굴이 취소되었습니다.");

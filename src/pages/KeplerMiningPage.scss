@@ -9,6 +9,14 @@
   text-align: center;
   img {
     width: 82rem;
+
+    @media screen and (max-width: 640px) {
+      width: 52rem;
+    }
+
+    @media screen and (max-width: 540px) {
+      width: 42rem;
+    }
   }
 }
 
@@ -19,11 +27,8 @@
   margin: 0 auto;
   padding: 60px 10px;
 
-  @media screen and (max-width: 800px) {
-    max-width: 540px;
-  }
   @media screen and (max-width: 600px) {
-    max-width: 420px;
+    max-width: 600px;
   }
   h3 {
     margin-bottom: 15px;
@@ -34,6 +39,14 @@
   padding-bottom: 5rem;
   img {
     width: 80rem;
+
+    @media screen and (max-width: 640px) {
+      width: 50rem;
+    }
+
+    @media screen and (max-width: 540px) {
+      width: 40rem;
+    }
   }
 
   p {
@@ -50,6 +63,24 @@
   color: $box-text-color;
 }
 
+.KeplerMiningPage__name {
+  padding: 2rem;
+  text-shadow: 3px 0 10px #fff;
+  font-family: "GMarketSansMedium";
+  font-size: 3rem;
+  margin-top: -5rem;
+
+  @media screen and (max-width: 640px) {
+    font-size: 2.5rem;
+  }
+}
+
+.KeplerMiningPage__limit {
+  padding: 2rem;
+  font-family: "GMarketSansMedium";
+  font-size: 1.6rem;
+}
+
 .KeplerMiningPage__tools {
   text-align: center;
   margin: 0 auto;
@@ -59,10 +90,18 @@
 
   .prev {
     position: absolute;
-    left: 14%;
+    left: 18%;
     top: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
+
+    @media screen and (max-width: 640px) {
+      left: 27%;
+    }
+
+    @media screen and (max-width: 540px) {
+      left: 10%;
+    }
   }
   .next {
     position: absolute;
@@ -70,29 +109,29 @@
     top: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
+
+    @media screen and (max-width: 540px) {
+      right: 0;
+    }
   }
 }
 
-.KeplerMiningPage__name {
-  padding: 2rem;
-  text-shadow: 3px 0 10px #fff;
-  font-family: "GMarketSansMedium";
-  font-size: 3rem;
-  margin-top: -5rem;
-}
-
-.KeplerMiningPage__limit {
-  padding: 2rem;
-  font-family: "GMarketSansMedium";
-  font-size: 1.6rem;
-}
-
 #slideShow {
-  width: 700px;
+  width: 650px;
   height: 500px;
   position: relative;
   // margin: 0 auto;
   overflow: hidden; /*리스트 형식으로 이미지를 일렬로 정렬할 것이기 때문에, 500px 밖으로 튀어 나간 이미지들은 hidden으로 숨겨줘야됨*/
+
+  @media screen and (max-width: 640px) {
+    width: 450px;
+    height: 350px;
+  }
+
+  @media screen and (max-width: 540px) {
+    width: 390px;
+    height: 350px;
+  }
 
   > p {
     position: absolute;
@@ -105,6 +144,18 @@
     font-family: "GmarketSans";
     font-size: 3rem;
     font-weight: 550;
+
+    @media screen and (max-width: 640px) {
+      left: 62%;
+      bottom: -3rem;
+      font-size: 2.7rem;
+    }
+
+    @media screen and (max-width: 540px) {
+      left: 50%;
+      bottom: -3rem;
+      font-size: 2.7rem;
+    }
   }
 
   .slides {
@@ -113,15 +164,30 @@
     top: 0;
     width: 2100px; /* 슬라이드할 사진과 마진 총 넓이 */
     transition: left 0.5s ease-out; /*ease-out: 처음에는 느렸다가 점점 빨라짐*/
+    @media screen and (max-width: 640px) {
+      width: 1480px;
+    }
+
+    @media screen and (max-width: 540px) {
+      width: 1190px;
+    }
   }
   /* 첫 번째 슬라이드 가운데에 정렬하기위해 첫번째 슬라이드만 margin-left조정 */
   .slides li:first-child {
     margin-left: 150px;
+
+    @media screen and (max-width: 540px) {
+      margin-left: 2rem;
+    }
   }
   /* 슬라이드들 옆으로 정렬 */
   .slides li:not(:last-child) {
     float: left;
-    margin-right: 150px;
+    margin-right: 100px;
+
+    @media screen and (max-width: 540px) {
+      margin-right: 2rem;
+    }
   }
 
   .slides li {
@@ -130,6 +196,9 @@
     > img {
       width: 50rem;
       border-radius: 4em;
+      @media screen and (max-width: 640px) {
+        width: 35rem;
+      }
     }
   }
 }
@@ -153,97 +222,10 @@
     padding: 5rem;
     font-family: "GMarketSansMedium";
     font-size: 1.6rem;
-  }
-}
 
-.KeplerMiningPage__payable {
-  display: flex;
-  text-align: center;
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 5rem;
-  background-color: #190021;
-  border-radius: 3em;
-
-  div {
-    label {
-      font-size: 2rem;
-      color: $white;
-    }
-
-    p {
-      margin: 1rem;
-      font-style: italic;
-      font-family: "GmarketSansMedium";
-      color: $box-text-color;
-    }
-  }
-
-  .box_price {
-    flex: 2;
-    margin: 2rem;
-    padding: 2rem;
-    border-right-style: solid;
-    border-color: $bar-color;
-  }
-
-  .klay_balance {
-    flex: 3;
-    margin: 2rem;
-    padding: 2rem;
-  }
-}
-
-.KeplerMiningPage__table {
-  background-color: $table-bg-color;
-  margin-top: 5rem;
-
-  .table_title {
-    width: 80%;
-    padding: 3rem;
-    padding-top: 5rem;
-    margin: 0 auto;
-    font-size: 3rem;
-    font-family: "GmarketSansLight";
-    border-bottom-style: solid;
-    border-color: $bar-color;
-  }
-
-  .table_contents {
-    width: 100%;
-    padding: 3rem;
-    margin: 0 auto;
-
-    > div {
-      display: flex;
-      // width: 100%;
-      // margin: 0 auto;
-      // padding: 3rem;
-      margin: 3rem;
-
-      > div {
-        flex: 1;
-        label {
-          font-family: "GMarketSansMedium";
-          font-size: 2.4rem;
-          color: $white;
-        }
-
-        li {
-          display: flex;
-          list-style: none;
-          color: $table-text-color;
-          // margin: 0 auto;
-          margin: 2.2rem;
-
-          p {
-            margin: 0 auto;
-            font-family: "NanumSquareBold";
-            font-size: 1.6rem;
-            // padding: 1rem;
-          }
-        }
-      }
+    @media screen and (max-width: 640px) {
+      font-size: 1.5rem;
+      line-height: 2.5rem;
     }
   }
 }

@@ -314,9 +314,6 @@ class KeplerBoxPage extends Component {
     );
 
     const num = await this.gachaId();
-
-    this.setState({ use: true });
-    return;
     const useCoin = await minterContract.methods
       .useCoin(currentIdx, 1)
       .send({
@@ -336,7 +333,6 @@ class KeplerBoxPage extends Component {
       .on("error", (error) => {
         console.log("error", error);
         alert("상자깡이 취소되었습니다.");
-        return false;
       });
   };
 
@@ -344,15 +340,15 @@ class KeplerBoxPage extends Component {
     const { account, currentIdx, balance, mintPrice, limit } = this.state;
 
     // 클레이 결제용
-    // if (balance <= mintPrice) {
-    //   alert("클레이가 부족합니다.");
-    //   return;
-    // }
+    if (balance <= mintPrice) {
+      alert("클레이가 부족합니다.");
+      return;
+    }
 
-    // if (limit == 0) {
-    //   alert("남은 상자가 없습니다.");
-    //   return;
-    // }
+    if (limit == 0) {
+      alert("남은 상자가 없습니다.");
+      return;
+    }
 
     const minterContract = new caver.klay.Contract(
       [
@@ -387,11 +383,6 @@ class KeplerBoxPage extends Component {
 
     const pay = await this.sendTxPay();
     const { use } = this.state;
-
-    this.setState({
-      modalOpen: true,
-    });
-    return;
 
     if (use) {
       await new Promise((resolve) => {
@@ -483,9 +474,7 @@ class KeplerBoxPage extends Component {
       .on("error", (error) => {
         console.log("error", error);
         alert("상자깡이 취소되었습니다.");
-        return false;
       });
-    // this.setState({ use: true });
   };
 
   sendTxKey = async () => {

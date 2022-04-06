@@ -94,7 +94,7 @@ class KeplerMainPage extends Component {
                   </div>
                   <div>
                     <li>
-                      <Link to="/mining">믹스스톤</Link>
+                      <Link to="/mining">스톤 채굴</Link>
                     </li>
                     <li>
                       <Link to="/governance">거버넌스</Link>

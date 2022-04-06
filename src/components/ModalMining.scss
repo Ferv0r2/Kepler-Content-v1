@@ -28,6 +28,15 @@
 
   animation: flicker-mining 1.5s infinite alternate;
   -webkit-animation: flicker-mining 1.5s infinite alternate;
+
+  @media screen and (max-width: 1600px) {
+    height: 80%;
+  }
+
+  @media screen and (max-width: 640px) {
+    width: 80%;
+    height: 60%;
+  }
 }
 .modal_Mining > section > header {
   position: relative;
@@ -70,6 +79,22 @@
 
   video {
     width: 50rem;
+
+    @media screen and (max-width: 1600px) {
+      padding-top: 0;
+      width: 45rem;
+    }
+
+    @media screen and (max-width: 640px) {
+      padding-top: 0;
+      width: 40rem;
+    }
+
+    @media screen and (max-width: 540px) {
+      padding-top: 4rem;
+      width: 25rem;
+      transform: scale(1.2);
+    }
   }
   p {
     padding-top: 5rem;
@@ -77,12 +102,26 @@
 
     animation: modal_Mining-bg-show 1s infinite alternate;
     -webkit-animation: modal_Mining-bg-show 1s infinite alternate;
+
+    @media screen and (max-width: 640px) {
+      margin-top: -3rem;
+      font-size: 2.5rem;
+    }
   }
 }
 
 .crack {
   img {
     width: 15rem;
+    @media screen and (max-width: 540px) {
+      width: 10rem;
+    }
+  }
+  div {
+    @media screen and (max-width: 540px) {
+      font-size: 1rem;
+      padding: 0.3rem 1rem;
+    }
   }
 }
 
@@ -104,6 +143,10 @@
   animation-delay: 1s;
   -webkit-animation: mining-show 1.5s;
   -webkit-animation-delay: 1s; /* Safari 4.0 - 8.0 */
+
+  @media screen and (max-width: 540px) {
+    left: 15%;
+  }
 }
 
 .crack2 {
@@ -162,6 +205,16 @@
   -webkit-animation: mining-fin 0.5s;
   -webkit-animation-delay: 5s; /* Safari 4.0 - 8.0 */
   animation-fill-mode: forwards;
+
+  @media screen and (max-width: 1600px) {
+    top: 5%;
+    left: 19%;
+  }
+
+  @media screen and (max-width: 640px) {
+    top: 8%;
+    left: 5%;
+  }
 }
 
 .Mining_result {
@@ -179,12 +232,31 @@
   text-align: center;
   width: 35rem;
   height: 35rem;
+  @media screen and (max-width: 1600px) {
+    width: 27rem;
+    height: 27rem;
+  }
+  @media screen and (max-width: 640px) {
+    margin-top: -2rem;
+    width: 20rem;
+    height: 20rem;
+  }
 
   img {
     width: 35rem;
     position: absolute;
     transform: translate(-50%, -50%);
     top: 37%;
+
+    @media screen and (max-width: 1600px) {
+      margin-top: -2rem;
+      width: 27rem;
+    }
+
+    @media screen and (max-width: 640px) {
+      margin-top: -2rem;
+      width: 20rem;
+    }
   }
   .item1 {
     left: 25%;
@@ -214,6 +286,15 @@
   .Mining__name {
     font-size: 2rem;
     padding: 1rem;
+
+    @media screen and (max-width: 1600px) {
+      font-size: 1.8rem;
+    }
+
+    @media screen and (max-width: 640px) {
+      padding: 0.2rem;
+      font-size: 1.3rem;
+    }
   }
 }
 
