@@ -522,7 +522,7 @@ class KeplerBoxPage extends Component {
       await new Promise((resolve) => {
         setTimeout(async () => {
           await minterContract.methods
-            .mintItem(account, gathaItem, 1)
+            .mintItem(account, gachaItem, 1)
             .send({
               from: account,
               gas: 7500000,
