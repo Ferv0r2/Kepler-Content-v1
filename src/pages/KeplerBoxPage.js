@@ -477,7 +477,7 @@ class KeplerBoxPage extends Component {
   };
 
   sendTxKey = async () => {
-    const { account, currentIdx, key, limit } = this.state;
+    const { account, currentIdx, gachaItem, key, limit } = this.state;
 
     console.log(key);
     if (key == 0) {
@@ -522,7 +522,7 @@ class KeplerBoxPage extends Component {
       await new Promise((resolve) => {
         setTimeout(async () => {
           await minterContract.methods
-            .mintItem(account, currentIdx, 1)
+            .mintItem(account, gathaItem, 1)
             .send({
               from: account,
               gas: 7500000,
