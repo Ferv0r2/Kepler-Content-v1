@@ -336,7 +336,8 @@ class KeplerBoxPage extends Component {
   };
 
   sendTxKlay = async () => {
-    const { account, currentIdx, balance, mintPrice, limit } = this.state;
+    const { account, currentIdx, gachaItem, balance, mintPrice, limit } =
+      this.state;
 
     // 클레이 결제용
     if (balance <= mintPrice) {
@@ -387,7 +388,7 @@ class KeplerBoxPage extends Component {
       await new Promise((resolve) => {
         setTimeout(async () => {
           await minterContract.methods
-            .mintItem(account, currentIdx, 1)
+            .mintItem(account, gachaItem, 1)
             .send({
               from: account,
               gas: 7500000,
