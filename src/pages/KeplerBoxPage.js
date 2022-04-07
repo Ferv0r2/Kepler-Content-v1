@@ -336,8 +336,7 @@ class KeplerBoxPage extends Component {
   };
 
   sendTxKlay = async () => {
-    const { account, currentIdx, gachaItem, balance, mintPrice, limit } =
-      this.state;
+    const { account, currentIdx, balance, mintPrice, limit } = this.state;
 
     // 클레이 결제용
     if (balance <= mintPrice) {
@@ -382,7 +381,7 @@ class KeplerBoxPage extends Component {
     );
 
     const pay = await this.sendTxPay();
-    const { use } = this.state;
+    const { use, gachaItem } = this.state;
 
     if (use) {
       await new Promise((resolve) => {
@@ -478,7 +477,7 @@ class KeplerBoxPage extends Component {
   };
 
   sendTxKey = async () => {
-    const { account, currentIdx, gachaItem, key, limit } = this.state;
+    const { account, currentIdx, key, limit } = this.state;
 
     console.log(key);
     if (key == 0) {
@@ -517,8 +516,9 @@ class KeplerBoxPage extends Component {
     );
 
     const pay = await this.sendTxItem();
-    const { use } = this.state;
+    const { use, gachaItem } = this.state;
 
+    console.log(gachaItem);
     if (use) {
       await new Promise((resolve) => {
         setTimeout(async () => {
