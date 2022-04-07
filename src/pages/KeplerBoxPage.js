@@ -18,7 +18,6 @@ class KeplerBoxPage extends Component {
     this.state = {
       account: "",
       balance: 0,
-      key: 36,
       isLoading: true,
       currentIdx: 0,
       limit: 0,
@@ -105,7 +104,7 @@ class KeplerBoxPage extends Component {
     if (currentIdx !== 0) {
       this.moveSlide(currentIdx - 1);
       this.setLimit(currentIdx - 1);
-      this.setOwnKey(currentIdx - 1);
+      // this.setOwnKey(currentIdx - 1);
       this.setMintPrice(currentIdx - 1);
     }
   };
@@ -116,52 +115,52 @@ class KeplerBoxPage extends Component {
     if (currentIdx !== slideCount - 1) {
       this.moveSlide(currentIdx + 1);
       this.setLimit(currentIdx + 1);
-      this.setOwnKey(currentIdx + 1);
+      // this.setOwnKey(currentIdx + 1);
       this.setMintPrice(currentIdx + 1);
     }
   };
 
-  setOwnKey = async (idx) => {
-    const { account } = this.state;
-    const itemContract = new caver.klay.Contract(
-      [
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "id",
-              type: "uint256",
-            },
-          ],
-          name: "balanceOf",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      itemCA
-    );
+  // setOwnKey = async (idx) => {
+  //   const { account } = this.state;
+  //   const itemContract = new caver.klay.Contract(
+  //     [
+  //       {
+  //         constant: true,
+  //         inputs: [
+  //           {
+  //             internalType: "address",
+  //             name: "account",
+  //             type: "address",
+  //           },
+  //           {
+  //             internalType: "uint256",
+  //             name: "id",
+  //             type: "uint256",
+  //           },
+  //         ],
+  //         name: "balanceOf",
+  //         outputs: [
+  //           {
+  //             internalType: "uint256",
+  //             name: "",
+  //             type: "uint256",
+  //           },
+  //         ],
+  //         payable: false,
+  //         stateMutability: "view",
+  //         type: "function",
+  //       },
+  //     ],
+  //     itemCA
+  //   );
 
-    const key = await itemContract.methods.balanceOf(account, idx + 39).call();
+  //   const key = await itemContract.methods.balanceOf(account, idx + 39).call();
 
-    console.log(key);
-    this.setState({
-      key,
-    });
-  };
+  //   console.log(key);
+  //   this.setState({
+  //     key,
+  //   });
+  // };
 
   setLimit = async (idx) => {
     const minterContract = new caver.klay.Contract(
@@ -477,13 +476,14 @@ class KeplerBoxPage extends Component {
   };
 
   sendTxKey = async () => {
-    const { account, currentIdx, key, limit } = this.state;
+    // const { account, currentIdx, key, limit } = this.state;
+    const { account, currentIdx, limit } = this.state;
 
-    console.log(key);
-    if (key == 0) {
-      alert("열쇠가 없습니다.");
-      return;
-    }
+    // console.log(key);
+    // if (key == 0) {
+    //   alert("열쇠가 없습니다.");
+    //   return;
+    // }
     const minterContract = new caver.klay.Contract(
       [
         {
