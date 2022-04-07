@@ -330,6 +330,7 @@ class KeplerBoxPage extends Component {
       })
       .on("error", (error) => {
         console.log("error", error);
+        this.setState({ use: false });
         alert("상자깡이 취소되었습니다.");
       });
   };
@@ -471,6 +472,7 @@ class KeplerBoxPage extends Component {
       })
       .on("error", (error) => {
         console.log("error", error);
+        this.setState({ use: false });
         alert("상자깡이 취소되었습니다.");
       });
   };
@@ -535,6 +537,7 @@ class KeplerBoxPage extends Component {
               this.setState({
                 receipt: JSON.stringify(receipt),
                 modalOpen: true,
+                use: false,
               });
             })
             .on("error", (error) => {
@@ -548,9 +551,6 @@ class KeplerBoxPage extends Component {
     } else {
       alert("열쇠 사용이 취소되었습니다.");
     }
-    this.setState({
-      modalOpen: true,
-    });
   };
 
   closeModal = () => {

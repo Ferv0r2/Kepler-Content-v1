@@ -315,6 +315,7 @@ class KeplerMiningPage extends Component {
       })
       .on("error", (error) => {
         console.log("error", error);
+        this.setState({ use: false });
         alert("믹스스톤 채굴이 취소되었습니다.");
       });
 
@@ -400,9 +401,6 @@ class KeplerMiningPage extends Component {
           resolve();
         }, 500);
       });
-      this.setState({
-        modalOpen: true,
-      });
     } else {
       alert("믹스스톤 채굴이 취소되었습니다.");
     }
@@ -447,7 +445,11 @@ class KeplerMiningPage extends Component {
             <div className="KeplerMiningPage__contents">
               <div className="KeplerMiningPage__mining">
                 <img src="video/mining.png" />
-                <p>믹스스톤은 케플러 NFT를 합성할 수 있습니다</p>
+                <p>트랜잭션은 2번 발생합니다.</p>
+                <p>
+                  최대 가스비로 인해 6 Klay 이상 소유해야 트랜잭션을 보낼 수
+                  있습니다.
+                </p>
               </div>
 
               <div className="KeplerMiningPage__mint">
