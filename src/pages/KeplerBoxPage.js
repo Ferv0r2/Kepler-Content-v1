@@ -157,7 +157,6 @@ class KeplerBoxPage extends Component {
 
     const key = await itemContract.methods.balanceOf(account, idx + 39).call();
 
-    console.log(key);
     this.setState({
       key,
     });
@@ -479,7 +478,6 @@ class KeplerBoxPage extends Component {
   sendTxKey = async () => {
     const { account, currentIdx, key, limit } = this.state;
 
-    console.log(key);
     if (key == 0) {
       alert("열쇠가 없습니다.");
       return;
@@ -518,7 +516,6 @@ class KeplerBoxPage extends Component {
     const pay = await this.sendTxItem();
     const { use, gachaItem } = this.state;
 
-    console.log(gachaItem);
     if (use) {
       await new Promise((resolve) => {
         setTimeout(async () => {
