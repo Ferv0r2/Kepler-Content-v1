@@ -8,4 +8,4 @@ export const NFTZ_PAGE = "https://nftz.co.in/KPR";
 export const KAKAO_PAGE = "https://open.kakao.com/o/gTLz1aTd";
 export const MEDIUM_PAGE = "https://medium.com/@Kepler-452b";
 export const TWITTER_PAGE = "https://twitter.com/Kepler_NFT";
-export const INSTAGRAM_PAGE = "https://www.instagram.com/kepler452b_nft/";
+export const INSTAGRAM_PAGE = "https://www.instagram.com/kepler452b_toon/";

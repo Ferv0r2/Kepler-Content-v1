@@ -29,7 +29,7 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="https://www.instagram.com/kepler452b_nft/">
+              <a href="https://www.instagram.com/kepler452b_toon/">
                 <i className="fab fa-instagram" aria-hidden="true"></i>
               </a>
             </li>
