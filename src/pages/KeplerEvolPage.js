@@ -91,7 +91,7 @@ class KeplerEvolPage extends Component {
           .tokenOfOwnerByIndex(account, index)
           .call();
 
-        if (evol.includes(parseInt(own))) {
+        if (evol["token"].includes(parseInt(own))) {
           // let url = await keplerContract.methods.tokenURI(index).call();
           // url = ipfs + url.substring(7);
 
