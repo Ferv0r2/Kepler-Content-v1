@@ -99,7 +99,15 @@ class KeplerMainPage extends Component {
                     <li>
                       <Link to="/governance">거버넌스</Link>
                     </li>
+                    {/* <li>
+                      <Link to="/shop">골닷 상점</Link>
+                    </li> */}
                   </div>
+                  {/* <div>
+                    <li>
+                      <Link to="/governance">거버넌스</Link>
+                    </li>
+                  </div> */}
                 </div>
               </div>
             </div>
