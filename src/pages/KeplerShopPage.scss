@@ -1,7 +1,6 @@
 .KeplerShopPage {
   width: 100%;
   height: 100%;
-  background: linear-gradient($bg-gradtion-top, $bg-gradtion-bottom);
 }
 
 .KeplerShopPage__main {
@@ -23,11 +22,29 @@
   }
 }
 
-.KeplerShopPage_title {
-  text-align: center;
-  border: 1rem solid;
-  border-color: #fff;
+.KeplerShopPage__title {
+  img {
+    width: 100%;
+  }
+}
 
+.KeplerShopPage__subtitle {
+  padding-top: 3rem;
+  padding-bottom: 6rem;
+
+  text-align: center;
+  color: #fff;
+  font-family: "GmarketSansMedium";
+  font-size: 2.7rem;
+}
+
+.KeplerShopPage__banner {
+  width: 100%;
+  max-width: 720px;
+
+  img {
+    width: 100%;
+  }
 }
 
 .KeplerShopPage__contents {
@@ -172,70 +189,6 @@
   }
 }
 
-.KeplerShopPage__mint {
-  margin: 3rem;
-
-  .mint_btn {
-    width: 15rem;
-    padding: 2rem;
-    margin: 0 auto;
-    background: linear-gradient($btn-gradtion-top, $btn-gradtion-bottom);
-    border-radius: 1.2em;
-    font-family: "GmarketSansBold";
-    color: $white;
-    font-size: 1.5rem;
-    cursor: pointer;
-
-    @media screen and (max-width: 800px) {
-      margin: 2rem auto;
-    }
-
-    &:hover {
-      color: $btn-gradtion-top;
-      background: $white;
-    }
-  }
-
-  p {
-    padding: 5rem;
-    font-family: "NanumSqureBold";
-    font-size: 2rem;
-  }
-}
-
-.mint_item {
-  display: flex;
-
-  @media screen and (max-width: 800px) {
-    display: initial;
-  }
-
-  > div {
-    margin: 3rem;
-  }
-
-  .mint_klay {
-    img {
-      width: 2.5rem;
-    }
-    &::after {
-      content: "KLAY";
-      padding: 1rem;
-    }
-  }
-
-  .mint_key {
-    img {
-      width: 2.5rem;
-      transform: scale(1.4);
-    }
-    &::after {
-      content: "KEY";
-      padding: 1rem;
-    }
-  }
-}
-
 .check {
   font-family: "NanumSqure";
   font-size: 1.6rem;
@@ -244,56 +197,13 @@
   }
 }
 
-.KeplerShopPage__payable {
-  display: flex;
-  text-align: center;
+.KeplerShopPage__table {
+  position: relative;
   width: 90%;
   margin: 0 auto;
-  margin-top: 5rem;
-  background: #190021;
-  border-radius: 3em;
-
-  @media screen and (max-width: 800px) {
-    display: initial;
-    width: 80%;
-  }
-
-  div {
-    label {
-      font-size: 2rem;
-      color: $white;
-    }
-
-    p {
-      margin: 1rem;
-      font-style: italic;
-      font-family: "GmarketSansMedium";
-      color: $box-text-color;
-    }
-  }
-
-  .box_price {
-    flex: 2;
-    margin: 2rem;
-    padding: 2rem;
-    border-right-style: solid;
-    border-color: $bar-color;
-
-    @media screen and (max-width: 800px) {
-      border-right-style: none;
-    }
-  }
-
-  .klay_balance {
-    flex: 3;
-    margin: 2rem;
-    padding: 2rem;
-  }
-}
-
-.KeplerShopPage__table {
-  background-color: $table-bg-color;
-  margin-top: 5rem;
+  // margin-top: 5rem;
+  box-shadow: 0 0 5px #fff, 0 0 40px $hover-color;
+  font-family: "GmarketSansMedium";
 
   @media screen and (max-width: 800px) {
     width: 90%;
@@ -301,17 +211,14 @@
   }
 
   .table_title {
-    width: 80%;
-    padding: 3rem;
-    padding-top: 5rem;
-    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: 3rem;
-    font-family: "GmarketSansLight";
-    border-bottom-style: solid;
-    border-color: $bar-color;
 
-    @media screen and (max-width: 800px) {
-      font-size: 2.5rem;
+    img {
+      width: 20rem;
     }
   }
 
@@ -319,50 +226,43 @@
     width: 100%;
     padding: 3rem;
     margin: 0 auto;
+    font-size: 2.5rem;
 
-    > div {
+    ul {
+      width: 100%;
+      margin: 0 auto;
+      padding-top: 2rem;
+    }
+    .item {
       display: flex;
-      // width: 100%;
-      // margin: 0 auto;
-      // padding: 3rem;
-      margin: 3rem;
-
-      @media screen and (max-width: 800px) {
-        display: initial;
-      }
-
-      > div {
-        flex: 1;
-
-        label {
-          font-family: "GMarketSansMedium";
-          font-size: 2.4rem;
-          color: $white;
-
-          @media screen and (max-width: 800px) {
-            font-size: 2rem;
-            padding: 2rem;
-          }
-        }
-
-        li {
-          display: flex;
-          list-style: none;
-          color: $table-text-color;
-          // margin: 0 auto;
-          margin: 2.2rem;
-
-          p {
-            margin: 0 auto;
-            font-family: "NanumSquareBold";
-            font-size: 1.6rem;
-            // padding: 1rem;
-            @media screen and (max-width: 800px) {
-              font-size: 1.6rem;
-            }
-          }
-        }
+      justify-content: space-between;
+      img {
+        width: 10rem;
       }
     }
+
+    .item_bg {
+      background: $bg-gradtion-bottom;
+      border-radius: 1em;
+    }
+    .item_mul {
+      font-style: italic;
+      font-size: 2rem;
+    }
+    .item_count {
+      font-style: italic;
+    }
+    .item_border {
+      div {
+        border: 3px solid #fff;
+        padding: 2rem;
+      }
+    }
+  }
+}
+
+.table_changer {
+  img {
+    width: 10rem;
   }
 }
