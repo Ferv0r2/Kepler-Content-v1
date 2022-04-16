@@ -1,15 +1,12 @@
 import React, { Component, useRef } from "react";
 import caver from "klaytn/caver";
+import keplerContract from "klaytn/KeplerContract";
 
 import Layout from "../components/Layout";
 import Nav from "components/Nav";
-import Modal from "components/Modal";
-
-import items from "./item.json";
 
 import "./KeplerShopPage.scss";
 
-const mintCA = "0x1eBA71383290bf924F3FE6f06E7D74572d1C5144";
 const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
 
 class KeplerShopPage extends Component {
@@ -17,7 +14,8 @@ class KeplerShopPage extends Component {
     super(props);
     this.state = {
       account: "",
-      balance: 0,
+      balanceNFT: 0,
+      balanceStone: 0,
       isLoading: true,
       currentIdx: 0,
       use: false,
@@ -58,13 +56,48 @@ class KeplerShopPage extends Component {
     const { klaytn } = window;
     if (klaytn === undefined) return;
 
+    const itemContract = new caver.klay.Contract(
+      [
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+          ],
+          name: "balanceOf",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      itemCA
+    );
+
     const account = klaytn.selectedAddress;
-    let balance = await caver.klay.getBalance(account);
-    balance = (balance / 1000000000000000000).toFixed(2);
+    const balanceNFT = await keplerContract.methods.balanceOf(account).call();
+    const balanceStone = await itemContract.methods
+      .balanceOf(account, 35)
+      .call();
 
     this.setState({
       account,
-      balance,
+      balanceNFT,
+      balanceStone,
       isLoading: false,
     });
   };
@@ -208,7 +241,8 @@ class KeplerShopPage extends Component {
   };
 
   render() {
-    const { account, balance, isLoading, limit, currentIdx } = this.state;
+    const { account, balanceNFT, balanceStone, isLoading, limit, currentIdx } =
+      this.state;
     const boxs = ["Normal Box", "Rare Box", "Unique Box"];
 
     return (
@@ -244,8 +278,12 @@ class KeplerShopPage extends Component {
                       <li className="item_bg">
                         <img src="images/shop/faded_stone.png" />
                       </li>
-                      <li className="item_mul">X</li>
-                      <li className="item_count">10</li>
+                      <li className="item_mul">
+                        <p>X</p>
+                      </li>
+                      <li className="item_count">
+                        <p>10</p>
+                      </li>
                       <li>
                         <img src="images/shop/after.png" />
                       </li>
@@ -253,12 +291,12 @@ class KeplerShopPage extends Component {
                         <img src="images/shop/normal_pickaxe.png" />
                       </li>
                       <li className="item_border">
-                        <div>교환</div>
+                        <p>교환</p>
                       </li>
                     </ul>
                     <div>
                       <label>남은 빛바랜 스톤 갯수</label>
-                      15
+                      {balanceStone}
                     </div>
                   </div>
                 </div>
