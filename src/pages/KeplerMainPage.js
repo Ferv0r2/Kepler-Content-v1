@@ -2,14 +2,12 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import caver from "klaytn/caver";
 import keplerContract from "klaytn/KeplerContract";
-// import fetch from "node-fetch";
 
 import Nav from "components/Nav";
 import Layout from "../components/Layout";
 
 import "./KeplerMainPage.scss";
 
-// const pinata = "https://gateway.pinata.cloud/ipfs/";
 class KeplerMainPage extends Component {
   constructor(props) {
     super(props);
