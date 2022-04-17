@@ -21,6 +21,9 @@ class KeplerShopPage extends Component {
       balanceStone: 0,
       isLoading: true,
       currentIdx: 0,
+      num1: "",
+      num2: "",
+      num3: "",
       txHash: "",
       receipt: false,
       error: false,
@@ -29,8 +32,8 @@ class KeplerShopPage extends Component {
   }
 
   componentDidMount() {
-    this.loadAccountInfo();
     this.setNetworkInfo();
+    this.setOwn = setInterval(() => this.loadAccountInfo(), 1000);
   }
 
   loadAccountInfo = async () => {
@@ -144,13 +147,6 @@ class KeplerShopPage extends Component {
 
   moveSlide = (num) => {
     const { currentIdx } = this.state;
-    if (window.innerWidth <= 540) {
-      this.ref.current.style.left = -num * 370 + "px";
-    } else if (window.innerWidth <= 640) {
-      this.ref.current.style.left = -num * 450 + "px";
-    } else {
-      this.ref.current.style.left = -num * 600 + "px";
-    }
     this.setState({ currentIdx: num });
   };
 
@@ -163,10 +159,28 @@ class KeplerShopPage extends Component {
 
   nextSlide = () => {
     const { currentIdx } = this.state;
-    const slideCount = 3;
+    const slideCount = 2;
     if (currentIdx !== slideCount - 1) {
       this.moveSlide(currentIdx + 1);
     }
+  };
+
+  onInputNum1 = async (e) => {
+    this.setState({
+      num1: e.target.value,
+    });
+  };
+
+  onInputNum2 = async (e) => {
+    this.setState({
+      num2: e.target.value,
+    });
+  };
+
+  onInputNum3 = async (e) => {
+    this.setState({
+      num3: e.target.value,
+    });
   };
 
   // setOwnKey = async (idx) => {
@@ -210,8 +224,8 @@ class KeplerShopPage extends Component {
   //   });
   // };
 
-  sendTx = async () => {
-    const { use, account, currentIdx } = this.state;
+  sendTx = async (level) => {
+    const { account } = this.state;
 
     const shopContract = new caver.klay.Contract(
       [
@@ -240,7 +254,126 @@ class KeplerShopPage extends Component {
     );
 
     await shopContract.methods
-      .useStone(account, 0)
+      .useStone(account, level)
+      .send({
+        from: account,
+        gas: 7500000,
+      })
+      .on("transactionHash", (transactionHash) => {
+        console.log("txHash", transactionHash);
+      })
+      .on("receipt", (receipt) => {
+        console.log("receipt", receipt);
+        alert("거래 완료!");
+      })
+      .on("error", (error) => {
+        console.log("error", error);
+        alert("교환이 취소되었습니다.");
+      });
+
+    this.setState({
+      num1: "",
+      num2: "",
+      num3: "",
+    });
+  };
+
+  sendTxNFT = async (level) => {
+    const { account, currentIdx, num1, num2, num3 } = this.state;
+
+    this.setState({
+      num1: "",
+      num2: "",
+      num3: "",
+    });
+
+    const nftContract = new caver.klay.Contract(
+      [
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "ownerOf",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      nftCA
+    );
+
+    if (level == 0) {
+      if (num1 == "") {
+        alert("세포 값을 입력해주세요 :)");
+        return;
+      }
+    } else if (level == 1) {
+      if (num1 == "" || num2 == "") {
+        alert("세포 값을 입력해주세요 :)");
+        return;
+      }
+    } else if (level == 2) {
+      if (num1 == "" || num2 == "" || num3 == "") {
+        alert("세포 값을 입력해주세요 :)");
+        return;
+      }
+    }
+
+    console.log(level, " ", num1, " ", num2, " ", num3);
+    const shopContract = new caver.klay.Contract(
+      [
+        {
+          constant: false,
+          inputs: [
+            {
+              internalType: "uint256[]",
+              name: "_tokenIds",
+              type: "uint256[]",
+            },
+            {
+              internalType: "uint256",
+              name: "_count",
+              type: "uint256",
+            },
+          ],
+          name: "useNFT",
+          outputs: [],
+          payable: false,
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      shopCA
+    );
+
+    const tokenArray = [];
+    if (level == 0) {
+      tokenArray.push(num1);
+    } else if (level == 1) {
+      tokenArray.push(num1);
+      tokenArray.push(num2);
+    } else if (level == 2) {
+      tokenArray.push(num1);
+      tokenArray.push(num2);
+      tokenArray.push(num3);
+    } else {
+      console.log("error");
+    }
+
+    await shopContract.methods
+      .useNFT(tokenArray, level + 1)
       .send({
         from: account,
         gas: 7500000,
@@ -259,9 +392,17 @@ class KeplerShopPage extends Component {
   };
 
   render() {
-    const { account, balanceNFT, balanceStone, isLoading, limit, currentIdx } =
-      this.state;
-    const boxs = ["Normal Box", "Rare Box", "Unique Box"];
+    const {
+      account,
+      balanceNFT,
+      balanceStone,
+      isLoading,
+      currentIdx,
+      num1,
+      num2,
+      num3,
+    } = this.state;
+    const sell_item = ["곡괭이 교환", "열쇠 교환"];
 
     return (
       <Layout>
@@ -278,54 +419,237 @@ class KeplerShopPage extends Component {
               <img src="images/shop/goldot_shop_banner.png" />
             </div>
             <div className="KeplerShopPage__contents">
-              {/* <div className="KeplerShopPage__boxs">
-                <div id="slideShow_box">
-                  <ul className="slides" ref={this.ref}></ul>
-                </div>
-              </div> */}
               <div className="KeplerShopPage__table">
-                <div className="table_title">
-                  <img src="images/shop/box_bg.png" />
-                </div>
                 <div className="table_title">
                   <img src="images/shop/box_title.png" />
                 </div>
-                <div className="table_contents">
-                  <div className="items">
-                    <ul className="item">
-                      <li className="item_bg">
-                        <img src="images/shop/faded_stone.png" />
-                      </li>
-                      <li className="item_mul">
-                        <p>X</p>
-                      </li>
-                      <li className="item_count">
-                        <p>10</p>
-                      </li>
-                      <li>
-                        <img src="images/shop/after.png" />
-                      </li>
-                      <li className="item_bg">
-                        <img src="images/shop/normal_pickaxe.png" />
-                      </li>
-                      <li className="item_border">
-                        <p onClick={this.sendTx}>교환</p>
-                      </li>
-                    </ul>
-                    <div>
+                {currentIdx == 0 ? (
+                  <div className="table_contents">
+                    <div className="items">
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img src="images/shop/faded_stone.png" />
+                        </li>
+                        <li>
+                          <h2>X</h2>
+                        </li>
+                        <li>
+                          <h1>10</h1>
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img src="images/shop/normal_pickaxe.png" />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTx(0)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+                    </div>
+                    <div className="items">
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img src="images/shop/faded_stone.png" />
+                        </li>
+                        <li>
+                          <h2>X</h2>
+                        </li>
+                        <li>
+                          <h1>20</h1>
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img src="images/shop/rare_pickaxe.png" />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTx(1)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+                    </div>
+                    <div className="items">
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img src="images/shop/faded_stone.png" />
+                        </li>
+                        <li>
+                          <h2>X</h2>
+                        </li>
+                        <li>
+                          <h1>30</h1>
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img src="images/shop/unique_pickaxe.png" />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTx(2)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+                    </div>
+                    <div className="item_count">
                       <label>남은 빛바랜 스톤 갯수</label>
-                      {balanceStone}
+                      <label>{balanceStone}</label>
                     </div>
                   </div>
-                </div>
+                ) : null}
+                {currentIdx == 1 ? (
+                  <div className="table_contents">
+                    <div className="items">
+                      <ul className="item">
+                        <li>
+                          <input
+                            type="text"
+                            placeholder="세포 번호 입력"
+                            onChange={this.onInputNum1}
+                            value={num1}
+                          />
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/normal_key.png"
+                            className="item_bg"
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxNFT(0)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+                    </div>
+                    <div className="items">
+                      <ul className="item">
+                        <div>
+                          <li>
+                            <input
+                              type="text"
+                              placeholder="세포 번호 입력"
+                              onChange={this.onInputNum1}
+                              value={num1}
+                            />
+                          </li>
+                          <li>
+                            <input
+                              type="text"
+                              placeholder="세포 번호 입력"
+                              onChange={this.onInputNum2}
+                              value={num2}
+                            />
+                          </li>
+                        </div>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/rare_key.png"
+                            className="item_bg"
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxNFT(1)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+                    </div>
+                    <div className="items">
+                      <ul className="item">
+                        <li>
+                          <li>
+                            <input
+                              type="text"
+                              placeholder="세포 번호 입력"
+                              onChange={this.onInputNum1}
+                              value={num1}
+                            />
+                          </li>
+                          <li>
+                            <input
+                              type="text"
+                              placeholder="세포 번호 입력"
+                              onChange={this.onInputNum2}
+                              value={num2}
+                            />
+                          </li>
+                          <li>
+                            <input
+                              type="text"
+                              placeholder="세포 번호 입력"
+                              onChange={this.onInputNum3}
+                              value={num3}
+                            />
+                          </li>
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/unique_key.png"
+                            className="item_bg"
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxNFT(2)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+                    </div>
+                    <div className="item_count">
+                      <label>남은 NFT 갯수</label>
+                      <label>{balanceNFT}</label>
+                    </div>
+                  </div>
+                ) : null}
               </div>
 
               <div className="table_changer">
-                <span className="prev">
-                  <img src="images/shop/left.png" onClick={this.prevSlide} />
+                <span className="prev" onClick={this.prevSlide}>
+                  <img src="images/shop/left.png" />
                 </span>
-                <span className="next">
-                  <img src="images/shop/right.png" onClick={this.nextSlide} />
+                <p>{sell_item[currentIdx]}</p>
+                <span className="next" onClick={this.nextSlide}>
+                  <img src="images/shop/right.png" />
                 </span>
               </div>
 

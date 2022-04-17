@@ -54,141 +54,6 @@
   color: $box-text-color;
 }
 
-.KeplerShopPage__boxs {
-  > p {
-    position: absolute;
-    left: 58%;
-    bottom: 0;
-    transform: translate(-50%, -50%);
-    padding: 2rem;
-    font-style: italic;
-    text-shadow: 3px 0 10px #fff;
-    font-family: "GMarketSans";
-    font-size: 3rem;
-  }
-
-  span > img {
-    width: 4rem;
-  }
-
-  .prev {
-    position: absolute;
-    left: 14%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-
-    @media screen and (max-width: 640px) {
-      left: 27%;
-    }
-
-    @media screen and (max-width: 540px) {
-      left: 10%;
-    }
-  }
-  .next {
-    position: absolute;
-    right: -4%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-
-    @media screen and (max-width: 540px) {
-      right: 0;
-    }
-  }
-}
-
-#slideShow_box {
-  width: 600px;
-  height: 500px;
-  position: relative;
-  // margin: 0 auto;
-  overflow: hidden; /*리스트 형식으로 이미지를 일렬로 정렬할 것이기 때문에, 500px 밖으로 튀어 나간 이미지들은 hidden으로 숨겨줘야됨*/
-
-  @media screen and (max-width: 640px) {
-    width: 450px;
-    height: 300px;
-  }
-
-  @media screen and (max-width: 540px) {
-    width: 390px;
-    height: 300px;
-  }
-
-  > p {
-    position: absolute;
-    width: 100%;
-    left: 58%;
-    bottom: 0;
-    transform: translate(-50%, -50%);
-    padding: 2rem;
-    font-style: italic;
-    text-shadow: 3px 0 10px #fff;
-    font-family: "GmarketSans";
-    font-size: 3rem;
-    font-weight: 550;
-
-    @media screen and (max-width: 640px) {
-      left: 62%;
-      bottom: -3rem;
-      font-size: 2.7rem;
-    }
-
-    @media screen and (max-width: 540px) {
-      left: 50%;
-      bottom: -3rem;
-      font-size: 2.7rem;
-    }
-  }
-
-  .slides {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 1800px; /* 슬라이드할 사진과 마진 총 넓이 */
-    transition: left 0.5s ease-out; /*ease-out: 처음에는 느렸다가 점점 빨라짐*/
-
-    @media screen and (max-width: 640px) {
-      width: 1480px;
-    }
-
-    @media screen and (max-width: 540px) {
-      width: 1190px;
-    }
-  }
-  /* 첫 번째 슬라이드 가운데에 정렬하기위해 첫번째 슬라이드만 margin-left조정 */
-  .slides li:first-child {
-    margin-left: 100px;
-
-    @media screen and (max-width: 540px) {
-      margin-left: 2rem;
-    }
-  }
-  /* 슬라이드들 옆으로 정렬 */
-  .slides li:not(:last-child) {
-    float: left;
-    margin-right: 100px;
-
-    @media screen and (max-width: 540px) {
-      margin-right: 2rem;
-    }
-  }
-
-  .slides li {
-    float: left;
-
-    > img {
-      width: 50rem;
-      border-radius: 4em;
-
-      @media screen and (max-width: 640px) {
-        width: 35rem;
-      }
-    }
-  }
-}
-
 .check {
   font-family: "NanumSqure";
   font-size: 1.6rem;
@@ -199,10 +64,11 @@
 
 .KeplerShopPage__table {
   position: relative;
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   // margin-top: 5rem;
-  box-shadow: 0 0 5px #fff, 0 0 40px $hover-color;
+  border: 2px solid #fff;
+  box-shadow: inset 0 0 15px #ff0000, 0 0 15px #ff0000;
   font-family: "GmarketSansMedium";
 
   @media screen and (max-width: 800px) {
@@ -216,15 +82,17 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 3rem;
+    z-index: 0;
 
     img {
-      width: 20rem;
+      width: 45rem;
     }
   }
 
   .table_contents {
     width: 100%;
-    padding: 3rem;
+    height: 800px;
+    padding: 6rem;
     margin: 0 auto;
     font-size: 2.5rem;
     color: #fff;
@@ -233,52 +101,117 @@
       display: flex;
       width: 100%;
       margin: 0 auto;
-      padding-top: 2rem;
+      padding-top: 4rem;
       justify-content: space-between;
 
       img {
-        width: 10rem;
+        width: 9rem;
+      }
+
+      input {
+        width: 22rem;
+        margin-top: 2.5rem;
+        text-align: center;
       }
 
       > li {
-        margin: 0 auto;
+        margin: 2rem auto;
+        vertical-align: middle;
+        z-index: 1;
 
-        > p {
-          height: 100%;
-          padding-top: 3.5rem;
+        > h2 {
+          font-size: 2.5rem;
+          margin-top: 3rem;
+          margin-left: 2.5rem;
+        }
+
+        > h1 {
+          font-size: 3.5rem;
+          margin-top: 2.5rem;
+          margin-left: 2.5rem;
+          font-style: italic;
+          width: 5rem;
         }
       }
     }
 
     .item_bg {
-      background: $bg-gradtion-bottom;
+      background: #2b2b2b;
       border-radius: 1em;
     }
-    .item_mul {
-      font-style: italic;
-      font-size: 2rem;
-    }
-    .item_count {
-      font-style: italic;
-    }
-    .item_border {
-      p {
-        border: 3px solid #fff;
-        padding: 2rem;
-        cursor: pointer;
 
-        &:hover {
-          border-color: $hover-color;
-          color: $hover-color;
-          background-color: #fff;
-        }
+    .item_arrow {
+      transform: scale(0.5);
+    }
+
+    .item_border {
+      border: 3px solid #fff;
+      padding: 2rem;
+      margin-top: 3rem;
+      width: 15rem;
+      height: 80%;
+      margin-left: 6rem;
+      font-size: 3.2rem;
+      cursor: pointer;
+
+      &:hover {
+        box-shadow: inset 0 0 15px #ff0000, 0 0 15px #ff0000;
+        text-shadow: 0 0 15px #ff0000;
+        // color: #ff0000;
+        // background-color: #fff;
       }
     }
   }
 }
 
-.table_changer {
-  img {
-    width: 10rem;
+.item_count {
+  position: absolute;
+  bottom: 5rem;
+  width: 90%;
+
+  > label:first-child {
+    font-size: 2.7rem;
   }
+  > label:last-child {
+    font-size: 4.2rem;
+    margin: 3.2rem;
+  }
+}
+
+.table_changer {
+  display: flex;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #fff;
+  font-family: "GmarketSansMedium";
+  font-size: 2.5rem;
+  text-align: center;
+  justify-content: center;
+
+  span {
+    background: #2b2b2b;
+    border: 2px solid #2b2b2b;
+    border-radius: 0.5em;
+    padding: 1rem 0.5rem;
+    cursor: pointer;
+
+    &:hover {
+      border: 2px solid #fff;
+    }
+  }
+
+  p {
+    padding: 2rem;
+    width: 20rem;
+  }
+
+  img {
+    width: 3rem;
+  }
+}
+
+.check {
+  padding-top: 4rem;
+  color: #fff;
+  font-family: "GmarketSansMedium";
 }
