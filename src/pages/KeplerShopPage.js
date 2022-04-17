@@ -8,6 +8,7 @@ import Nav from "components/Nav";
 import "./KeplerShopPage.scss";
 
 // const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
+const nftCA = "0x6859c58A2DC2fE89421ef0387fE9dBaf4a4413C7";
 const itemCA = "0xB1f01670A962a177Cd814450A89820EF79E62C02";
 const shopCA = "0x9DE831C25b6d7bd22F3f5EF5C527e4340ACD34Be";
 
@@ -57,6 +58,33 @@ class KeplerShopPage extends Component {
     const { klaytn } = window;
     if (klaytn === undefined) return;
 
+    const nftContract = new caver.klay.Contract(
+      [
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+          ],
+          name: "balanceOf",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      nftCA
+    );
+
     const itemContract = new caver.klay.Contract(
       [
         {
@@ -91,13 +119,14 @@ class KeplerShopPage extends Component {
 
     const account = klaytn.selectedAddress;
     // const balanceNFT = await keplerContract.methods.balanceOf(account).call();
+    const balanceNFT = await nftContract.methods.balanceOf(account).call();
     const balanceStone = await itemContract.methods
       .balanceOf(account, 35)
       .call();
 
     this.setState({
       account,
-      // balanceNFT,
+      balanceNFT,
       balanceStone,
       isLoading: false,
     });

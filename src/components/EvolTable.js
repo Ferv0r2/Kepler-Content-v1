@@ -5,7 +5,7 @@ import "./EvolTable.scss";
 
 const url = "https://klu.bs/pfp/0x928267e7db3d173898553ff593a78719bb16929f/";
 
-const EvolTable = ({ data }) => {
+const EvolTable = ({ name, data }) => {
   const datas = data;
   // const tokenURIs = tokenURI;
 
@@ -13,7 +13,9 @@ const EvolTable = ({ data }) => {
     <div className="EvolTable">
       <div className="EvolTable__infoBox">
         <div className="EvolTable__token">
-          <h2>내 진화 번호 ({datas.length})</h2>
+          <h2>
+            {name} ({datas.length})
+          </h2>
         </div>
         <ul>
           {datas.length != 0 ? (

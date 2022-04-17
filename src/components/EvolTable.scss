@@ -7,6 +7,7 @@
   flex-direction: column;
   align-items: center;
   color: $white;
+  padding-bottom: 5rem;
   @include breakpoint("max-card") {
     padding: 40px 0;
   }

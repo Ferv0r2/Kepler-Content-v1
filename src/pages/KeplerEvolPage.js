@@ -4,6 +4,7 @@ import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
 
 import evol from "./evol-log.json";
+import mix from "./mix.json";
 import Loading from "components/Loading";
 import Layout from "../components/Layout";
 import Nav from "components/Nav";
@@ -21,6 +22,8 @@ class KeplerEvolPage extends Component {
       balance: 0,
       network: null,
       data: [],
+      mixOwn: [],
+      mix: [],
       isLoading: true,
       tokenURI: [],
     };
@@ -81,8 +84,11 @@ class KeplerEvolPage extends Component {
 
     let account = klaytn.selectedAddress;
     let len = await keplerContract.methods.balanceOf(account).call();
+
     const promises = [];
     const owners = [];
+    const mix_total = [];
+    const mix_owners = [];
     // const tokenLinks = [];
 
     for (let id = 0; id < len; id++) {
@@ -94,11 +100,30 @@ class KeplerEvolPage extends Component {
         if (evol["token"].includes(parseInt(own))) {
           // let url = await keplerContract.methods.tokenURI(index).call();
           // url = ipfs + url.substring(7);
-
           owners.push(own);
-          // tokenLinks.push(url);
+        }
+
+        if (mix["mix"].includes(parseInt(own))) {
+          // let url = await keplerContract.methods.tokenURI(index).call();
+          // url = ipfs + url.substring(7);
+          mix_total.push(own);
+
+          if (evol["token"].includes(parseInt(own))) {
+            mix_owners.push(own);
+          }
+        }
+
+        if (mix["hmix"].includes(parseInt(own))) {
+          // let url = await keplerContract.methods.tokenURI(index).call();
+          // url = ipfs + url.substring(7);
+          mix_total.push(own);
+
+          if (evol["token"].includes(parseInt(own))) {
+            mix_owners.push(own);
+          }
         }
       };
+
       promises.push(promise(id));
     }
     await Promise.all(promises);
@@ -111,6 +136,8 @@ class KeplerEvolPage extends Component {
 
     this.setState({
       data: this.state.data.concat(owners),
+      mixOwn: this.state.data.concat(mix_total),
+      mix: this.state.data.concat(mix_owners),
       // tokenURI: this.state.tokenURI.concat(tokenURIs),
       isLoading: false,
     });
@@ -139,7 +166,7 @@ class KeplerEvolPage extends Component {
   };
 
   render() {
-    const { account, data, isLoading } = this.state;
+    const { account, data, mixOwn, mix, isLoading } = this.state;
 
     return (
       <Layout>
@@ -147,14 +174,18 @@ class KeplerEvolPage extends Component {
           <Nav address={account} load={isLoading} />
           <div className="KeplerEvolPage__main">
             <div className="KeplerEvolPage__contents">
-              <TotalEvolTable></TotalEvolTable>
+              <TotalEvolTable />
               {this.state.isLoading ? (
                 <div className="KeplerEvolPage_loading">
-                  <Loading></Loading>
+                  <Loading />
                   <p>내 진화 번호를 불러오는 중입니다...</p>
                 </div>
               ) : (
-                <EvolTable data={data}></EvolTable>
+                <div>
+                  <EvolTable name={"내 진화 번호"} data={data}></EvolTable>
+                  <EvolTable name={"내 믹스 번호"} data={mixOwn}></EvolTable>
+                  <EvolTable name={"내 믹스 진화 번호"} data={mix}></EvolTable>
+                </div>
                 // <EvolTable data={data} tokenURI={tokenURI}></EvolTable>
               )}
             </div>
