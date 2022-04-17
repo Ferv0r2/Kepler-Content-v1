@@ -7,7 +7,9 @@ import Nav from "components/Nav";
 
 import "./KeplerShopPage.scss";
 
-const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
+// const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
+const itemCA = "0xB1f01670A962a177Cd814450A89820EF79E62C02";
+const shopCA = "0x9DE831C25b6d7bd22F3f5EF5C527e4340ACD34Be";
 
 class KeplerShopPage extends Component {
   constructor(props) {
@@ -18,7 +20,6 @@ class KeplerShopPage extends Component {
       balanceStone: 0,
       isLoading: true,
       currentIdx: 0,
-      use: false,
       txHash: "",
       receipt: false,
       error: false,
@@ -89,14 +90,14 @@ class KeplerShopPage extends Component {
     );
 
     const account = klaytn.selectedAddress;
-    const balanceNFT = await keplerContract.methods.balanceOf(account).call();
+    // const balanceNFT = await keplerContract.methods.balanceOf(account).call();
     const balanceStone = await itemContract.methods
       .balanceOf(account, 35)
       .call();
 
     this.setState({
       account,
-      balanceNFT,
+      // balanceNFT,
       balanceStone,
       isLoading: false,
     });
@@ -182,11 +183,8 @@ class KeplerShopPage extends Component {
 
   sendTx = async () => {
     const { use, account, currentIdx } = this.state;
-    if (use == true) {
-      return;
-    }
 
-    const minterContract = new caver.klay.Contract(
+    const shopContract = new caver.klay.Contract(
       [
         {
           constant: false,
@@ -198,45 +196,36 @@ class KeplerShopPage extends Component {
             },
             {
               internalType: "uint256",
-              name: "_boxId",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "_count",
+              name: "_id",
               type: "uint256",
             },
           ],
-          name: "useKey",
+          name: "useStone",
           outputs: [],
-          payable: true,
-          stateMutability: "payable",
+          payable: false,
+          stateMutability: "nonpayable",
           type: "function",
         },
       ],
-      mintCA
+      shopCA
     );
 
-    const num = await this.gachaId();
-
-    const useKey = await minterContract.methods
-      .useKey(account, currentIdx, 1)
+    await shopContract.methods
+      .useStone(account, 0)
       .send({
         from: account,
         gas: 7500000,
       })
       .on("transactionHash", (transactionHash) => {
         console.log("txHash", transactionHash);
-        this.setState({ use: true });
       })
       .on("receipt", (receipt) => {
         console.log("receipt", receipt);
-        this.setState({ use: true });
+        alert("거래 완료!");
       })
       .on("error", (error) => {
         console.log("error", error);
-        this.setState({ use: false });
-        alert("상자깡이 취소되었습니다.");
+        alert("교환이 취소되었습니다.");
       });
   };
 
@@ -291,7 +280,7 @@ class KeplerShopPage extends Component {
                         <img src="images/shop/normal_pickaxe.png" />
                       </li>
                       <li className="item_border">
-                        <p>교환</p>
+                        <p onClick={this.sendTx}>교환</p>
                       </li>
                     </ul>
                     <div>

@@ -265,6 +265,13 @@
       p {
         border: 3px solid #fff;
         padding: 2rem;
+        cursor: pointer;
+
+        &:hover {
+          border-color: $hover-color;
+          color: $hover-color;
+          background-color: #fff;
+        }
       }
     }
   }
