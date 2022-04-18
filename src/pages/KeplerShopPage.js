@@ -1,9 +1,11 @@
 import React, { Component, useRef } from "react";
 import caver from "klaytn/caver";
 import keplerContract from "klaytn/KeplerContract";
+import fetch from "node-fetch";
 
 import Layout from "../components/Layout";
 import Nav from "components/Nav";
+import Modal from "components/ModalNFT";
 
 import "./KeplerShopPage.scss";
 
@@ -11,6 +13,8 @@ import "./KeplerShopPage.scss";
 const nftCA = "0x6859c58A2DC2fE89421ef0387fE9dBaf4a4413C7";
 const itemCA = "0xB1f01670A962a177Cd814450A89820EF79E62C02";
 const shopCA = "0x9DE831C25b6d7bd22F3f5EF5C527e4340ACD34Be";
+
+const imgURI = "https://ipfs.infura.io/ipfs/";
 
 class KeplerShopPage extends Component {
   constructor(props) {
@@ -21,12 +25,15 @@ class KeplerShopPage extends Component {
       balanceStone: 0,
       isLoading: true,
       currentIdx: 0,
+      level: 0,
       num1: "",
       num2: "",
       num3: "",
+      urls: [],
       txHash: "",
       receipt: false,
       error: false,
+      modalOpen: false,
     };
     this.ref = React.createRef();
   }
@@ -279,57 +286,7 @@ class KeplerShopPage extends Component {
   };
 
   sendTxNFT = async (level) => {
-    const { account, currentIdx, num1, num2, num3 } = this.state;
-
-    this.setState({
-      num1: "",
-      num2: "",
-      num3: "",
-    });
-
-    const nftContract = new caver.klay.Contract(
-      [
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-          ],
-          name: "ownerOf",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      nftCA
-    );
-
-    if (level == 0) {
-      if (num1 == "") {
-        alert("세포 값을 입력해주세요 :)");
-        return;
-      }
-    } else if (level == 1) {
-      if (num1 == "" || num2 == "") {
-        alert("세포 값을 입력해주세요 :)");
-        return;
-      }
-    } else if (level == 2) {
-      if (num1 == "" || num2 == "" || num3 == "") {
-        alert("세포 값을 입력해주세요 :)");
-        return;
-      }
-    }
+    const { account, num1, num2, num3 } = this.state;
 
     console.log(level, " ", num1, " ", num2, " ", num3);
     const shopContract = new caver.klay.Contract(
@@ -389,6 +346,216 @@ class KeplerShopPage extends Component {
         console.log("error", error);
         alert("교환이 취소되었습니다.");
       });
+
+    this.setState({
+      modalOpen: false,
+      num1: "",
+      num2: "",
+      num3: "",
+    });
+  };
+
+  setURI = async (array) => {
+    const promises = [];
+    const urls = [];
+
+    const len = array.length;
+    for (let id = 0; id < len; id++) {
+      const promise = async (index) => {
+        const res = await fetch(imgURI + array[index]);
+        let posts = await res.json();
+        posts = imgURI + posts.image.substring(7);
+        console.log(posts);
+
+        urls.push(posts);
+      };
+      promises.push(promise(id));
+    }
+    await Promise.all(promises);
+
+    return urls;
+  };
+
+  setOpen = async (level) => {
+    const { account, num1, num2, num3 } = this.state;
+
+    const nftContract = new caver.klay.Contract(
+      [
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "ownerOf",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "tokenURI",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      nftCA
+    );
+
+    const addr = account.toUpperCase();
+    const ipfs = [];
+    if (level == 0) {
+      if (num1 == "") {
+        alert("NFT 값을 입력해주세요 :)");
+        return;
+      }
+      let own = await nftContract.methods.ownerOf(num1).call();
+
+      own = own.toUpperCase();
+
+      if (addr != own) {
+        alert(`${num1}번 NFT의 소유주가 아닙니다.`);
+        this.setState({
+          num1: "",
+        });
+        return;
+      }
+
+      let url = await nftContract.methods.tokenURI(num1).call();
+      ipfs.push(url.substring(7));
+    } else if (level == 1) {
+      if (num1 == "" || num2 == "") {
+        alert("NFT 값을 입력해주세요 :)");
+        return;
+      }
+
+      let own = await nftContract.methods.ownerOf(num1).call();
+
+      own = own.toUpperCase();
+
+      if (addr != own) {
+        alert(`${num1}번 NFT의 소유주가 아닙니다.`);
+        this.setState({
+          num1: "",
+          num2: "",
+        });
+        return;
+      }
+
+      own = await nftContract.methods.ownerOf(num2).call();
+
+      own = own.toUpperCase();
+
+      if (addr != own) {
+        alert(`${num2}번 NFT의 소유주가 아닙니다.`);
+        this.setState({
+          num1: "",
+          num2: "",
+        });
+        return;
+      }
+
+      let url = await nftContract.methods.tokenURI(num1).call();
+      ipfs.push(url.substring(7));
+      url = await nftContract.methods.tokenURI(num2).call();
+      ipfs.push(url.substring(7));
+    } else if (level == 2) {
+      if (num1 == "" || num2 == "" || num3 == "") {
+        alert("NFT 값을 입력해주세요 :)");
+        return;
+      }
+
+      let own = await nftContract.methods.ownerOf(num1).call();
+
+      own = own.toUpperCase();
+
+      if (addr != own) {
+        alert(`${num1}번 NFT의 소유주가 아닙니다.`);
+        this.setState({
+          num1: "",
+          num2: "",
+          num3: "",
+        });
+        return;
+      }
+
+      own = await nftContract.methods.ownerOf(num2).call();
+
+      own = own.toUpperCase();
+
+      if (addr != own) {
+        alert(`${num2}번 NFT의 소유주가 아닙니다.`);
+        this.setState({
+          num1: "",
+          num2: "",
+          num3: "",
+        });
+        return;
+      }
+
+      own = await nftContract.methods.ownerOf(num3).call();
+
+      own = own.toUpperCase();
+
+      if (addr != own) {
+        alert(`${num3}번 NFT의 소유주가 아닙니다.`);
+        this.setState({
+          num1: "",
+          num2: "",
+          num3: "",
+        });
+        return;
+      }
+
+      let url = await nftContract.methods.tokenURI(num1).call();
+      ipfs.push(url.substring(7));
+      url = await nftContract.methods.tokenURI(num2).call();
+      ipfs.push(url.substring(7));
+      url = await nftContract.methods.tokenURI(num3).call();
+      ipfs.push(url.substring(7));
+    }
+
+    const urls = await this.setURI(ipfs);
+    console.log(urls);
+    this.setState({
+      level,
+      urls,
+      modalOpen: true,
+    });
+  };
+
+  closeModal = () => {
+    this.setState({
+      num1: "",
+      num2: "",
+      num3: "",
+      modalOpen: false,
+    });
   };
 
   render() {
@@ -398,9 +565,12 @@ class KeplerShopPage extends Component {
       balanceStone,
       isLoading,
       currentIdx,
+      level,
       num1,
       num2,
       num3,
+      urls,
+      modalOpen,
     } = this.state;
     const sell_item = ["곡괭이 교환", "열쇠 교환"];
 
@@ -423,6 +593,7 @@ class KeplerShopPage extends Component {
                 <div className="table_title">
                   <img src="images/shop/box_title.png" />
                 </div>
+
                 {currentIdx == 0 ? (
                   <div className="table_contents">
                     <div className="items">
@@ -447,8 +618,7 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTx(0)}
-                        >
+                          onClick={(e) => this.sendTx(0)}>
                           <p>교환</p>
                         </div>
                       </ul>
@@ -475,8 +645,7 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTx(1)}
-                        >
+                          onClick={(e) => this.sendTx(1)}>
                           <p>교환</p>
                         </div>
                       </ul>
@@ -503,8 +672,7 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTx(2)}
-                        >
+                          onClick={(e) => this.sendTx(2)}>
                           <p>교환</p>
                         </div>
                       </ul>
@@ -522,7 +690,7 @@ class KeplerShopPage extends Component {
                         <li>
                           <input
                             type="text"
-                            placeholder="세포 번호 입력"
+                            placeholder="NFT 번호 입력"
                             onChange={this.onInputNum1}
                             value={num1}
                           />
@@ -541,8 +709,7 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTxNFT(0)}
-                        >
+                          onClick={(e) => this.setOpen(0)}>
                           <p>교환</p>
                         </div>
                       </ul>
@@ -553,7 +720,7 @@ class KeplerShopPage extends Component {
                           <li>
                             <input
                               type="text"
-                              placeholder="세포 번호 입력"
+                              placeholder="NFT 번호 입력"
                               onChange={this.onInputNum1}
                               value={num1}
                             />
@@ -561,7 +728,7 @@ class KeplerShopPage extends Component {
                           <li>
                             <input
                               type="text"
-                              placeholder="세포 번호 입력"
+                              placeholder="NFT 번호 입력"
                               onChange={this.onInputNum2}
                               value={num2}
                             />
@@ -581,8 +748,7 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTxNFT(1)}
-                        >
+                          onClick={(e) => this.setOpen(1)}>
                           <p>교환</p>
                         </div>
                       </ul>
@@ -593,7 +759,7 @@ class KeplerShopPage extends Component {
                           <li>
                             <input
                               type="text"
-                              placeholder="세포 번호 입력"
+                              placeholder="NFT 번호 입력"
                               onChange={this.onInputNum1}
                               value={num1}
                             />
@@ -601,7 +767,7 @@ class KeplerShopPage extends Component {
                           <li>
                             <input
                               type="text"
-                              placeholder="세포 번호 입력"
+                              placeholder="NFT 번호 입력"
                               onChange={this.onInputNum2}
                               value={num2}
                             />
@@ -609,7 +775,7 @@ class KeplerShopPage extends Component {
                           <li>
                             <input
                               type="text"
-                              placeholder="세포 번호 입력"
+                              placeholder="NFT 번호 입력"
                               onChange={this.onInputNum3}
                               value={num3}
                             />
@@ -629,8 +795,7 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTxNFT(2)}
-                        >
+                          onClick={(e) => this.setOpen(2)}>
                           <p>교환</p>
                         </div>
                       </ul>
@@ -641,6 +806,16 @@ class KeplerShopPage extends Component {
                     </div>
                   </div>
                 ) : null}
+
+                <Modal
+                  open={modalOpen}
+                  num1={num1}
+                  num2={num2}
+                  num3={num3}
+                  urls={urls}
+                  tx={(e) => this.sendTxNFT(level)}
+                  close={this.closeModal}
+                />
               </div>
 
               <div className="table_changer">
