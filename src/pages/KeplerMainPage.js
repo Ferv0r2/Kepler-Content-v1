@@ -77,33 +77,30 @@ class KeplerMainPage extends Component {
         <div className="KeplerMainPage">
           <Nav address={account} load={isLoading} />
           <div className="KeplerMainPage__main">
-            <h2 className="KeplerMainPage__title">Kepler Contents</h2>
             <div className="KeplerMainPage__contents">
               <div className="KeplerMainPage__infoBox">
+                {/* <div className="v-line" /> */}
                 <img src="images/main_icon.png" />
                 <div className="KeplerMainPage__link">
                   <div>
                     <li>
-                      <Link to="/evol">일일 진화</Link>
+                      <Link to="/evol">Today's Evolution</Link>
                     </li>
                     <li>
-                      <Link to="/box">랜덤박스</Link>
-                    </li>
-                  </div>
-                  <div>
-                    <li>
-                      <Link to="/mining">스톤 채굴</Link>
-                    </li>
-                    {/* <li>
-                      <Link to="/governance">거버넌스</Link>
-                    </li> */}
-                    <li>
-                      <Link to="/shop">골닷 상점</Link>
+                      <Link to="/box">Random Box</Link>
                     </li>
                   </div>
                   <div>
                     <li>
-                      <Link to="/governance">거버넌스</Link>
+                      <Link to="/mining">Kepler Mining</Link>
+                    </li>
+                    <li>
+                      <Link to="/shop">Goldot Shop</Link>
+                    </li>
+                  </div>
+                  <div>
+                    <li>
+                      <Link to="/governance">Governanace</Link>
                     </li>
                   </div>
                 </div>

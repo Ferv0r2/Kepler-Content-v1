@@ -196,39 +196,6 @@
   }
 }
 
-.mint_item {
-  display: flex;
-
-  @media screen and (max-width: 800px) {
-    display: initial;
-  }
-
-  // > div {
-  //   margin: 3rem;
-  // }
-
-  .mint_klay {
-    img {
-      width: 2.5rem;
-    }
-    &::after {
-      content: "KLAY";
-      padding: 1rem;
-    }
-  }
-
-  .mint_key {
-    img {
-      width: 2.5rem;
-      transform: scale(1.4);
-    }
-    &::after {
-      content: "KEY";
-      padding: 1rem;
-    }
-  }
-}
-
 .check {
   font-family: "NanumSqure";
   font-size: 1.6rem;
@@ -251,36 +218,32 @@
     width: 80%;
   }
 
-  div {
+  .key_balance {
+    flex: 1;
+    margin: 2rem;
+    padding: 2rem;    
+    
+  @media screen and (max-width: 800px) {
+    background: #190021;
+    border-radius: 3em;
+  }
+
+    img {
+      width: 2.5rem;
+    }
+    
     label {
-      font-size: 2rem;
+      margin: 1rem auto;
+      font-size: 1.5rem;
       color: $white;
     }
 
     p {
-      margin: 1rem;
+      margin: 1rem auto;
       font-style: italic;
       font-family: "GmarketSansMedium";
-      color: $box-text-color;
+      color: #fff;
     }
-  }
-
-  .box_price {
-    flex: 2;
-    margin: 2rem;
-    padding: 2rem;
-    border-right-style: solid;
-    border-color: $bar-color;
-
-    @media screen and (max-width: 800px) {
-      border-right-style: none;
-    }
-  }
-
-  .klay_balance {
-    flex: 3;
-    margin: 2rem;
-    padding: 2rem;
   }
 }
 

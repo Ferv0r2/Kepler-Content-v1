@@ -9,10 +9,13 @@ import Modal from "components/ModalNFT";
 
 import "./KeplerShopPage.scss";
 
-// const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
-const nftCA = "0x6859c58A2DC2fE89421ef0387fE9dBaf4a4413C7";
-const itemCA = "0xB1f01670A962a177Cd814450A89820EF79E62C02";
-const shopCA = "0x9DE831C25b6d7bd22F3f5EF5C527e4340ACD34Be";
+const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
+const shopCA = "0xf5996a159872e016472756a7723915EEdC357f58";
+
+// testnet
+// const nftCA = "0x6859c58A2DC2fE89421ef0387fE9dBaf4a4413C7";
+// const itemCA = "0xB1f01670A962a177Cd814450A89820EF79E62C02";
+// const shopCA = "0x85EBB98DA0947D4526B950b3bDE849bBe732Ee9B";
 
 const imgURI = "https://ipfs.infura.io/ipfs/";
 
@@ -68,33 +71,6 @@ class KeplerShopPage extends Component {
     const { klaytn } = window;
     if (klaytn === undefined) return;
 
-    const nftContract = new caver.klay.Contract(
-      [
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "address",
-              name: "owner",
-              type: "address",
-            },
-          ],
-          name: "balanceOf",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      nftCA
-    );
-
     const itemContract = new caver.klay.Contract(
       [
         {
@@ -128,8 +104,7 @@ class KeplerShopPage extends Component {
     );
 
     const account = klaytn.selectedAddress;
-    // const balanceNFT = await keplerContract.methods.balanceOf(account).call();
-    const balanceNFT = await nftContract.methods.balanceOf(account).call();
+    const balanceNFT = await keplerContract.methods.balanceOf(account).call();
     const balanceStone = await itemContract.methods
       .balanceOf(account, 35)
       .call();
@@ -190,47 +165,6 @@ class KeplerShopPage extends Component {
     });
   };
 
-  // setOwnKey = async (idx) => {
-  //   const { account } = this.state;
-  //   const itemContract = new caver.klay.Contract(
-  //     [
-  //       {
-  //         constant: true,
-  //         inputs: [
-  //           {
-  //             internalType: "address",
-  //             name: "account",
-  //             type: "address",
-  //           },
-  //           {
-  //             internalType: "uint256",
-  //             name: "id",
-  //             type: "uint256",
-  //           },
-  //         ],
-  //         name: "balanceOf",
-  //         outputs: [
-  //           {
-  //             internalType: "uint256",
-  //             name: "",
-  //             type: "uint256",
-  //           },
-  //         ],
-  //         payable: false,
-  //         stateMutability: "view",
-  //         type: "function",
-  //       },
-  //     ],
-  //     itemCA
-  //   );
-
-  //   const key = await itemContract.methods.balanceOf(account, idx + 39).call();
-
-  //   this.setState({
-  //     key,
-  //   });
-  // };
-
   sendTx = async (level) => {
     const { account } = this.state;
 
@@ -271,7 +205,7 @@ class KeplerShopPage extends Component {
       })
       .on("receipt", (receipt) => {
         console.log("receipt", receipt);
-        alert("거래 완료!");
+        alert("스톤 거래 완료!");
       })
       .on("error", (error) => {
         console.log("error", error);
@@ -288,7 +222,6 @@ class KeplerShopPage extends Component {
   sendTxNFT = async (level) => {
     const { account, num1, num2, num3 } = this.state;
 
-    console.log(level, " ", num1, " ", num2, " ", num3);
     const shopContract = new caver.klay.Contract(
       [
         {
@@ -340,7 +273,7 @@ class KeplerShopPage extends Component {
       })
       .on("receipt", (receipt) => {
         console.log("receipt", receipt);
-        alert("거래 완료!");
+        alert("열쇠 거래 완료!");
       })
       .on("error", (error) => {
         console.log("error", error);
@@ -362,12 +295,16 @@ class KeplerShopPage extends Component {
     const len = array.length;
     for (let id = 0; id < len; id++) {
       const promise = async (index) => {
-        const res = await fetch(imgURI + array[index]);
-        let posts = await res.json();
-        posts = imgURI + posts.image.substring(7);
-        console.log(posts);
+        try {
+          const res = await fetch(imgURI + array[index]);
+          let posts = await res.json();
+          posts = imgURI + posts.image.substring(7);
+          console.log(posts);
 
-        urls.push(posts);
+          urls.push(posts);
+        } catch {
+          urls.push(imgURI + "QmTCKV9yQ5nEtag4gijjQYUB9zNQ3PmM7vyoSKFiezt8ki");
+        }
       };
       promises.push(promise(id));
     }
@@ -379,54 +316,6 @@ class KeplerShopPage extends Component {
   setOpen = async (level) => {
     const { account, num1, num2, num3 } = this.state;
 
-    const nftContract = new caver.klay.Contract(
-      [
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-          ],
-          name: "ownerOf",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-          ],
-          name: "tokenURI",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      nftCA
-    );
-
     const addr = account.toUpperCase();
     const ipfs = [];
     if (level == 0) {
@@ -434,7 +323,7 @@ class KeplerShopPage extends Component {
         alert("NFT 값을 입력해주세요 :)");
         return;
       }
-      let own = await nftContract.methods.ownerOf(num1).call();
+      let own = await keplerContract.methods.ownerOf(num1).call();
 
       own = own.toUpperCase();
 
@@ -446,7 +335,7 @@ class KeplerShopPage extends Component {
         return;
       }
 
-      let url = await nftContract.methods.tokenURI(num1).call();
+      let url = await keplerContract.methods.tokenURI(num1).call();
       ipfs.push(url.substring(7));
     } else if (level == 1) {
       if (num1 == "" || num2 == "") {
@@ -454,7 +343,7 @@ class KeplerShopPage extends Component {
         return;
       }
 
-      let own = await nftContract.methods.ownerOf(num1).call();
+      let own = await keplerContract.methods.ownerOf(num1).call();
 
       own = own.toUpperCase();
 
@@ -467,7 +356,7 @@ class KeplerShopPage extends Component {
         return;
       }
 
-      own = await nftContract.methods.ownerOf(num2).call();
+      own = await keplerContract.methods.ownerOf(num2).call();
 
       own = own.toUpperCase();
 
@@ -480,9 +369,9 @@ class KeplerShopPage extends Component {
         return;
       }
 
-      let url = await nftContract.methods.tokenURI(num1).call();
+      let url = await keplerContract.methods.tokenURI(num1).call();
       ipfs.push(url.substring(7));
-      url = await nftContract.methods.tokenURI(num2).call();
+      url = await keplerContract.methods.tokenURI(num2).call();
       ipfs.push(url.substring(7));
     } else if (level == 2) {
       if (num1 == "" || num2 == "" || num3 == "") {
@@ -490,7 +379,7 @@ class KeplerShopPage extends Component {
         return;
       }
 
-      let own = await nftContract.methods.ownerOf(num1).call();
+      let own = await keplerContract.methods.ownerOf(num1).call();
 
       own = own.toUpperCase();
 
@@ -504,7 +393,7 @@ class KeplerShopPage extends Component {
         return;
       }
 
-      own = await nftContract.methods.ownerOf(num2).call();
+      own = await keplerContract.methods.ownerOf(num2).call();
 
       own = own.toUpperCase();
 
@@ -518,7 +407,7 @@ class KeplerShopPage extends Component {
         return;
       }
 
-      own = await nftContract.methods.ownerOf(num3).call();
+      own = await keplerContract.methods.ownerOf(num3).call();
 
       own = own.toUpperCase();
 
@@ -532,11 +421,11 @@ class KeplerShopPage extends Component {
         return;
       }
 
-      let url = await nftContract.methods.tokenURI(num1).call();
+      let url = await keplerContract.methods.tokenURI(num1).call();
       ipfs.push(url.substring(7));
-      url = await nftContract.methods.tokenURI(num2).call();
+      url = await keplerContract.methods.tokenURI(num2).call();
       ipfs.push(url.substring(7));
-      url = await nftContract.methods.tokenURI(num3).call();
+      url = await keplerContract.methods.tokenURI(num3).call();
       ipfs.push(url.substring(7));
     }
 

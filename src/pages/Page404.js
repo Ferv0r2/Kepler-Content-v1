@@ -6,7 +6,7 @@ import "./Page404.scss";
 const Page404 = () => {
   return (
     <div className="Page404__error">
-      <img src="images/main_icon.png" />
+      <img src="images/past_logo.png" />
       <div className="Page404__info">This page is in preparation.</div>
       <div className="Page404__home">
         <Link to="/">Go to Home</Link>

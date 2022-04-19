@@ -17,13 +17,12 @@ class KeplerBoxPage extends Component {
     super(props);
     this.state = {
       account: "",
-      balance: 0,
-      key: 39,
+      key1: 0,
+      key2: 0,
+      key3: 0,
       isLoading: true,
       currentIdx: 0,
-      limit: 0,
       use: false,
-      mintPrice: 0,
       gachaItem: 0,
       modalOpen: false,
       txHash: "",
@@ -34,7 +33,7 @@ class KeplerBoxPage extends Component {
   }
 
   componentDidMount() {
-    this.loadAccountInfo();
+    this.setOwn = setInterval(() => this.loadAccountInfo(), 1000);
     this.setNetworkInfo();
   }
 
@@ -45,12 +44,8 @@ class KeplerBoxPage extends Component {
       try {
         await klaytn.enable();
         this.setAccountInfo(klaytn);
-        this.setLimit(0);
-        this.setMintPrice(0);
         klaytn.on("accountsChanged", () => {
           this.setAccountInfo(klaytn);
-          this.setLimit(0);
-          this.setMintPrice(0);
         });
       } catch (error) {
         console.log(error);
@@ -67,13 +62,48 @@ class KeplerBoxPage extends Component {
     const { klaytn } = window;
     if (klaytn === undefined) return;
 
+    const itemContract = new caver.klay.Contract(
+      [
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+          ],
+          name: "balanceOf",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      itemCA
+    );
+
     const account = klaytn.selectedAddress;
-    let balance = await caver.klay.getBalance(account);
-    balance = (balance / 1000000000000000000).toFixed(2);
+    const key1 = await itemContract.methods.balanceOf(account, 39).call();
+    const key2 = await itemContract.methods.balanceOf(account, 40).call();
+    const key3 = await itemContract.methods.balanceOf(account, 41).call();
 
     this.setState({
       account,
-      balance,
+      key1,
+      key2,
+      key3,
       isLoading: false,
     });
   };
@@ -119,116 +149,6 @@ class KeplerBoxPage extends Component {
       this.setOwnKey(currentIdx + 1);
       this.setMintPrice(currentIdx + 1);
     }
-  };
-
-  setOwnKey = async (idx) => {
-    const { account } = this.state;
-    const itemContract = new caver.klay.Contract(
-      [
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "id",
-              type: "uint256",
-            },
-          ],
-          name: "balanceOf",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      itemCA
-    );
-
-    const key = await itemContract.methods.balanceOf(account, idx + 39).call();
-
-    this.setState({
-      key,
-    });
-  };
-
-  setLimit = async (idx) => {
-    const minterContract = new caver.klay.Contract(
-      [
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "limit",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      mintCA
-    );
-
-    const boxLimit = await minterContract.methods.limit(idx).call();
-    this.setState({
-      limit: boxLimit,
-    });
-  };
-
-  setMintPrice = async (idx) => {
-    const minterContract = new caver.klay.Contract(
-      [
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "mintPrice",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      mintCA
-    );
-
-    let mintPrice = await minterContract.methods.mintPrice(idx).call();
-    mintPrice = mintPrice / 1000000000000000000;
-    this.setState({
-      mintPrice,
-    });
   };
 
   gachaId = async () => {
@@ -278,144 +198,6 @@ class KeplerBoxPage extends Component {
 
     this.setState({ gachaItem: pointer });
   };
-
-  // sendTxPay = async () => {
-  //   const { use, account, currentIdx, mintPrice } = this.state;
-  //   if (use == true) {
-  //     return;
-  //   }
-
-  //   const minterContract = new caver.klay.Contract(
-  //     [
-  //       {
-  //         constant: false,
-  //         inputs: [
-  //           {
-  //             internalType: "uint256",
-  //             name: "_boxId",
-  //             type: "uint256",
-  //           },
-  //           {
-  //             internalType: "uint256",
-  //             name: "_count",
-  //             type: "uint256",
-  //           },
-  //         ],
-  //         name: "useCoin",
-  //         outputs: [],
-  //         payable: true,
-  //         stateMutability: "payable",
-  //         type: "function",
-  //       },
-  //     ],
-  //     mintCA
-  //   );
-
-  //   const num = await this.gachaId();
-  //   const useCoin = await minterContract.methods
-  //     .useCoin(currentIdx, 1)
-  //     .send({
-  //       type: "SMART_CONTRACT_EXECUTION",
-  //       from: account,
-  //       gas: 7500000,
-  //       value: caver.utils.toPeb(mintPrice, "KLAY"),
-  //     })
-  //     .on("transactionHash", (transactionHash) => {
-  //       console.log("txHash", transactionHash);
-  //       this.setState({ use: true });
-  //     })
-  //     .on("receipt", (receipt) => {
-  //       console.log("receipt", receipt);
-  //       this.setState({ use: true });
-  //     })
-  //     .on("error", (error) => {
-  //       console.log("error", error);
-  //       this.setState({ use: false });
-  //       alert("상자깡이 취소되었습니다.");
-  //     });
-  // };
-
-  // sendTxKlay = async () => {
-  //   const { account, currentIdx, balance, mintPrice, limit } = this.state;
-
-  //   // 클레이 결제용
-  //   if (balance <= mintPrice) {
-  //     alert("클레이가 부족합니다.");
-  //     return;
-  //   }
-
-  //   if (limit == 0) {
-  //     alert("남은 상자가 없습니다.");
-  //     return;
-  //   }
-
-  //   const minterContract = new caver.klay.Contract(
-  //     [
-  //       {
-  //         constant: false,
-  //         inputs: [
-  //           {
-  //             internalType: "address",
-  //             name: "_account",
-  //             type: "address",
-  //           },
-  //           {
-  //             internalType: "uint256",
-  //             name: "_id",
-  //             type: "uint256",
-  //           },
-  //           {
-  //             internalType: "uint256",
-  //             name: "_count",
-  //             type: "uint256",
-  //           },
-  //         ],
-  //         name: "mintItem",
-  //         outputs: [],
-  //         payable: false,
-  //         stateMutability: "nonpayable",
-  //         type: "function",
-  //       },
-  //     ],
-  //     mintCA
-  //   );
-
-  //   const pay = await this.sendTxPay();
-  //   const { use, gachaItem } = this.state;
-
-  //   if (use) {
-  //     await new Promise((resolve) => {
-  //       setTimeout(async () => {
-  //         await minterContract.methods
-  //           .mintItem(account, gachaItem, 1)
-  //           .send({
-  //             from: account,
-  //             gas: 7500000,
-  //           })
-  //           .on("transactionHash", (transactionHash) => {
-  //             console.log("txHash", transactionHash);
-  //             this.setState({ txHash: transactionHash });
-  //           })
-  //           .on("receipt", (receipt) => {
-  //             console.log("receipt", receipt);
-  //             // alert('신청이 정상적으로 완료되었습니다.')
-  //             this.setState({
-  //               receipt: JSON.stringify(receipt),
-  //               modalOpen: true,
-  //             });
-  //           })
-  //           .on("error", (error) => {
-  //             console.log("error", error);
-  //             alert("상자깡이 취소되었습니다.");
-  //             this.setState({ error: error.message });
-  //           });
-  //         resolve();
-  //       }, 200);
-  //     });
-  //   } else {
-  //     alert("클레이가 지불되지 않았습니다.");
-  //   }
-  // };
 
   sendTxItem = async () => {
     const { use, account, currentIdx } = this.state;
@@ -478,7 +260,7 @@ class KeplerBoxPage extends Component {
   };
 
   sendTxKey = async () => {
-    const { account, currentIdx, key, limit } = this.state;
+    const { account, key } = this.state;
 
     if (key == 0) {
       alert("열쇠가 없습니다.");
@@ -563,16 +345,15 @@ class KeplerBoxPage extends Component {
   render() {
     const {
       account,
-      balance,
+      key1,
+      key2,
+      key3,
       isLoading,
-      limit,
-      mintPrice,
       currentIdx,
       gachaItem,
       modalOpen,
     } = this.state;
     const boxs = ["Normal Box", "Rare Box", "Unique Box"];
-    // const max = [100, 50, 30];
 
     return (
       <Layout>
@@ -609,20 +390,34 @@ class KeplerBoxPage extends Component {
                 </div>
               </div>
               <div className="KeplerBoxPage__mint">
-                {/* <p>HOW TO OPEN THE BOX?</p> */}
                 <div className="mint_item">
-                  {/* <div></div>
-                  <div className="mint_btn mint_klay" onClick={this.sendTxKlay}>
-                    <img src="images/klaytn_logo.png" />
-                  </div> */}
-                  <div className="mint_btn mint_key" onClick={this.sendTxKey}>
-                    <img src={`images/items/K${currentIdx + 1}.png`} />
+                  <div className="mint_btn" onClick={this.sendTxKey}>
+                    OPEN BOX
                   </div>
-                  {/* <div></div> */}
                 </div>
-                {/* <p>
-                  Limit : {limit} / {max[currentIdx]}
-                </p> */}
+              </div>
+              <div className="KeplerBoxPage__payable">
+                <div className="key_balance">
+                  <label>Normal Key</label>
+                  <p>
+                    <img src={`images/items/K1.png`} />
+                    {key1}
+                  </p>
+                </div>
+                <div className="key_balance">
+                  <label>Rare Key</label>
+                  <p>
+                    <img src={`images/items/K2.png`} />
+                    {key2}
+                  </p>
+                </div>
+                <div className="key_balance">
+                  <label>Unique Key</label>
+                  <p>
+                    <img src={`images/items/K3.png`} />
+                    {key3}
+                  </p>
+                </div>
               </div>
               <div className="check">
                 <p>트랜잭션은 2번 발생합니다 (예상 수수료 예측 때문)</p>
@@ -632,16 +427,6 @@ class KeplerBoxPage extends Component {
                 </p>
               </div>
 
-              <div className="KeplerBoxPage__payable">
-                <div className="box_price">
-                  <label>Price</label>
-                  <p>1 box = {mintPrice} klay</p>
-                </div>
-                <div className="klay_balance">
-                  <label>Your Klay</label>
-                  <p>your klay balance = {balance} klay</p>
-                </div>
-              </div>
               <div className="KeplerBoxPage__table">
                 <div className="table_title">Percentage Table</div>
                 <div className="table_contents">
