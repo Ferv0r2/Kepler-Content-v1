@@ -70,8 +70,6 @@ class KeplerMainPage extends Component {
   render() {
     const { account, balance, isLoading } = this.state;
 
-    // if (this.state.isLoading) return <Loading />;
-
     return (
       <Layout>
         <div className="KeplerMainPage">
@@ -79,7 +77,6 @@ class KeplerMainPage extends Component {
           <div className="KeplerMainPage__main">
             <div className="KeplerMainPage__contents">
               <div className="KeplerMainPage__infoBox">
-                {/* <div className="v-line" /> */}
                 <img src="images/main_icon.png" />
                 <div className="KeplerMainPage__link">
                   <div>
