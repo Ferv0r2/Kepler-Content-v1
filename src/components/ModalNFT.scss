@@ -78,7 +78,6 @@
     font-size: 3rem;
     text-shadow: 0 0 10px #ff0000;
   }
-
 }
 
 .nft_contents {
@@ -105,7 +104,6 @@
       border-radius: 1em;
       width: 10rem;
       padding: 1rem;
-      
     }
   }
 }
@@ -117,19 +115,25 @@
 
 .checked {
   width: 20rem;
-  margin:  0 auto;
+  margin: 0 auto;
   padding: 2rem;
   color: #fff;
   font-size: 2rem;
   cursor: pointer;
   border: 2px solid #fff;
-  
+
   &:hover {
-    color: $hover-color;
-    border-color: $hover-color;
+    text-shadow: 0 0 10px #ff0000;
+    box-shadow: inset 0 0 15px #ff0000, 0 0 15px #ff0000;
   }
 }
 
+.load {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 @keyframes modal-show {
   from {

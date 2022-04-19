@@ -20,7 +20,6 @@ const ModalNFT = ({ open, tx, close, header, num1, num2, num3, urls }) => {
             </button>
           </header>
           <main>
-            {/* {props.children} */}
             <div className="nft_modal">
               <div className="nft_title">소각되는 NFT</div>
               <div className="nft_contents">
@@ -34,7 +33,9 @@ const ModalNFT = ({ open, tx, close, header, num1, num2, num3, urls }) => {
                     );
                   })
                 ) : (
-                  <Loading></Loading>
+                  <div className="load">
+                    <Loading />
+                  </div>
                 )}
               </div>
               <div className="nft_check">

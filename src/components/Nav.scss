@@ -27,6 +27,7 @@
   }
   &:after {
     content: "Kepler-452b";
+    color: #a3a3a3;
     font-size: 3rem;
     margin: auto;
     height: 100%;
@@ -36,6 +37,7 @@
 
 .Nav__loading {
   display: flex;
+  color: #9d9d9d;
 
   @media screen and (max-width: 720px) {
     display: none;
@@ -54,6 +56,7 @@
 .Nav__address {
   width: 200px;
   font-size: 1.5rem;
+  color: #9d9d9d;
 
   p {
     overflow: hidden;

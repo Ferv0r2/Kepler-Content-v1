@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="Footer__main">
         <div className="Footer__contents">
           <div className="Footer__logo">
-            <img src="images/logo.png" />
+            <img src="images/footer_logo.png" />
           </div>
           <div className="Footer__info">
             <p>
@@ -45,7 +45,7 @@ const Footer = () => {
             </li>
             <li>
               <a href="https://kepler-452b.net">
-                <img src="images/logo.png" />
+                <img src="images/footer_logo.png" />
               </a>
             </li>
           </div>

@@ -103,6 +103,7 @@
       margin: 0 auto;
       padding-top: 4rem;
       justify-content: space-between;
+      align-items: center;
 
       img {
         width: 9rem;
@@ -110,8 +111,8 @@
 
       input {
         width: 22rem;
-        margin-top: 2.5rem;
         text-align: center;
+        margin: 1rem auto;
       }
 
       > li {
@@ -121,16 +122,11 @@
 
         > h2 {
           font-size: 2.5rem;
-          margin-top: 3rem;
-          margin-left: 2.5rem;
         }
 
         > h1 {
           font-size: 3.5rem;
-          margin-top: 2.5rem;
-          margin-left: 2.5rem;
           font-style: italic;
-          width: 5rem;
         }
       }
     }
@@ -147,10 +143,10 @@
     .item_border {
       border: 3px solid #fff;
       padding: 2rem;
-      margin-top: 3rem;
-      width: 15rem;
+      width: 12rem;
       height: 80%;
-      margin-left: 6rem;
+      // margin: auto;
+      margin-left: 4rem;
       font-size: 3.2rem;
       cursor: pointer;
 
