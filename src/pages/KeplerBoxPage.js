@@ -134,9 +134,6 @@ class KeplerBoxPage extends Component {
     const { currentIdx } = this.state;
     if (currentIdx !== 0) {
       this.moveSlide(currentIdx - 1);
-      this.setLimit(currentIdx - 1);
-      this.setOwnKey(currentIdx - 1);
-      this.setMintPrice(currentIdx - 1);
     }
   };
 
@@ -145,9 +142,6 @@ class KeplerBoxPage extends Component {
     const slideCount = 3;
     if (currentIdx !== slideCount - 1) {
       this.moveSlide(currentIdx + 1);
-      this.setLimit(currentIdx + 1);
-      this.setOwnKey(currentIdx + 1);
-      this.setMintPrice(currentIdx + 1);
     }
   };
 
