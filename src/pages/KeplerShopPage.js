@@ -507,10 +507,15 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTx(0)}>
+                          onClick={(e) => this.sendTx(0)}
+                        >
                           <p>교환</p>
                         </div>
                       </ul>
+
+                      <div className="item_m" onClick={(e) => this.sendTx(0)}>
+                        <p>교환</p>
+                      </div>
                     </div>
                     <div className="items">
                       <ul className="item">
@@ -534,10 +539,15 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTx(1)}>
+                          onClick={(e) => this.sendTx(1)}
+                        >
                           <p>교환</p>
                         </div>
                       </ul>
+
+                      <div className="item_m" onClick={(e) => this.sendTx(1)}>
+                        <p>교환</p>
+                      </div>
                     </div>
                     <div className="items">
                       <ul className="item">
@@ -561,14 +571,19 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTx(2)}>
+                          onClick={(e) => this.sendTx(2)}
+                        >
                           <p>교환</p>
                         </div>
                       </ul>
+
+                      <div className="item_m" onClick={(e) => this.sendTx(2)}>
+                        <p>교환</p>
+                      </div>
                     </div>
                     <div className="item_count">
-                      <label>남은 빛바랜 스톤 갯수</label>
-                      <label>{balanceStone}</label>
+                      <p>남은 빛바랜 스톤 갯수</p>
+                      <p>{balanceStone}</p>
                     </div>
                   </div>
                 ) : null}
@@ -598,10 +613,14 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.setOpen(0)}>
+                          onClick={(e) => this.setOpen(0)}
+                        >
                           <p>교환</p>
                         </div>
                       </ul>
+                      <div className="item_m" onClick={(e) => this.setOpen(0)}>
+                        <p>교환</p>
+                      </div>
                     </div>
                     <div className="items">
                       <ul className="item">
@@ -637,10 +656,14 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.setOpen(1)}>
+                          onClick={(e) => this.setOpen(1)}
+                        >
                           <p>교환</p>
                         </div>
                       </ul>
+                      <div className="item_m" onClick={(e) => this.setOpen(1)}>
+                        <p>교환</p>
+                      </div>
                     </div>
                     <div className="items">
                       <ul className="item">
@@ -684,14 +707,18 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.setOpen(2)}>
+                          onClick={(e) => this.setOpen(2)}
+                        >
                           <p>교환</p>
                         </div>
                       </ul>
+                      <div className="item_m" onClick={(e) => this.setOpen(2)}>
+                        <p>교환</p>
+                      </div>
                     </div>
                     <div className="item_count">
-                      <label>남은 NFT 갯수</label>
-                      <label>{balanceNFT}</label>
+                      <p>남은 NFT 갯수</p>
+                      <p>{balanceNFT}</p>
                     </div>
                   </div>
                 ) : null}
@@ -720,8 +747,8 @@ class KeplerShopPage extends Component {
               <div className="check">
                 <p>
                   6 Klay 이상 소유해야 트랜잭션이 에러를 발생시키지 않습니다
-                  (최대 가스비 인상 때문)
                 </p>
+                <p>(최대 가스비 인상 때문)</p>
               </div>
             </div>
           </div>

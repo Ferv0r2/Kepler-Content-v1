@@ -46,7 +46,7 @@
     width: 80%;
 
     @media screen and (max-width: 640px) {
-      transform: scale(1.2);
+      transform: scale(1.15);
     }
   }
 }
@@ -80,7 +80,7 @@
 
     a {
       &:hover {
-        color:#d52e82;
+        color: #d52e82;
         text-shadow: 2px 2px 2px #fff;
         align-items: center;
         font-size: 2rem;
