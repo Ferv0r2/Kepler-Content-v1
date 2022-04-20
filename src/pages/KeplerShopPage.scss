@@ -121,6 +121,10 @@
 
       img {
         width: 9rem;
+
+        @media screen and (max-width: 600px) {
+          width: 8rem;
+        }
       }
 
       input {
@@ -287,8 +291,4 @@
   padding-top: 4rem;
   color: #fff;
   font-family: "GmarketSansMedium";
-
-  p {
-    line-height: 1rem;
-  }
 }

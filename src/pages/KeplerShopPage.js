@@ -594,7 +594,7 @@ class KeplerShopPage extends Component {
                         <li>
                           <input
                             type="text"
-                            placeholder="NFT 번호 입력"
+                            placeholder="번호 기입"
                             onChange={this.onInputNum1}
                             value={num1}
                           />
@@ -628,7 +628,7 @@ class KeplerShopPage extends Component {
                           <li>
                             <input
                               type="text"
-                              placeholder="NFT 번호 입력"
+                              placeholder="번호 기입"
                               onChange={this.onInputNum1}
                               value={num1}
                             />
@@ -636,7 +636,7 @@ class KeplerShopPage extends Component {
                           <li>
                             <input
                               type="text"
-                              placeholder="NFT 번호 입력"
+                              placeholder="번호 기입"
                               onChange={this.onInputNum2}
                               value={num2}
                             />
@@ -671,7 +671,7 @@ class KeplerShopPage extends Component {
                           <li>
                             <input
                               type="text"
-                              placeholder="NFT 번호 입력"
+                              placeholder="번호 기입"
                               onChange={this.onInputNum1}
                               value={num1}
                             />
@@ -679,7 +679,7 @@ class KeplerShopPage extends Component {
                           <li>
                             <input
                               type="text"
-                              placeholder="NFT 번호 입력"
+                              placeholder="번호 기입"
                               onChange={this.onInputNum2}
                               value={num2}
                             />
@@ -687,7 +687,7 @@ class KeplerShopPage extends Component {
                           <li>
                             <input
                               type="text"
-                              placeholder="NFT 번호 입력"
+                              placeholder="번호 기입"
                               onChange={this.onInputNum3}
                               value={num3}
                             />
