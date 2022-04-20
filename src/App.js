@@ -21,8 +21,8 @@ const App = () => {
           <Route path="/box" element={<KeplerBoxPage />} />
           <Route path="/mining" element={<KeplerMiningPage />} />
           <Route path="/evol" element={<KeplerEvolPage />} />
-          <Route path="/shop" element={<KeplerShopPage />} />
-          {/* <Route path="/shop" element={<ErrorPage />} /> */}
+          {/* <Route path="/shop" element={<KeplerShopPage />} /> */}
+          <Route path="/shop" element={<ErrorPage />} />
           {/* <Route path="/governance" element={<KeplerGovernanceListPage />} /> */}
           <Route path="/governance" element={<ErrorPage />} />
           <Route path="/governance/0" element={<KeplerGovernancePage />} />
