@@ -507,8 +507,7 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTx(0)}
-                        >
+                          onClick={(e) => this.sendTx(0)}>
                           <p>교환</p>
                         </div>
                       </ul>
@@ -539,8 +538,7 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTx(1)}
-                        >
+                          onClick={(e) => this.sendTx(1)}>
                           <p>교환</p>
                         </div>
                       </ul>
@@ -571,8 +569,7 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTx(2)}
-                        >
+                          onClick={(e) => this.sendTx(2)}>
                           <p>교환</p>
                         </div>
                       </ul>
@@ -613,8 +610,7 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.setOpen(0)}
-                        >
+                          onClick={(e) => this.setOpen(0)}>
                           <p>교환</p>
                         </div>
                       </ul>
@@ -656,8 +652,7 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.setOpen(1)}
-                        >
+                          onClick={(e) => this.setOpen(1)}>
                           <p>교환</p>
                         </div>
                       </ul>
@@ -707,8 +702,7 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.setOpen(2)}
-                        >
+                          onClick={(e) => this.setOpen(2)}>
                           <p>교환</p>
                         </div>
                       </ul>
