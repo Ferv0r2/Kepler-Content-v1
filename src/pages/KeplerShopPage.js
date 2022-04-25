@@ -43,7 +43,8 @@ class KeplerShopPage extends Component {
 
   componentDidMount() {
     this.setNetworkInfo();
-    this.setOwn = setInterval(() => this.loadAccountInfo(), 1000);
+    this.loadAccountInfo();
+    // this.setOwn = setInterval(() => this.loadAccountInfo(), 1000);
   }
 
   loadAccountInfo = async () => {
@@ -114,6 +115,51 @@ class KeplerShopPage extends Component {
       balanceNFT,
       balanceStone,
       isLoading: false,
+    });
+  };
+
+  setBalance = async () => {
+    const { account } = this.state;
+    const itemContract = new caver.klay.Contract(
+      [
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+          ],
+          name: "balanceOf",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      itemCA
+    );
+
+    const balanceNFT = await keplerContract.methods.balanceOf(account).call();
+    const balanceStone = await itemContract.methods
+      .balanceOf(account, 35)
+      .call();
+
+    this.setState({
+      balanceNFT: [...balanceNFT],
+      balanceStone: [...balanceStone],
     });
   };
 
@@ -205,6 +251,7 @@ class KeplerShopPage extends Component {
       })
       .on("receipt", (receipt) => {
         console.log("receipt", receipt);
+        this.setBalance();
         alert("스톤 거래 완료!");
       })
       .on("error", (error) => {
@@ -273,6 +320,7 @@ class KeplerShopPage extends Component {
       })
       .on("receipt", (receipt) => {
         console.log("receipt", receipt);
+        this.setBalance();
         alert("열쇠 거래 완료!");
       })
       .on("error", (error) => {

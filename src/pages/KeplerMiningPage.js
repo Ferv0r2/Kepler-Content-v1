@@ -385,6 +385,7 @@ class KeplerMiningPage extends Component {
             })
             .on("receipt", (receipt) => {
               console.log("receipt", receipt);
+              this.setBalance(currentIdx);
               this.setState({
                 receipt: JSON.stringify(receipt),
                 modalOpen: true,

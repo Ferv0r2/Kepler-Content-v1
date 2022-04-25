@@ -33,8 +33,9 @@ class KeplerBoxPage extends Component {
   }
 
   componentDidMount() {
-    this.setOwn = setInterval(() => this.loadAccountInfo(), 1000);
     this.setNetworkInfo();
+    this.loadAccountInfo();
+    // this.setOwn = setInterval(() => this.loadAccountInfo(), 1000);
   }
 
   loadAccountInfo = async () => {
@@ -105,6 +106,52 @@ class KeplerBoxPage extends Component {
       key2,
       key3,
       isLoading: false,
+    });
+  };
+
+  setBalance = async () => {
+    const { account } = this.state;
+
+    const itemContract = new caver.klay.Contract(
+      [
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+          ],
+          name: "balanceOf",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      itemCA
+    );
+
+    const key1 = await itemContract.methods.balanceOf(account, 39).call();
+    const key2 = await itemContract.methods.balanceOf(account, 40).call();
+    const key3 = await itemContract.methods.balanceOf(account, 41).call();
+
+    this.setState({
+      key1: [...key1],
+      key2: [...key2],
+      key3: [...key3],
     });
   };
 
@@ -244,6 +291,7 @@ class KeplerBoxPage extends Component {
       })
       .on("receipt", (receipt) => {
         console.log("receipt", receipt);
+        this.setBalance();
         this.setState({ use: true });
       })
       .on("error", (error) => {
