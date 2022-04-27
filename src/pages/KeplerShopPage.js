@@ -17,8 +17,6 @@ const shopCA = "0xf5996a159872e016472756a7723915EEdC357f58";
 // const itemCA = "0xB1f01670A962a177Cd814450A89820EF79E62C02";
 // const shopCA = "0x85EBB98DA0947D4526B950b3bDE849bBe732Ee9B";
 
-const imgURI = "https://ipfs.infura.io/ipfs/";
-
 class KeplerShopPage extends Component {
   constructor(props) {
     super(props);
@@ -351,16 +349,17 @@ class KeplerShopPage extends Component {
     const len = array.length;
     for (let id = 0; id < len; id++) {
       const promise = async (index) => {
-        try {
-          const res = await fetch(imgURI + array[index]);
-          let posts = await res.json();
-          posts = imgURI + posts.image.substring(7);
-          console.log(posts);
+        const res = await fetch(array[index]);
+        const posts = await res.json();
+        console.log(posts.image);
 
-          urls.push(posts);
-        } catch {
-          urls.push(imgURI + "QmTCKV9yQ5nEtag4gijjQYUB9zNQ3PmM7vyoSKFiezt8ki");
-        }
+        urls.push(posts.image);
+        // try {
+        // } catch {
+        //   urls.push(
+        //     "https://ipfs.infura.io/ipfs/QmTCKV9yQ5nEtag4gijjQYUB9zNQ3PmM7vyoSKFiezt8ki"
+        //   );
+        // }
       };
       promises.push(promise(id));
     }
@@ -413,7 +412,7 @@ class KeplerShopPage extends Component {
       }
 
       let url = await keplerContract.methods.tokenURI(num1).call();
-      ipfs.push(url.substring(7));
+      ipfs.push(url);
     } else if (level == 1) {
       if (num1 == "" || num2 == "") {
         alert("NFT 값을 입력해주세요 :)");
@@ -447,9 +446,9 @@ class KeplerShopPage extends Component {
       }
 
       let url = await keplerContract.methods.tokenURI(num1).call();
-      ipfs.push(url.substring(7));
+      ipfs.push(url);
       url = await keplerContract.methods.tokenURI(num2).call();
-      ipfs.push(url.substring(7));
+      ipfs.push(url);
     } else if (level == 2) {
       if (num1 == "" || num2 == "" || num3 == "") {
         alert("NFT 값을 입력해주세요 :)");
@@ -499,11 +498,11 @@ class KeplerShopPage extends Component {
       }
 
       let url = await keplerContract.methods.tokenURI(num1).call();
-      ipfs.push(url.substring(7));
+      ipfs.push(url);
       url = await keplerContract.methods.tokenURI(num2).call();
-      ipfs.push(url.substring(7));
+      ipfs.push(url);
       url = await keplerContract.methods.tokenURI(num3).call();
-      ipfs.push(url.substring(7));
+      ipfs.push(url);
     }
 
     const urls = await this.setURI(ipfs);
@@ -584,7 +583,8 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTx(0)}>
+                          onClick={(e) => this.sendTx(0)}
+                        >
                           <p>교환</p>
                         </div>
                       </ul>
@@ -615,7 +615,8 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTx(1)}>
+                          onClick={(e) => this.sendTx(1)}
+                        >
                           <p>교환</p>
                         </div>
                       </ul>
@@ -646,7 +647,8 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.sendTx(2)}>
+                          onClick={(e) => this.sendTx(2)}
+                        >
                           <p>교환</p>
                         </div>
                       </ul>
@@ -687,7 +689,8 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.setOpen(0)}>
+                          onClick={(e) => this.setOpen(0)}
+                        >
                           <p>교환</p>
                         </div>
                       </ul>
@@ -729,7 +732,8 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.setOpen(1)}>
+                          onClick={(e) => this.setOpen(1)}
+                        >
                           <p>교환</p>
                         </div>
                       </ul>
@@ -779,7 +783,8 @@ class KeplerShopPage extends Component {
                         </li>
                         <div
                           className="item_border"
-                          onClick={(e) => this.setOpen(2)}>
+                          onClick={(e) => this.setOpen(2)}
+                        >
                           <p>교환</p>
                         </div>
                       </ul>
