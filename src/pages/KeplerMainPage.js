@@ -13,7 +13,6 @@ class KeplerMainPage extends Component {
     super(props);
     this.state = {
       account: "",
-      balance: 0,
       isLoading: true,
     };
   }
@@ -49,11 +48,9 @@ class KeplerMainPage extends Component {
     if (klaytn === undefined) return;
 
     const account = klaytn.selectedAddress;
-    const balance = await caver.klay.getBalance(account);
     this.setState({
       account,
       isLoading: false,
-      balance: caver.utils.fromPeb(balance, "KLAY"),
     });
   };
 
@@ -68,7 +65,7 @@ class KeplerMainPage extends Component {
   };
 
   render() {
-    const { account, balance, isLoading } = this.state;
+    const { account, isLoading } = this.state;
 
     return (
       <Layout>

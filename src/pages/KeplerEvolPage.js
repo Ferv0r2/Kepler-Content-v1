@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import caver from "klaytn/caver";
 import keplerContract from "klaytn/KeplerContract";
-// import fetch from "node-fetch";
+import fetch from "node-fetch";
 
-import evol from "./evol-log.json";
+// import evol from "./evol-log.json";
 import mix from "./mix.json";
 import Loading from "components/Loading";
 import Layout from "../components/Layout";
@@ -19,13 +19,15 @@ class KeplerEvolPage extends Component {
     super(props);
     this.state = {
       account: "",
-      balance: 0,
       network: null,
       data: [],
       mixOwn: [],
       mix: [],
+      spawning: [],
+      totalLoading: true,
       isLoading: true,
       tokenURI: [],
+      evol: [],
     };
   }
 
@@ -40,6 +42,7 @@ class KeplerEvolPage extends Component {
     if (klaytn) {
       try {
         await klaytn.enable();
+        await this.setTotal();
         this.setAccountInfo(klaytn);
         this.setOwner(klaytn);
         klaytn.on("accountsChanged", () => {
@@ -78,40 +81,55 @@ class KeplerEvolPage extends Component {
     return urls;
   };
 
+  setTotal = async () => {
+    const baseURI = "https://api.kepler-452b.net/evol/";
+
+    // GET DAILY EVOL
+    const date = new Date();
+
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const day = ("0" + date.getDate()).slice(-2);
+    const z_day = ("0" + (date.getDate() - 1)).slice(-2);
+
+    const today = `${year}-${month}-${day}`;
+    const yesterday = `${year}-${month}-${z_day}`;
+
+    let evol;
+    try {
+      const evolURI = baseURI + `${today}-daily`;
+      const res = await fetch(evolURI);
+      evol = await res.json();
+      evol = JSON.parse(evol);
+    } catch {
+      const evolURI = baseURI + `${yesterday}-daily`;
+      const res = await fetch(evolURI);
+      evol = await res.json();
+    }
+
+    this.setState({
+      evol,
+      totalLoading: false,
+    });
+  };
+
   setOwner = async () => {
     const { klaytn } = window;
     if (klaytn === undefined) return;
 
+    const { evol, totalLoading } = this.state;
+    if (totalLoading == true) return;
+
     let account = klaytn.selectedAddress;
-    let len = await keplerContract.methods.balanceOf(account).call();
+    const len = await keplerContract.methods.balanceOf(account).call();
 
     const promises = [];
     const owners = [];
+    const spawning_owners = [];
     const mix_total = [];
     const mix_owners = [];
     // const tokenLinks = [];
 
-    // GET DAILY EVOL
-    // const date = new Date();
-
-    // const year = date.getFullYear();
-    // const month = ("0" + (date.getMonth() + 1)).slice(-2);
-    // const day = ("0" + date.getDate()).slice(-2);
-    // const z_day = ("0" + (date.getDate() - 1)).slice(-2);
-
-    // const today = `${year}-${month}-${day}`;
-    // const yesterday = `${year}-${month}-${z_day}`;
-
-    // let evol;
-    // try {
-    //   const evolURI = `https://api.kepler-452b.net/evol/${today}-daily`;
-    //   const res = await fetch(evolURI);
-    //   evol = await res.json();
-    // } catch {
-    //   const evolURI = `https://api.kepler-452b.net/evol/${yesterday}-daily`;
-    //   const res = await fetch(evolURI);
-    //   evol = await res.json();
-    // }
     for (let id = 0; id < len; id++) {
       const promise = async (index) => {
         let own = await keplerContract.methods
@@ -122,6 +140,12 @@ class KeplerEvolPage extends Component {
           // let url = await keplerContract.methods.tokenURI(index).call();
           // url = ipfs + url.substring(7);
           owners.push(own);
+        }
+
+        if (evol["spawning"].includes(parseInt(own))) {
+          // let url = await keplerContract.methods.tokenURI(index).call();
+          // url = ipfs + url.substring(7);
+          spawning_owners.push(own);
         }
 
         if (mix["mix"].includes(parseInt(own))) {
@@ -154,11 +178,21 @@ class KeplerEvolPage extends Component {
     owners.sort((a, b) => {
       return a - b;
     });
+    spawning_owners.sort((a, b) => {
+      return a - b;
+    });
+    mix_total.sort((a, b) => {
+      return a - b;
+    });
+    mix_owners.sort((a, b) => {
+      return a - b;
+    });
 
     this.setState({
-      data: this.state.data.concat(owners),
-      mixOwn: this.state.data.concat(mix_total),
-      mix: this.state.data.concat(mix_owners),
+      data: [...owners],
+      spawning: [...spawning_owners],
+      mixOwn: [...mix_total],
+      mix: [...mix_owners],
       // tokenURI: this.state.tokenURI.concat(tokenURIs),
       isLoading: false,
     });
@@ -169,10 +203,8 @@ class KeplerEvolPage extends Component {
     if (klaytn === undefined) return;
 
     const account = klaytn.selectedAddress;
-    const balance = await caver.klay.getBalance(account);
     this.setState({
       account,
-      balance: caver.utils.fromPeb(balance, "KLAY"),
     });
   };
 
@@ -187,7 +219,16 @@ class KeplerEvolPage extends Component {
   };
 
   render() {
-    const { account, data, mixOwn, mix, isLoading } = this.state;
+    const {
+      account,
+      data,
+      spawning,
+      mixOwn,
+      mix,
+      evol,
+      totalLoading,
+      isLoading,
+    } = this.state;
 
     return (
       <Layout>
@@ -195,8 +236,8 @@ class KeplerEvolPage extends Component {
           <Nav address={account} load={isLoading} />
           <div className="KeplerEvolPage__main">
             <div className="KeplerEvolPage__contents">
-              <TotalEvolTable />
-              {this.state.isLoading ? (
+              <TotalEvolTable evol={evol} load={totalLoading} />
+              {isLoading ? (
                 <div className="KeplerEvolPage_loading">
                   <Loading />
                   <p>내 진화 번호를 불러오는 중입니다...</p>
@@ -204,6 +245,7 @@ class KeplerEvolPage extends Component {
               ) : (
                 <div>
                   <EvolTable name={"내 진화 번호"} data={data} />
+                  <EvolTable name={"내 산란된 번호"} data={spawning} />
                   <EvolTable name={"내 믹스 번호"} data={mixOwn} />
                   <EvolTable name={"내 믹스 진화 번호"} data={mix} />
                 </div>

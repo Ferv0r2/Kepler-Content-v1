@@ -26,11 +26,20 @@
   }
 }
 
+.TotalEvolTable_loading {
+  padding: 10rem;
+
+  @media screen and (max-width: 800px) {
+    padding: 3rem;
+  }
+}
+
 .TotalEvolTable__date {
   font-style: italic;
   padding: 10px;
   padding-bottom: 20px;
   font-size: 24px;
+  text-align: center;
 
   @media screen and (max-width: 800px) {
     font-size: 20px;

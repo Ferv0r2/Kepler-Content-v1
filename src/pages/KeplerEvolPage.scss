@@ -29,22 +29,24 @@
 .KeplerEvolPage_loading {
   display: flex;
   padding-bottom: 10rem;
+  max-width: 540px;
+  margin: 0 auto;
+  color: $white;
+
+  @media screen and (max-width: 800px) {
+    max-width: 420px;
+  }
+
+  @media screen and (max-width: 600px) {
+    width: 90%;
+  }
 
   p {
-    margin: 0.5em;
-    color: $white;
-    font-size: 1.3em;
-    vertical-align: middle;
-    justify-items: baseline;
+    margin: 0.5em auto;
+    font-size: 1.8rem;
 
-    &::after {
-      content: "* 카이카스 연결이 필요합니다 :)";
-      margin: 0.8em;
-      font-size: 0.7em;
-
-      @media screen and (max-width: 720px) {
-        display: none;
-      }
+    @media screen and (max-width: 600px) {
+      font-size: 1.5rem;
     }
   }
 }
