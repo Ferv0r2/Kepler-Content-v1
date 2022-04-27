@@ -24,6 +24,7 @@ class KeplerShopPage extends Component {
     super(props);
     this.state = {
       account: "",
+      balance: 0,
       balanceNFT: 0,
       balanceStone: 0,
       isLoading: true,
@@ -105,6 +106,7 @@ class KeplerShopPage extends Component {
     );
 
     const account = klaytn.selectedAddress;
+    const balance = await caver.klay.getBalance(account);
     const balanceNFT = await keplerContract.methods.balanceOf(account).call();
     const balanceStone = await itemContract.methods
       .balanceOf(account, 35)
@@ -112,6 +114,7 @@ class KeplerShopPage extends Component {
 
     this.setState({
       account,
+      balance: caver.utils.fromPeb(balance, "KLAY"),
       balanceNFT,
       balanceStone,
       isLoading: false,
@@ -212,7 +215,12 @@ class KeplerShopPage extends Component {
   };
 
   sendTx = async (level) => {
-    const { account } = this.state;
+    const { account, balance } = this.state;
+
+    if (balance < 6) {
+      alert("6 Klay 이상 소유해야 합니다 :)");
+      return;
+    }
 
     const shopContract = new caver.klay.Contract(
       [
@@ -362,7 +370,28 @@ class KeplerShopPage extends Component {
   };
 
   setOpen = async (level) => {
-    const { account, num1, num2, num3 } = this.state;
+    const { account, balance, num1, num2, num3 } = this.state;
+
+    if (balance < 6) {
+      alert("6 Klay 이상 소유해야 합니다 :)");
+      return;
+    }
+
+    // Get DATE
+    const date = new Date();
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+
+    console.log(hour, " ", minute);
+    if (hour == 20 || hour == 21) {
+      if (hour == 20 && minute >= 30) {
+        alert("매일 20:30 ~ 21:30은 상점 점검 시간입니다 (진화 안정)");
+        return;
+      } else if (hour == 21 && minute <= 30) {
+        alert("매일 20:30 ~ 21:30은 상점 점검 시간입니다 (진화 안정)");
+        return;
+      }
+    }
 
     const addr = account.toUpperCase();
     const ipfs = [];
@@ -791,6 +820,10 @@ class KeplerShopPage extends Component {
                   6 Klay 이상 소유해야 트랜잭션이 에러를 발생시키지 않습니다
                 </p>
                 <p>(최대 가스비 인상 때문)</p>
+              </div>
+              <div className="check">
+                <p>매일 20:30 ~ 21:30은 열쇠 거래가 제한됩니다</p>
+                <p>(진화 안정성 때문)</p>
               </div>
             </div>
           </div>

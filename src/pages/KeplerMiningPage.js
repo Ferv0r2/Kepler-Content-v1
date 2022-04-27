@@ -17,6 +17,7 @@ class KeplerMiningPage extends Component {
     this.state = {
       account: "",
       balance: 0,
+      pickaxe: 0,
       isLoading: true,
       currentIdx: 0,
       limit: 0,
@@ -65,6 +66,7 @@ class KeplerMiningPage extends Component {
     if (klaytn === undefined) return;
 
     const account = klaytn.selectedAddress;
+    const balance = await caver.klay.getBalance(account);
     const itemContract = new caver.klay.Contract(
       [
         {
@@ -96,11 +98,12 @@ class KeplerMiningPage extends Component {
       ],
       itemCA
     );
-    const balance = await itemContract.methods.balanceOf(account, 36).call();
+    const pickaxe = await itemContract.methods.balanceOf(account, 36).call();
 
     this.setState({
       account,
-      balance,
+      balance: caver.utils.fromPeb(balance, "KLAY"),
+      pickaxe,
       isLoading: false,
     });
   };
@@ -178,11 +181,11 @@ class KeplerMiningPage extends Component {
       itemCA
     );
 
-    const balance = await itemContract.methods
+    const pickaxe = await itemContract.methods
       .balanceOf(account, idx + 36)
       .call();
     this.setState({
-      balance,
+      pickaxe,
     });
   };
 
@@ -323,10 +326,15 @@ class KeplerMiningPage extends Component {
   };
 
   sendTxItem = async () => {
-    const { account, currentIdx, balance } = this.state;
+    const { account, currentIdx, balance, pickaxe } = this.state;
 
-    if (balance == 0) {
+    if (pickaxe == 0) {
       alert("곡괭이가 없습니다.");
+      return;
+    }
+
+    if (balance < 6) {
+      alert("6 Klay 이상 소유해야 합니다 :)");
       return;
     }
 
@@ -426,7 +434,7 @@ class KeplerMiningPage extends Component {
   render() {
     const {
       account,
-      balance,
+      pickaxe,
       isLoading,
       currentIdx,
       destroy,
@@ -499,7 +507,7 @@ class KeplerMiningPage extends Component {
                   <p>{boxs[currentIdx]}</p>
                 </div>
                 <div className="KeplerMiningPage__limit">
-                  <p>남은 수량 : {balance} 개</p>
+                  <p>남은 수량 : {pickaxe} 개</p>
                 </div>
               </div>
             </div>

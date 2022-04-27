@@ -17,6 +17,7 @@ class KeplerBoxPage extends Component {
     super(props);
     this.state = {
       account: "",
+      balance: 0,
       key1: 0,
       key2: 0,
       key3: 0,
@@ -96,12 +97,14 @@ class KeplerBoxPage extends Component {
     );
 
     const account = klaytn.selectedAddress;
+    const balance = await caver.klay.getBalance(account);
     const key1 = await itemContract.methods.balanceOf(account, 39).call();
     const key2 = await itemContract.methods.balanceOf(account, 40).call();
     const key3 = await itemContract.methods.balanceOf(account, 41).call();
 
     this.setState({
       account,
+      balance: caver.utils.fromPeb(balance, "KLAY"),
       key1,
       key2,
       key3,
@@ -302,10 +305,14 @@ class KeplerBoxPage extends Component {
   };
 
   sendTxKey = async () => {
-    const { account, key } = this.state;
+    const { account, balance, key } = this.state;
 
     if (key == 0) {
       alert("열쇠가 없습니다.");
+      return;
+    }
+    if (balance < 6) {
+      alert("6 Klay 이상 소유해야 합니다 :)");
       return;
     }
     const minterContract = new caver.klay.Contract(
