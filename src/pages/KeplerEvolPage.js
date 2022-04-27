@@ -91,6 +91,27 @@ class KeplerEvolPage extends Component {
     const mix_owners = [];
     // const tokenLinks = [];
 
+    // GET DAILY EVOL
+    // const date = new Date();
+
+    // const year = date.getFullYear();
+    // const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    // const day = ("0" + date.getDate()).slice(-2);
+    // const z_day = ("0" + (date.getDate() - 1)).slice(-2);
+
+    // const today = `${year}-${month}-${day}`;
+    // const yesterday = `${year}-${month}-${z_day}`;
+
+    // let evol;
+    // try {
+    //   const evolURI = `https://api.kepler-452b.net/evol/${today}-daily`;
+    //   const res = await fetch(evolURI);
+    //   evol = await res.json();
+    // } catch {
+    //   const evolURI = `https://api.kepler-452b.net/evol/${yesterday}-daily`;
+    //   const res = await fetch(evolURI);
+    //   evol = await res.json();
+    // }
     for (let id = 0; id < len; id++) {
       const promise = async (index) => {
         let own = await keplerContract.methods
@@ -182,9 +203,9 @@ class KeplerEvolPage extends Component {
                 </div>
               ) : (
                 <div>
-                  <EvolTable name={"내 진화 번호"} data={data}></EvolTable>
-                  <EvolTable name={"내 믹스 번호"} data={mixOwn}></EvolTable>
-                  <EvolTable name={"내 믹스 진화 번호"} data={mix}></EvolTable>
+                  <EvolTable name={"내 진화 번호"} data={data} />
+                  <EvolTable name={"내 믹스 번호"} data={mixOwn} />
+                  <EvolTable name={"내 믹스 진화 번호"} data={mix} />
                 </div>
                 // <EvolTable data={data} tokenURI={tokenURI}></EvolTable>
               )}
