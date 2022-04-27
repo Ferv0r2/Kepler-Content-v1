@@ -41,8 +41,8 @@ class KeplerEvolPage extends Component {
 
     if (klaytn) {
       try {
-        await klaytn.enable();
         await this.setTotal();
+        await klaytn.enable();
         this.setAccountInfo(klaytn);
         this.setOwner(klaytn);
         klaytn.on("accountsChanged", () => {
@@ -51,6 +51,7 @@ class KeplerEvolPage extends Component {
         });
       } catch (error) {
         // console.log(error);
+        await this.setTotal();
         console.log("User denied account access");
       }
     } else {
