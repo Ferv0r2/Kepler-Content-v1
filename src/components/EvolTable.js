@@ -5,7 +5,7 @@ import "./EvolTable.scss";
 
 const url = "https://klu.bs/pfp/0x928267e7db3d173898553ff593a78719bb16929f/";
 
-const EvolTable = ({ name, data }) => {
+const EvolTable = ({ name, data, info }) => {
   const datas = data;
   // const tokenURIs = tokenURI;
 
@@ -28,7 +28,7 @@ const EvolTable = ({ name, data }) => {
               );
             })
           ) : (
-            <h2>금일 진화한 NFT가 없습니다...</h2>
+            <h2>{info}</h2>
           )}
         </ul>
       </div>

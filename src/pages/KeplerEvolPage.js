@@ -244,10 +244,26 @@ class KeplerEvolPage extends Component {
                 </div>
               ) : (
                 <div>
-                  <EvolTable name={"내 진화 번호"} data={data} />
-                  <EvolTable name={"내 산란된 번호"} data={spawning} />
-                  <EvolTable name={"내 믹스 번호"} data={mixOwn} />
-                  <EvolTable name={"내 믹스 진화 번호"} data={mix} />
+                  <EvolTable
+                    name={"내 진화 번호"}
+                    data={data}
+                    info={"금일 진화한 NFT가 없습니다..."}
+                  />
+                  <EvolTable
+                    name={"내 산란된 번호"}
+                    data={spawning}
+                    info={"금일 산란된 NFT가 없습니다..."}
+                  />
+                  <EvolTable
+                    name={"내 믹스 번호"}
+                    data={mixOwn}
+                    info={"믹스종 NFT가 없습니다..."}
+                  />
+                  <EvolTable
+                    name={"내 믹스 진화 번호"}
+                    data={mix}
+                    info={"금일 진화한 NFT가 없습니다..."}
+                  />
                 </div>
                 // <EvolTable data={data} tokenURI={tokenURI}></EvolTable>
               )}
