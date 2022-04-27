@@ -34,6 +34,7 @@ class KeplerEvolPage extends Component {
   componentDidMount() {
     this.loadAccountInfo();
     this.setNetworkInfo();
+    this.setTotal();
   }
 
   loadAccountInfo = async () => {
@@ -41,7 +42,6 @@ class KeplerEvolPage extends Component {
 
     if (klaytn) {
       try {
-        await this.setTotal();
         await klaytn.enable();
         this.setAccountInfo(klaytn);
         this.setOwner(klaytn);
@@ -51,7 +51,6 @@ class KeplerEvolPage extends Component {
         });
       } catch (error) {
         // console.log(error);
-        await this.setTotal();
         console.log("User denied account access");
       }
     } else {
