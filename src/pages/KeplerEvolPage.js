@@ -34,7 +34,6 @@ class KeplerEvolPage extends Component {
   componentDidMount() {
     this.loadAccountInfo();
     this.setNetworkInfo();
-    this.setTotal();
   }
 
   loadAccountInfo = async () => {
@@ -117,8 +116,10 @@ class KeplerEvolPage extends Component {
     const { klaytn } = window;
     if (klaytn === undefined) return;
 
-    const { evol, totalLoading } = this.state;
-    if (totalLoading == true) return;
+    const { totalLoading } = this.state;
+    if (totalLoading == true) await this.setTotal();
+
+    const { evol } = this.state;
 
     let account = klaytn.selectedAddress;
     const len = await keplerContract.methods.balanceOf(account).call();
