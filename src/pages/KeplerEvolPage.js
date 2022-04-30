@@ -101,7 +101,8 @@ class KeplerEvolPage extends Component {
       evol = await res.json();
       evol = JSON.parse(evol);
     } catch {
-      const evolURI = baseURI + `${yesterday}-daily`;
+      // const evolURI = baseURI + `${yesterday}-daily`;
+      const evolURI = baseURI + "2022-04-30-daily";
       const res = await fetch(evolURI);
       evol = await res.json();
     }
