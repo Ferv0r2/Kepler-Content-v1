@@ -175,16 +175,16 @@ class KeplerEvolPage extends Component {
           const res = await fetch(url);
           const post = await res.json();
 
-          owners.push(own);
-          ownerURI.push(post.image);
+          mix_total.push(own);
+          mixURI.push(post.image);
 
           if (evol["token"].includes(parseInt(own))) {
             const url = await keplerContract.methods.tokenURI(own).call();
             const res = await fetch(url);
             const post = await res.json();
 
-            spawning_owners.push(own);
-            spawnURI.push(post.image);
+            mix_owners.push(own);
+            mixEvolURI.push(post.image);
           }
         }
 
