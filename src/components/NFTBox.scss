@@ -4,15 +4,26 @@
 
   .NFTBox__link {
     position: relative;
+
+    &:hover {
+      color: #fff;
+    }
   }
 
   .NFTBox__name {
     position: absolute;
-    right: 0;
+    right: 0.1rem;
     bottom: -250%;
     text-align: center;
     font-size: 1.7rem;
+    background: $gradtion-top;
+    padding: 0.3rem;
+    border-radius: 0.5em;
 
+    &:hover {
+      color: $gradtion-top;
+      background: #fff;
+    }
     @media screen and (max-width: 800px) {
       font-size: 1.5rem;
     }

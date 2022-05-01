@@ -8,7 +8,6 @@ const url = "https://klu.bs/pfp/0x928267e7db3d173898553ff593a78719bb16929f/";
 const EvolTable = ({ name, data, tokenURI, info }) => {
   const datas = data;
   const tokenURIs = tokenURI;
-  console.log(tokenURIs);
   return (
     <div className="EvolTable">
       <div className="EvolTable__infoBox">

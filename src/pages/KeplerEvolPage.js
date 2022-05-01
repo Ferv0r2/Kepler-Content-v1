@@ -62,31 +62,34 @@ class KeplerEvolPage extends Component {
     }
   };
 
-  setURI = async (array) => {
-    const promises = [];
-    const urls = [];
+  // setURI = async (array) => {
+  //   const promises = [];
+  //   const urls = [];
 
-    const len = array.length;
-    for (let id = 0; id < len; id++) {
-      const promise = async (index) => {
-        const res = await fetch(array[index]);
-        let posts = await res.json();
+  //   console.log(array);
+  //   const len = array.length;
+  //   for (let id = 0; id < len; id++) {
+  //     const promise = async (index) => {
+  //       const res = await fetch(array[index]["value"]);
+  //       const posts = await res.json();
 
-        // const url = {};
-        // url["key"] = index;
-        // url["value"] = posts.image;
+  //       const url = {};
+  //       url["key"] = index;
+  //       url["value"] = posts.image;
 
-        urls.push(posts.image);
-      };
-      promises.push(promise(id));
-    }
-    await Promise.all(promises);
+  //       urls.push(posts.image);
+  //     };
+  //     promises.push(promise(id));
+  //   }
+  //   await Promise.all(promises);
 
-    // urls.sort((a, b) => {
-    //   return a - b;
-    // });
-    return urls;
-  };
+  //   urls.sort((a, b) => {
+  //     return a["key"] - b["key"];
+  //   });
+
+  //   console.log(urls);
+  //   return urls;
+  // };
 
   setTotal = async () => {
     const baseURI = "https://api.kepler-452b.net/evol/";
@@ -108,8 +111,7 @@ class KeplerEvolPage extends Component {
       const res = await fetch(evolURI);
       evol = await res.json();
     } catch {
-      // const evolURI = baseURI + `${yesterday}-daily`;
-      const evolURI = baseURI + "2022-04-30-daily";
+      const evolURI = baseURI + `${yesterday}-daily`;
       const res = await fetch(evolURI);
       evol = await res.json();
     }
@@ -133,12 +135,13 @@ class KeplerEvolPage extends Component {
     const len = await keplerContract.methods.balanceOf(account).call();
 
     const promises = [];
+
     const owners = [];
     const spawning_owners = [];
     const mix_total = [];
     const mix_owners = [];
 
-    const evolURI = [];
+    const ownerURI = [];
     const spawnURI = [];
     const mixURI = [];
     const mixEvolURI = [];
@@ -151,37 +154,55 @@ class KeplerEvolPage extends Component {
 
         if (evol["token"].includes(parseInt(own))) {
           const url = await keplerContract.methods.tokenURI(own).call();
-          evolURI.push(url);
+          const res = await fetch(url);
+          const post = await res.json();
+
           owners.push(own);
+          ownerURI.push(post.image);
         }
 
         if (evol["spawning"].includes(parseInt(own))) {
           const url = await keplerContract.methods.tokenURI(own).call();
-          spawnURI.push(url);
+          const res = await fetch(url);
+          const post = await res.json();
+
           spawning_owners.push(own);
+          spawnURI.push(post.image);
         }
 
         if (mix["mix"].includes(parseInt(own))) {
           const url = await keplerContract.methods.tokenURI(own).call();
-          mixURI.push(url);
-          mix_total.push(own);
+          const res = await fetch(url);
+          const post = await res.json();
+
+          owners.push(own);
+          ownerURI.push(post.image);
 
           if (evol["token"].includes(parseInt(own))) {
             const url = await keplerContract.methods.tokenURI(own).call();
-            mixEvolURI.push(url);
-            mix_owners.push(own);
+            const res = await fetch(url);
+            const post = await res.json();
+
+            spawning_owners.push(own);
+            spawnURI.push(post.image);
           }
         }
 
         if (mix["hmix"].includes(parseInt(own))) {
           const url = await keplerContract.methods.tokenURI(own).call();
-          mixURI.push(url);
+          const res = await fetch(url);
+          const post = await res.json();
+
           mix_total.push(own);
+          mixURI.push(post.image);
 
           if (evol["token"].includes(parseInt(own))) {
             const url = await keplerContract.methods.tokenURI(own).call();
-            mixEvolURI.push(url);
+            const res = await fetch(url);
+            const post = await res.json();
+
             mix_owners.push(own);
+            mixEvolURI.push(post.image);
           }
         }
       };
@@ -190,33 +211,34 @@ class KeplerEvolPage extends Component {
     }
     await Promise.all(promises);
 
-    const evolURIs = await this.setURI(evolURI);
-    const spawnURIs = await this.setURI(spawnURI);
-    const mixURIs = await this.setURI(mixURI);
-    const mixEvolURIs = await this.setURI(mixEvolURI);
+    // owners.values = await this.setURI(owners.values);
+    // spawning_owners.values = await this.setURI(spawning_owners.values);
+    // mix_total.values = await this.setURI(mix_total.values);
+    // mix_owners.values = await this.setURI(mix_owners.values);
 
-    owners.sort((a, b) => {
-      return a - b;
-    });
-    spawning_owners.sort((a, b) => {
-      return a - b;
-    });
-    mix_total.sort((a, b) => {
-      return a - b;
-    });
-    mix_owners.sort((a, b) => {
-      return a - b;
-    });
+    // owners.sort((a, b) => {
+    //   ownerURI[owners.indexOf(a)] - ownerURI[owners.indexOf(b)];
+    //   return a - b;
+    // });
+    // spawning_owners.sort((a, b) => {
+    //   return a - b;
+    // });
+    // mix_total.sort((a, b) => {
+    //   return a - b;
+    // });
+    // mix_owners.sort((a, b) => {
+    //   return a - b;
+    // });
 
     this.setState({
       data: [...owners],
       spawning: [...spawning_owners],
       mixOwn: [...mix_total],
       mix: [...mix_owners],
-      evolURIs: [...evolURIs],
-      spawnURIs: [...spawnURIs],
-      mixURIs: [...mixURIs],
-      mixEvolURIs: [...mixEvolURIs],
+      evolURIs: [...ownerURI],
+      spawnURIs: [...spawnURI],
+      mixURIs: [...mixURI],
+      mixEvolURIs: [...mixEvolURI],
       isLoading: false,
     });
   };
