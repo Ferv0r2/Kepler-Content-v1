@@ -26,7 +26,10 @@ class KeplerEvolPage extends Component {
       spawning: [],
       totalLoading: true,
       isLoading: true,
-      tokenURI: [],
+      evolURIs: [],
+      spawnURIs: [],
+      mixURIs: [],
+      mixEvolURIs: [],
       evol: [],
     };
   }
@@ -68,15 +71,20 @@ class KeplerEvolPage extends Component {
       const promise = async (index) => {
         const res = await fetch(array[index]);
         let posts = await res.json();
-        posts = ipfs + posts.image.substring(7);
-        console.log(posts);
 
-        urls.push(posts);
+        // const url = {};
+        // url["key"] = index;
+        // url["value"] = posts.image;
+
+        urls.push(posts.image);
       };
       promises.push(promise(id));
     }
     await Promise.all(promises);
 
+    // urls.sort((a, b) => {
+    //   return a - b;
+    // });
     return urls;
   };
 
@@ -129,7 +137,11 @@ class KeplerEvolPage extends Component {
     const spawning_owners = [];
     const mix_total = [];
     const mix_owners = [];
-    // const tokenLinks = [];
+
+    const evolURI = [];
+    const spawnURI = [];
+    const mixURI = [];
+    const mixEvolURI = [];
 
     for (let id = 0; id < len; id++) {
       const promise = async (index) => {
@@ -138,33 +150,37 @@ class KeplerEvolPage extends Component {
           .call();
 
         if (evol["token"].includes(parseInt(own))) {
-          // let url = await keplerContract.methods.tokenURI(index).call();
-          // url = ipfs + url.substring(7);
+          const url = await keplerContract.methods.tokenURI(own).call();
+          evolURI.push(url);
           owners.push(own);
         }
 
         if (evol["spawning"].includes(parseInt(own))) {
-          // let url = await keplerContract.methods.tokenURI(index).call();
-          // url = ipfs + url.substring(7);
+          const url = await keplerContract.methods.tokenURI(own).call();
+          spawnURI.push(url);
           spawning_owners.push(own);
         }
 
         if (mix["mix"].includes(parseInt(own))) {
-          // let url = await keplerContract.methods.tokenURI(index).call();
-          // url = ipfs + url.substring(7);
+          const url = await keplerContract.methods.tokenURI(own).call();
+          mixURI.push(url);
           mix_total.push(own);
 
           if (evol["token"].includes(parseInt(own))) {
+            const url = await keplerContract.methods.tokenURI(own).call();
+            mixEvolURI.push(url);
             mix_owners.push(own);
           }
         }
 
         if (mix["hmix"].includes(parseInt(own))) {
-          // let url = await keplerContract.methods.tokenURI(index).call();
-          // url = ipfs + url.substring(7);
+          const url = await keplerContract.methods.tokenURI(own).call();
+          mixURI.push(url);
           mix_total.push(own);
 
           if (evol["token"].includes(parseInt(own))) {
+            const url = await keplerContract.methods.tokenURI(own).call();
+            mixEvolURI.push(url);
             mix_owners.push(own);
           }
         }
@@ -174,7 +190,10 @@ class KeplerEvolPage extends Component {
     }
     await Promise.all(promises);
 
-    // const tokenURIs = await this.setURI(tokenLinks);
+    const evolURIs = await this.setURI(evolURI);
+    const spawnURIs = await this.setURI(spawnURI);
+    const mixURIs = await this.setURI(mixURI);
+    const mixEvolURIs = await this.setURI(mixEvolURI);
 
     owners.sort((a, b) => {
       return a - b;
@@ -194,7 +213,10 @@ class KeplerEvolPage extends Component {
       spawning: [...spawning_owners],
       mixOwn: [...mix_total],
       mix: [...mix_owners],
-      // tokenURI: this.state.tokenURI.concat(tokenURIs),
+      evolURIs: [...evolURIs],
+      spawnURIs: [...spawnURIs],
+      mixURIs: [...mixURIs],
+      mixEvolURIs: [...mixEvolURIs],
       isLoading: false,
     });
   };
@@ -226,6 +248,10 @@ class KeplerEvolPage extends Component {
       spawning,
       mixOwn,
       mix,
+      evolURIs,
+      spawnURIs,
+      mixURIs,
+      mixEvolURIs,
       evol,
       totalLoading,
       isLoading,
@@ -248,21 +274,25 @@ class KeplerEvolPage extends Component {
                   <EvolTable
                     name={"내 진화 번호"}
                     data={data}
+                    tokenURI={evolURIs}
                     info={"금일 진화한 NFT가 없습니다..."}
                   />
                   <EvolTable
                     name={"내 산란된 번호"}
                     data={spawning}
+                    tokenURI={spawnURIs}
                     info={"금일 산란된 NFT가 없습니다..."}
                   />
                   <EvolTable
                     name={"내 믹스 번호"}
                     data={mixOwn}
+                    tokenURI={mixURIs}
                     info={"믹스종 NFT가 없습니다..."}
                   />
                   <EvolTable
                     name={"내 믹스 진화 번호"}
                     data={mix}
+                    tokenURI={mixEvolURIs}
                     info={"금일 진화한 NFT가 없습니다..."}
                   />
                 </div>

@@ -2,7 +2,14 @@
   width: 100%;
   margin-top: 20px;
 
-  .NFTBox__Name {
+  .NFTBox__link {
+    position: relative;
+  }
+
+  .NFTBox__name {
+    position: absolute;
+    right: 0;
+    bottom: -250%;
     text-align: center;
     font-size: 1.7rem;
 
@@ -10,8 +17,8 @@
       font-size: 1.5rem;
     }
   }
-  .NFTBox__Img {
-    width: 180px;
+  .NFTBox__img {
+    width: 100%;
     padding-top: 20px;
     padding-bottom: 20px;
   }
