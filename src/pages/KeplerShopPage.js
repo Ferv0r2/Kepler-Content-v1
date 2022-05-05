@@ -383,11 +383,11 @@ class KeplerShopPage extends Component {
 
     console.log(hour, " ", minute);
     if (hour == 20 || hour == 21) {
-      if (hour == 20 && minute >= 30) {
-        alert("매일 20:30 ~ 21:30은 상점 점검 시간입니다 (진화 안정)");
+      if (hour == 20) {
+        alert("매일 20:00 ~ 21:30은 상점 점검 시간입니다 (진화 안정)");
         return;
       } else if (hour == 21 && minute <= 30) {
-        alert("매일 20:30 ~ 21:30은 상점 점검 시간입니다 (진화 안정)");
+        alert("매일 20:00 ~ 21:30은 상점 점검 시간입니다 (진화 안정)");
         return;
       }
     }
