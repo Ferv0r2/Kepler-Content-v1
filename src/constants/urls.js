@@ -9,3 +9,4 @@ export const KAKAO_PAGE = "https://open.kakao.com/o/gTLz1aTd";
 export const MEDIUM_PAGE = "https://medium.com/@Kepler-452b";
 export const TWITTER_PAGE = "https://twitter.com/Kepler_NFT";
 export const INSTAGRAM_PAGE = "https://www.instagram.com/kepler452b_toon/";
+export const GUIDE_BOOK = "http://docs.kepler-452b.net/";

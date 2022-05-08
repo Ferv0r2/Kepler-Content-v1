@@ -88,3 +88,33 @@
     }
   }
 }
+
+.guide_book {
+  width: 90%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+
+  > p {
+    font-size: 1.5rem;
+  }
+
+  a {
+    display: flex;
+    text-align: center;
+    margin: 2rem 3rem;
+    &:hover {
+      color: #d52e82;
+    }
+
+    > p {
+      margin: 1.5rem;
+    }
+
+    img {
+      width: 16px;
+      margin: auto;
+      padding-bottom: 5px;
+    }
+  }
+}

@@ -97,6 +97,13 @@ class KeplerMainPage extends Component {
                       <Link to="/governance">Governanace</Link>
                     </li>
                   </div>
+                  <div className="guide_book">
+                    <p>More Information?</p>
+                    <a href="https://docs.kepler-452b.net">
+                      <p>GUIDE BOOK</p>
+                      <img src="images/external.png" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
