@@ -35,6 +35,7 @@ class KeplerEvolPage extends Component {
   }
 
   componentDidMount() {
+    this.setTotal();
     this.loadAccountInfo();
     this.setNetworkInfo();
   }

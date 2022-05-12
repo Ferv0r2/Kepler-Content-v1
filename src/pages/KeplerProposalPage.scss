@@ -1,22 +1,95 @@
 .KeplerProposalPage {
   width: 100%;
   height: 100%;
+  color: $white;
+  background-color: #221b3d;
+  text-align: center;
 }
 
-.KeplerProposalPage__main {
-  width: 100%;
-  min-height: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding-top: 70px;
-  padding: 60px 10px;
+.container {
+  padding-top: 6rem;
+  padding-bottom: 10rem;
+}
 
-  h3 {
-    margin-bottom: 15px;
+.KeplerProposalPage__before {
+  width: 100%;
+  padding-bottom: 2rem;
+  margin: 0 auto;
+  max-width: 720px;
+
+  .prev {
+    position: relative;
+    text-align: left;
+
+    &:hover {
+      cursor: pointer;
+      color: #988bd4;
+    }
+
+    img {
+      width: 24rem;
+    }
+    p {
+      position: absolute;
+      top: 50%;
+      left: 19%;
+      transform: translate(-50%, -50%);
+      color: #bdbbc0;
+      font-size: 1.8rem;
+      font-family: "GmarketSansMedium";
+
+      &:hover {
+        cursor: pointer;
+        color: #988bd4;
+      }
+    }
   }
 }
 
-.KeplerProposalPage__content {
-  display: flex;
-  padding: 40px 0;
+.KeplerProposalPage__title {
+  padding: 5rem;
+  font-family: "GmarketSansBold";
+  font-size: 40px;
+  font-style: italic;
+}
+
+.KeplerProposalPage__contents {
+  padding: 4rem;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+  max-width: 720px;
+  margin: 0 auto;
+  border-radius: 4rem;
+  background-color: #06050c;
+  font-family: "GmarketSansMedium";
+
+  #gove-title {
+    padding: 1rem;
+  }
+
+  #gove-contents {
+    height: 20rem;
+    padding: 1rem;
+  }
+
+  #gove-summary {
+    height: 20rem;
+    padding: 1rem;
+  }
+
+  .btn-suggest {
+    background: #51408b;
+    border-radius: 0.2em;
+    margin: 5rem auto;
+    width: 22%;
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 2.2rem;
+    font-style: italic;
+    font-family: "GmarketSansBold";
+
+    &:hover {
+      background: #656565;
+    }
+  }
 }

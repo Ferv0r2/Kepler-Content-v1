@@ -1,12 +1,11 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import caver from "klaytn/caver";
 import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
 
 import Layout from "../components/Layout";
-import Nav from "components/SubNav";
-import Token from "components/Token";
-import VoteProposal from "../components/VoteProposal";
+import Nav from "components/Nav";
 
 import "./KeplerGovernancePage.scss";
 
@@ -33,8 +32,6 @@ class KeplerGovernancePage extends Component {
   componentDidMount() {
     this.loadAccountInfo();
     this.setNetworkInfo();
-    this.setLimit = setInterval(() => this.setProposal(), 1000);
-    this.setBN = setInterval(() => this.setBlockNumber(), 1000);
   }
 
   loadAccountInfo = async () => {
@@ -44,10 +41,8 @@ class KeplerGovernancePage extends Component {
       try {
         await klaytn.enable();
         this.setAccountInfo(klaytn);
-        this.setProposal(klaytn);
         klaytn.on("accountsChanged", () => {
           this.setAccountInfo(klaytn);
-          this.setProposal(klaytn);
         });
       } catch (error) {
         // console.log(error);
@@ -67,24 +62,23 @@ class KeplerGovernancePage extends Component {
     const account = klaytn.selectedAddress;
     const balance = await keplerContract.methods.balanceOf(account).call();
 
-    await this.setUrl(account);
     this.setState({
       account,
       balance: balance,
     });
   };
 
-  setBlockNumber = async () => {
-    const { proposal } = this.state;
-    const bn = await caver.klay.getBlockNumber();
-    let time =
-      parseInt(proposal.blockNumber) + parseInt(proposal.votePeriod) - bn;
+  // setBlockNumber = async () => {
+  //   const { proposal } = this.state;
+  //   const bn = await caver.klay.getBlockNumber();
+  //   let time =
+  //     parseInt(proposal.blockNumber) + parseInt(proposal.votePeriod) - bn;
 
-    if (time <= 0) time = 0;
-    this.setState({
-      blockNumber: time,
-    });
-  };
+  //   if (time <= 0) time = 0;
+  //   this.setState({
+  //     blockNumber: time,
+  //   });
+  // };
 
   setNetworkInfo = async () => {
     const { klaytn } = window;
@@ -96,209 +90,59 @@ class KeplerGovernancePage extends Component {
     );
   };
 
-  setUrl = async (account) => {
-    const urls = [];
-    const tokenNum = await keplerContract.methods
-      .tokenOfOwnerByIndex(account, 0)
-      .call();
-
-    let tokenIPFS = await keplerContract.methods.tokenURI(tokenNum).call();
-
-    tokenIPFS = ipfs + tokenIPFS.substring(7);
-
-    await fetch(tokenIPFS, {
-      headers: {
-        "Access-Control-Allow-Origin": "https://nft-kepler-452b.shop/",
-        "Access-Control-Allow-Credentials": "true",
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        return res.json();
-      })
-      .then((res) => {
-        const url = ipfs + res.image.substring(7);
-        urls.push(url);
-      });
-    this.setState({
-      tokenURI: urls[0],
-    });
-  };
-
-  setProposal = async () => {
-    const govContract = new caver.klay.Contract(
-      [
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "proposals",
-          outputs: [
-            {
-              internalType: "address",
-              name: "proposer",
-              type: "address",
-            },
-            {
-              internalType: "string",
-              name: "title",
-              type: "string",
-            },
-            {
-              internalType: "string",
-              name: "summary",
-              type: "string",
-            },
-            {
-              internalType: "string",
-              name: "content",
-              type: "string",
-            },
-            {
-              internalType: "string",
-              name: "note",
-              type: "string",
-            },
-            {
-              internalType: "uint256",
-              name: "blockNumber",
-              type: "uint256",
-            },
-            {
-              internalType: "address",
-              name: "proposenft",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "votePeriod",
-              type: "uint256",
-            },
-            {
-              internalType: "bool",
-              name: "canceled",
-              type: "bool",
-            },
-            {
-              internalType: "bool",
-              name: "executed",
-              type: "bool",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "forVotes",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "againstVotes",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "proposalId",
-              type: "uint256",
-            },
-          ],
-          name: "result",
-          outputs: [
-            {
-              internalType: "uint8",
-              name: "",
-              type: "uint8",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      govCA
-    );
-    const proindex = 7;
-    const proposals = await govContract.methods.proposals(proindex).call();
-    const agree = await govContract.methods.forVotes(proindex).call();
-    const degree = await govContract.methods.againstVotes(proindex).call();
-    const result = await govContract.methods.result(proindex).call();
-    this.setState({
-      proposal: proposals,
-      agree: agree,
-      degree: degree,
-      result: result,
-    });
-  };
-
   render() {
-    const {
-      account,
-      balance,
-      tokenURI,
-      proposal,
-      agree,
-      degree,
-      result,
-      isLoading,
-      blockNumber,
-    } = this.state;
+    const { account, isLoading } = this.state;
+
     return (
       <Layout>
         <div className="KeplerGovernancePage">
           <Nav address={account} load={isLoading} />
-          <Token address={account} balance={balance} tokenURI={tokenURI} />
+          <div className="KeplerGovernancePage__header">
+            <div className="KeplerGovernanacePage__title">
+              <h3>Kepler-452b</h3>
+              <h2>GOVERNANCE</h2>
+            </div>
+            <img src="images/governance/gove_icon.png" />
+          </div>
+          <div className="KeplerGovernancePage__proposal">
+            <div className="btn_proposal">
+              <Link to="/governance/proposal">제안 작성하기</Link>
+            </div>
+          </div>
           <div className="KeplerGovernancePage__main">
+            <div className="KeplerGovernancePage__infoBox">
+              <p>
+                케플러 식물 NFT를 소유중이라면 투표를 진행하고 제안을 작성할 수
+                있습니다.
+              </p>
+              <p>
+                더 나은 Kepler-452b 프로젝트를 위해 여러분의 의견을 보여주세요
+              </p>
+            </div>
             <div className="KeplerGovernancePage__contents">
-              <VoteProposal
-                proposal={proposal}
-                agree={agree}
-                degree={degree}
-                result={result}
-                blockNumber={blockNumber}
-              />
+              <div className="KeplerProposalList__title">LIST</div>
+              <div className="List__contents">
+                <div className="List__proposals">
+                  <div className="List__numbers">
+                    <ul>
+                      <li>2</li>
+                      <li>1</li>
+                    </ul>
+                  </div>
+                  <div className="List__titles">
+                    <ul>
+                      <li>인스타툰 골닷님 고정 출현</li>
+                      <li>Kepler-452b 프로젝트 거버넌스 홈페이지 안내문</li>
+                    </ul>
+                  </div>
+                  <div className="List__result">
+                    <ul>
+                      <li>투표중</li>
+                      <li>찬성</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

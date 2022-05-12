@@ -1,24 +1,176 @@
 .KeplerGovernancePage {
   width: 100%;
   height: 100%;
+  background-color: #221b3d;
+  font-family: "GmarketSansBold";
 }
 
-.KeplerGovernancePage__main {
+.KeplerGovernancePage__header {
+  position: relative;
   width: 100%;
   min-height: 100%;
-  max-width: 1280px;
+  max-width: 720px;
   margin: 0 auto;
-  padding-top: 70px;
-  padding: 60px 10px;
+  text-align: center;
+  color: $white;
+  font-style: italic;
+  text-shadow: 4px 0 10px #a590f1;
+  z-index: 1;
+
+  .KeplerGovernanacePage__title {
+    position: absolute;
+    top: 15rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
   h3 {
-    margin-bottom: 15px;
+    font-size: 4.2rem;
+  }
+
+  h2 {
+    font-size: 4.8rem;
+    margin: 3rem;
+  }
+
+  > img {
+    padding-top: 8rem;
+    width: 90%;
   }
 }
 
-.KeplerGovernancePage__content {
+.KeplerGovernancePage__proposal {
   position: relative;
+  width: 100%;
+  min-height: 100%;
+  max-width: 720px;
+  margin: -5rem auto;
+  font-size: 2.3rem;
+  font-style: italic;
+  text-align: center;
+  z-index: 10;
+
+  .btn_proposal {
+    width: 24rem;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 1em;
+    background: #0f0c1b;
+    color: #bdbdc0;
+
+    &:hover {
+      cursor: pointer;
+      color: #988bd4;
+    }
+
+    a:hover {
+      color: #988bd4;
+    }
+  }
+}
+
+.KeplerGovernancePage__main {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding-top: 70px;
+  padding: 60px 10px;
+  z-index: 1;
+}
+
+.KeplerGovernancePage__infoBox {
+  color: $white;
+  padding: 2rem;
+  font-size: 1.7rem;
+  font-family: "GmarketSansMedium";
+  font-style: italic;
+  text-align: center;
+
+  p {
+    padding: 1rem;
+  }
+}
+
+.KeplerGovernancePage__contents {
+  padding: 5rem 0;
+}
+
+.KeplerProposalList__title {
+  font-size: 2.7rem;
+  padding: 2rem;
+  text-align: center;
+  font-style: italic;
+  color: $white;
+}
+
+.List__contents {
+  border-radius: 3rem;
+  background-color: #0f0c1b;
+  color: $white;
+  padding: 2rem;
+  font-size: 2rem;
+  font-style: italic;
+  font-family: "GmarketSansMedium";
+}
+
+.List__proposals {
   display: flex;
-  padding: 40px 0;
-  overflow: auto;
+  justify-content: space-between;
+
+  > div {
+    margin: 1rem;
+
+    > ul > li {
+      // margin: 2rem;
+      padding: 1.5rem;
+    }
+  }
+
+  .List__numbers {
+    flex: 1;
+
+    > ul {
+      text-align: center;
+
+      > li:hover {
+        cursor: pointer;
+        color: #988bd4;
+      }
+    }
+  }
+
+  .List__titles {
+    flex: 7;
+    border-right: 2px solid #423061;
+    overflow: hidden;
+    white-space: nowrap;
+
+    > ul {
+      width: 90%;
+      overflow: hidden;
+      white-space: nowrap;
+
+      > li {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &:hover {
+          cursor: pointer;
+          color: #988bd4;
+        }
+      }
+    }
+  }
+
+  .List__result {
+    flex: 2;
+    color: #8c64c3;
+
+    > ul {
+      text-align: center;
+    }
+  }
 }
