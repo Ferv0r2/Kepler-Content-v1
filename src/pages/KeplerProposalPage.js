@@ -7,7 +7,6 @@ import Loading from "components/Loading";
 import Layout from "../components/Layout";
 import Nav from "components/SubNav";
 import VoteProposal from "components/VoteProposal";
-import Token from "components/Token";
 
 import "./KeplerProposalPage.scss";
 
