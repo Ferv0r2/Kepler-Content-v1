@@ -11,13 +11,7 @@ import "./KeplerShopPage.scss";
 
 const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
 const shopCA = "0xf5996a159872e016472756a7723915EEdC357f58";
-// const shopPotionCA = "0xf698A14330B3EE9fba7AD33064373a4284c4373f";
 const shopPotionCA = "0xA8B43d92754f42E16012207bc6368Ede70FC4615";
-
-// testnet
-// const nftCA = "0x6859c58A2DC2fE89421ef0387fE9dBaf4a4413C7";
-// const itemCA = "0xB1f01670A962a177Cd814450A89820EF79E62C02";
-// const shopCA = "0x85EBB98DA0947D4526B950b3bDE849bBe732Ee9B";
 
 class KeplerShopPage extends Component {
   constructor(props) {
