@@ -11,6 +11,8 @@ import "./KeplerShopPage.scss";
 
 const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
 const shopCA = "0xf5996a159872e016472756a7723915EEdC357f58";
+// const shopPotionCA = "0xf698A14330B3EE9fba7AD33064373a4284c4373f";
+const shopPotionCA = "0xA8B43d92754f42E16012207bc6368Ede70FC4615";
 
 // testnet
 // const nftCA = "0x6859c58A2DC2fE89421ef0387fE9dBaf4a4413C7";
@@ -27,6 +29,7 @@ class KeplerShopPage extends Component {
       balanceStone: 0,
       isLoading: true,
       currentIdx: 0,
+      currentPotionIdx: 0,
       level: 0,
       num1: "",
       num2: "",
@@ -188,9 +191,29 @@ class KeplerShopPage extends Component {
 
   nextSlide = () => {
     const { currentIdx } = this.state;
-    const slideCount = 2;
+    const slideCount = 3;
     if (currentIdx !== slideCount - 1) {
       this.moveSlide(currentIdx + 1);
+    }
+  };
+
+  movePotionSlide = (num) => {
+    const { currentPotionIdx } = this.state;
+    this.setState({ currentPotionIdx: num });
+  };
+
+  prevPotionSlide = () => {
+    const { currentPotionIdx } = this.state;
+    if (currentPotionIdx !== 0) {
+      this.movePotionSlide(currentPotionIdx - 1);
+    }
+  };
+
+  nextPotionSlide = () => {
+    const { currentPotionIdx } = this.state;
+    const slideCount = 5;
+    if (currentPotionIdx !== slideCount - 1) {
+      this.movePotionSlide(currentPotionIdx + 1);
     }
   };
 
@@ -264,12 +287,114 @@ class KeplerShopPage extends Component {
         console.log("error", error);
         alert("교환이 취소되었습니다.");
       });
+  };
 
-    this.setState({
-      num1: "",
-      num2: "",
-      num3: "",
-    });
+  sendTxUp = async (level) => {
+    const { account, balance, currentPotionIdx } = this.state;
+
+    if (balance < 6) {
+      alert("6 Klay 이상 소유해야 합니다 :)");
+      return;
+    }
+
+    const shopContract = new caver.klay.Contract(
+      [
+        {
+          constant: false,
+          inputs: [
+            {
+              internalType: "address",
+              name: "_account",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "upPotion",
+          outputs: [],
+          payable: false,
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      shopPotionCA
+    );
+
+    await shopContract.methods
+      .upPotion(account, currentPotionIdx + level)
+      .send({
+        from: account,
+        gas: 7500000,
+      })
+      .on("transactionHash", (transactionHash) => {
+        console.log("txHash", transactionHash);
+      })
+      .on("receipt", (receipt) => {
+        console.log("receipt", receipt);
+        this.setBalance();
+        alert("포션 업그레이드 완료!");
+      })
+      .on("error", (error) => {
+        console.log("error", error);
+        alert("교환이 취소되었습니다.");
+      });
+  };
+
+  sendTxMix = async (level) => {
+    const { account, balance, currentPotionIdx } = this.state;
+
+    if (balance < 6) {
+      alert("6 Klay 이상 소유해야 합니다 :)");
+      return;
+    }
+
+    const shopContract = new caver.klay.Contract(
+      [
+        {
+          constant: false,
+          inputs: [
+            {
+              internalType: "address",
+              name: "_account",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+          ],
+          name: "mixPotion",
+          outputs: [],
+          payable: false,
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ],
+      shopPotionCA
+    );
+
+    await shopContract.methods
+      .mixPotion(account, currentPotionIdx + level)
+      .send({
+        from: account,
+        gas: 7500000,
+      })
+      .on("transactionHash", (transactionHash) => {
+        console.log("txHash", transactionHash);
+      })
+      .on("receipt", (receipt) => {
+        console.log("receipt", receipt);
+        this.setBalance();
+        alert("포션 믹스 완료!");
+      })
+      .on("error", (error) => {
+        console.log("error", error);
+        alert("교환이 취소되었습니다.");
+      });
   };
 
   sendTxNFT = async (level) => {
@@ -530,6 +655,7 @@ class KeplerShopPage extends Component {
       balanceStone,
       isLoading,
       currentIdx,
+      currentPotionIdx,
       level,
       num1,
       num2,
@@ -537,7 +663,7 @@ class KeplerShopPage extends Component {
       urls,
       modalOpen,
     } = this.state;
-    const sell_item = ["곡괭이 교환", "열쇠 교환"];
+    const sell_item = ["곡괭이 교환", "열쇠 교환", "포션 교환"];
 
     return (
       <Layout>
@@ -795,6 +921,440 @@ class KeplerShopPage extends Component {
                     <div className="item_count">
                       <p>남은 NFT 갯수</p>
                       <p>{balanceNFT}</p>
+                    </div>
+                  </div>
+                ) : null}
+                {currentIdx == 2 && currentPotionIdx != 4 ? (
+                  <div className="table_contents">
+                    <div className="items">
+                      <div className="another">
+                        <p>현재 보고 있는 종</p>
+                        <div className="current_type">
+                          <span className="prev" onClick={this.prevPotionSlide}>
+                            <img src="images/shop/left.png" />
+                          </span>
+                          <p>{currentPotionIdx + 1} 종</p>
+                          <span className="next" onClick={this.nextPotionSlide}>
+                            <img src="images/shop/right.png" />
+                          </span>
+                        </div>
+                      </div>
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}S.png`}
+                          />
+                        </li>
+                        <li>
+                          <h2>X</h2>
+                        </li>
+                        <li>
+                          <h1>10</h1>
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}M.png`}
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxUp(20)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+
+                      <div
+                        className="item_m"
+                        onClick={(e) => this.sendTxUp(20)}
+                      >
+                        <p>교환</p>
+                      </div>
+                    </div>
+                    <div className="items">
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}M.png`}
+                          />
+                        </li>
+                        <li>
+                          <h2>X</h2>
+                        </li>
+                        <li>
+                          <h1>10</h1>
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}L.png`}
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxUp(10)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+
+                      <div
+                        className="item_m"
+                        onClick={(e) => this.sendTxUp(10)}
+                      >
+                        <p>교환</p>
+                      </div>
+                    </div>
+                    <div className="items">
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}S.png`}
+                          />
+                        </li>
+                        <li>
+                          <h2>+</h2>
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 2}S.png`}
+                          />
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 6}S.png`}
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxMix(20)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+
+                      <div
+                        className="item_m"
+                        onClick={(e) => this.sendTxMix(20)}
+                      >
+                        <p>교환</p>
+                      </div>
+                    </div>
+                    <div className="items">
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}M.png`}
+                          />
+                        </li>
+                        <li>
+                          <h2>+</h2>
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 2}M.png`}
+                          />
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 6}M.png`}
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxMix(10)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+
+                      <div
+                        className="item_m"
+                        onClick={(e) => this.sendTxMix(10)}
+                      >
+                        <p>교환</p>
+                      </div>
+                    </div>
+                    <div className="items">
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}L.png`}
+                          />
+                        </li>
+                        <li>
+                          <h2>+</h2>
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 2}L.png`}
+                          />
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 6}L.png`}
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxMix(0)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+
+                      <div
+                        className="item_m"
+                        onClick={(e) => this.sendTxMix(0)}
+                      >
+                        <p>교환</p>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+                {currentIdx == 2 && currentPotionIdx == 4 ? (
+                  <div className="table_contents">
+                    <div className="items">
+                      <div className="another">
+                        <p>현재 보고 있는 종</p>
+                        <div className="current_type">
+                          <span className="prev" onClick={this.prevPotionSlide}>
+                            <img src="images/shop/left.png" />
+                          </span>
+                          <p>{currentPotionIdx + 1} 종</p>
+                          <span className="next" onClick={this.nextPotionSlide}>
+                            <img src="images/shop/right.png" />
+                          </span>
+                        </div>
+                      </div>
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}S.png`}
+                          />
+                        </li>
+                        <li>
+                          <h2>X</h2>
+                        </li>
+                        <li>
+                          <h1>10</h1>
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}M.png`}
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxUp(20)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+
+                      <div
+                        className="item_m"
+                        onClick={(e) => this.sendTxUp(20)}
+                      >
+                        <p>교환</p>
+                      </div>
+                    </div>
+                    <div className="items">
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}M.png`}
+                          />
+                        </li>
+                        <li>
+                          <h2>X</h2>
+                        </li>
+                        <li>
+                          <h1>10</h1>
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}L.png`}
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxUp(10)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+
+                      <div
+                        className="item_m"
+                        onClick={(e) => this.sendTxUp(10)}
+                      >
+                        <p>교환</p>
+                      </div>
+                    </div>
+                    <div className="items">
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}S.png`}
+                          />
+                        </li>
+                        <li>
+                          <h2>+</h2>
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx - 3}S.png`}
+                          />
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 6}S.png`}
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxMix(20)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+
+                      <div
+                        className="item_m"
+                        onClick={(e) => this.sendTxMix(20)}
+                      >
+                        <p>교환</p>
+                      </div>
+                    </div>
+                    <div className="items">
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}M.png`}
+                          />
+                        </li>
+                        <li>
+                          <h2>+</h2>
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx - 3}M.png`}
+                          />
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 6}M.png`}
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxMix(10)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+
+                      <div
+                        className="item_m"
+                        onClick={(e) => this.sendTxMix(10)}
+                      >
+                        <p>교환</p>
+                      </div>
+                    </div>
+                    <div className="items">
+                      <ul className="item">
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 1}L.png`}
+                          />
+                        </li>
+                        <li>
+                          <h2>+</h2>
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx - 3}L.png`}
+                          />
+                        </li>
+                        <li>
+                          <img
+                            src="images/shop/after.png"
+                            className="item_arrow"
+                          />
+                        </li>
+                        <li className="item_bg">
+                          <img
+                            src={`images/items/${currentPotionIdx + 6}L.png`}
+                          />
+                        </li>
+                        <div
+                          className="item_border"
+                          onClick={(e) => this.sendTxMix(0)}
+                        >
+                          <p>교환</p>
+                        </div>
+                      </ul>
+
+                      <div
+                        className="item_m"
+                        onClick={(e) => this.sendTxMix(0)}
+                      >
+                        <p>교환</p>
+                      </div>
                     </div>
                   </div>
                 ) : null}

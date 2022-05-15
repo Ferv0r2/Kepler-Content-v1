@@ -96,15 +96,77 @@
 
   .table_contents {
     width: 100%;
-    height: 800px;
+    min-height: 800px;
     padding: 6rem;
     margin: 0 auto;
     font-size: 2.5rem;
     color: #fff;
 
     @media screen and (max-width: 720px) {
-      height: 1100px;
+      min-height: 1100px;
       padding: 2rem;
+    }
+
+    .items {
+      position: relative;
+
+      .another {
+        width: 30rem;
+        margin: 0 auto;
+        line-height: 2.5rem;
+        background-color: #2b2b2b;
+        border-radius: 1rem;
+        z-index: 3;
+
+        @media screen and (max-width: 720px) {
+          width: 20rem;
+          padding: 1rem;
+          margin-top: 3rem;
+        }
+
+        > p {
+          font-size: 2rem;
+          padding: 1rem;
+
+          @media screen and (max-width: 720px) {
+            font-size: 1.5rem;
+          }
+        }
+      }
+
+      .current_type {
+        display: flex;
+        width: 50%;
+        margin: 0 auto;
+        padding: 1rem;
+        text-align: center;
+
+        @media screen and (max-width: 720px) {
+          width: 80%;
+        }
+
+        p {
+          width: 30rem;
+          font-size: 1.8rem;
+          padding: 0.5rem;
+
+          @media screen and (max-width: 720px) {
+            width: 20rem;
+          }
+        }
+        span {
+          border: 1px solid #2b2b2b;
+          border-radius: 1rem;
+          padding: 0.5rem;
+          &:hover {
+            cursor: pointer;
+            border: 1px solid #fff;
+          }
+          img {
+            width: 2rem;
+          }
+        }
+      }
     }
 
     .item {
