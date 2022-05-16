@@ -22,12 +22,12 @@ const App = () => {
           <Route path="/mining" element={<KeplerMiningPage />} />
           <Route path="/evol" element={<KeplerEvolPage />} />
           <Route path="/shop" element={<KeplerShopPage />} />
-          {/* <Route path="/governance" element={<ErrorPage />} />
-          <Route path="/governance/proposal" element={<ErrorPage />} /> */}
+          <Route path="/governance" element={<ErrorPage />} />
+          <Route path="/governance/proposal" element={<ErrorPage />} />
           {/* <Route path="/governance" element={<Proposal />} /> */}
-          <Route path="/governance" element={<KeplerGovernancePage />} />
+          {/* <Route path="/governance" element={<KeplerGovernancePage />} />
           <Route path="/governance/:id" element={<KeplerGovernancePage />} />
-          <Route path="/governance/proposal" element={<KeplerProposalPage />} />
+          <Route path="/governance/proposal" element={<KeplerProposalPage />} /> */}
         </Routes>
       </div>
     </Router>
