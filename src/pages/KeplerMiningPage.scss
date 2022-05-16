@@ -221,6 +221,10 @@
     font-family: "GmarketSansBold";
     font-size: 2rem;
     cursor: pointer;
+
+    &:hover {
+      background: #94889e;
+    }
   }
 
   p {
