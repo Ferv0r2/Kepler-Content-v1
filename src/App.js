@@ -7,7 +7,7 @@ import KeplerEvolPage from "pages/KeplerEvolPage";
 import KeplerShopPage from "pages/KeplerShopPage";
 import KeplerGovernancePage from "pages/KeplerGovernancePage";
 import KeplerProposalPage from "pages/KeplerProposalPage";
-// import Proposal from "components/Proposal";
+import Proposal from "components/Proposal";
 import ErrorPage from "pages/Page404";
 
 import "./App.scss";
@@ -22,12 +22,12 @@ const App = () => {
           <Route path="/mining" element={<KeplerMiningPage />} />
           <Route path="/evol" element={<KeplerEvolPage />} />
           <Route path="/shop" element={<KeplerShopPage />} />
-          <Route path="/governance" element={<ErrorPage />} />
-          <Route path="/governance/proposal" element={<ErrorPage />} />
+          {/* <Route path="/governance" element={<ErrorPage />} />
+          <Route path="/governance/proposal" element={<ErrorPage />} /> */}
           {/* <Route path="/governance" element={<Proposal />} /> */}
-          {/* <Route path="/governance" element={<KeplerGovernancePage />} />
-          <Route path="/governance/:id" element={<KeplerGovernancePage />} />
-          <Route path="/governance/proposal" element={<KeplerProposalPage />} /> */}
+          <Route path="/governance" element={<KeplerGovernancePage />} />
+          <Route path="/governance/*" element={<Proposal />} />
+          <Route path="/proposal" element={<KeplerProposalPage />} />
         </Routes>
       </div>
     </Router>

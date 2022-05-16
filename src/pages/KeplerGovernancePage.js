@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import caver from "klaytn/caver";
 import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
@@ -92,6 +92,7 @@ class KeplerGovernancePage extends Component {
 
   render() {
     const { account, isLoading } = this.state;
+    const ids = [1, 2];
 
     return (
       <Layout>
@@ -106,7 +107,7 @@ class KeplerGovernancePage extends Component {
           </div>
           <div className="KeplerGovernancePage__proposal">
             <div className="btn_proposal">
-              <Link to="/governance/proposal">제안 작성하기</Link>
+              <Link to="/proposal">제안 작성하기</Link>
             </div>
           </div>
           <div className="KeplerGovernancePage__main">
@@ -131,8 +132,16 @@ class KeplerGovernancePage extends Component {
                   </div>
                   <div className="List__titles">
                     <ul>
-                      <li>인스타툰 골닷님 고정 출현</li>
-                      <li>Kepler-452b 프로젝트 거버넌스 홈페이지 안내문</li>
+                      <li>
+                        <Link to={`/governance/${ids[1]}`}>
+                          인스타툰 골닷님 고정 출현
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to={`/governance/${ids[0]}`}>
+                          Kepler-452b 프로젝트 거버넌스 홈페이지 안내문
+                        </Link>
+                      </li>
                     </ul>
                   </div>
                   <div className="List__result">
