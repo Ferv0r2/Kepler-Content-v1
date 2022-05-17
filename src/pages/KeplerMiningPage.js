@@ -8,7 +8,7 @@ import ModalMining from "components/ModalMining";
 
 import "./KeplerMiningPage.scss";
 
-const miningCA = "0x8aa421816B3b003854789ee6bC717DfFF54363aF";
+const miningCA = "0xe87FAbF13663E5Aa2639B5028b0e22e746a28aCC";
 const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
 
 class KeplerMiningPage extends Component {
@@ -265,10 +265,7 @@ class KeplerMiningPage extends Component {
   };
 
   sendTxUse = async () => {
-    const { use, account, currentIdx } = this.state;
-    if (use == true) {
-      return;
-    }
+    const { account, currentIdx } = this.state;
 
     const num = await this.gachaId();
     const miningContract = new caver.klay.Contract(
@@ -310,7 +307,6 @@ class KeplerMiningPage extends Component {
       })
       .on("transactionHash", (transactionHash) => {
         console.log("txHash", transactionHash);
-        this.setState({ use: true });
       })
       .on("receipt", (receipt) => {
         console.log("receipt", receipt);
@@ -321,8 +317,6 @@ class KeplerMiningPage extends Component {
         this.setState({ use: false });
         alert("믹스스톤 채굴이 취소되었습니다.");
       });
-
-    // this.setState({ use: true });
   };
 
   sendTxItem = async () => {
@@ -370,11 +364,41 @@ class KeplerMiningPage extends Component {
           stateMutability: "nonpayable",
           type: "function",
         },
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          name: "payers",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
       ],
       miningCA
     );
 
-    const useItem = await this.sendTxUse();
+    const payer = await miningContract.methods
+      .payers(currentIdx, account)
+      .call();
+
+    if (!payer) await this.sendTxUse();
 
     const { use, gachaItem, counter, getBack } = this.state;
 
@@ -413,9 +437,6 @@ class KeplerMiningPage extends Component {
     } else {
       alert("믹스스톤 채굴이 취소되었습니다.");
     }
-    // this.setState({
-    //   modalOpen: true,
-    // });
   };
 
   closeModal = () => {
