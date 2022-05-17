@@ -8,7 +8,7 @@ import ModalMining from "components/ModalMining";
 
 import "./KeplerMiningPage.scss";
 
-const miningCA = "0xe87FAbF13663E5Aa2639B5028b0e22e746a28aCC";
+const miningCA = "0x9da24c77C9C2988338ab38Ae14376b6AD868601C";
 const itemCA = "0x31756CAa3363516C01843F96f6AA7d9c922163b3";
 
 class KeplerMiningPage extends Component {
@@ -20,9 +20,7 @@ class KeplerMiningPage extends Component {
       pickaxe: 0,
       isLoading: true,
       currentIdx: 0,
-      limit: 0,
-      use: false,
-      gachaItem: [],
+      gachaItems: 35,
       counter: 0,
       getBack: 0,
       modalOpen: false,
@@ -119,7 +117,6 @@ class KeplerMiningPage extends Component {
   };
 
   moveSlide = (num) => {
-    const { currentIdx } = this.state;
     if (window.innerWidth <= 540) {
       this.ref.current.style.left = -num * 370 + "px";
     } else if (window.innerWidth <= 640) {
@@ -192,7 +189,7 @@ class KeplerMiningPage extends Component {
   gachaId = async () => {
     const { currentIdx } = this.state;
 
-    let pointer = [];
+    let pointer = 35;
     let counter = 0;
     let status = 1;
 
@@ -208,60 +205,42 @@ class KeplerMiningPage extends Component {
         status = 0;
       }
       if (itemGacha < 0.8) {
-        pointer.push(itemNum);
-        pointer.push(itemNum);
-        pointer.push(itemNum);
+        pointer = itemNum;
         counter = 3;
       } else if (itemGacha < 10.4) {
-        pointer.push(itemNum);
-        pointer.push(itemNum);
-        pointer.push(35);
+        pointer = itemNum;
         counter = 2;
       } else if (itemGacha < 48.8) {
-        pointer.push(itemNum);
-        pointer.push(35);
-        pointer.push(35);
+        pointer = itemNum;
         counter = 1;
-      } else {
-        pointer.push(35);
-        pointer.push(35);
-        pointer.push(35);
       }
     } else if (currentIdx == 1) {
       if (destruct < 55) {
         status = 0;
       }
       if (itemGacha < 4) {
-        pointer.push(itemNum);
-        pointer.push(itemNum);
+        pointer = itemNum;
         counter = 2;
       } else if (itemGacha < 32) {
-        pointer.push(itemNum);
-        pointer.push(35);
+        pointer = itemNum;
         counter = 1;
-      } else {
-        pointer.push(35);
-        pointer.push(35);
       }
     } else if (currentIdx == 0) {
       if (destruct < 70) {
         status = 0;
       }
       if (itemGacha < 20) {
-        pointer.push(itemNum);
+        pointer = itemNum;
         counter = 1;
-      } else {
-        pointer.push(35);
       }
     } else {
       console.log("error");
     }
 
     this.setState({
-      gachaItem: pointer,
-      counter: counter,
       getBack: status,
     });
+    return [pointer, counter];
   };
 
   sendTxUse = async () => {
@@ -285,7 +264,12 @@ class KeplerMiningPage extends Component {
             },
             {
               internalType: "uint256",
-              name: "_destructCount",
+              name: "_tokenId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_count",
               type: "uint256",
             },
           ],
@@ -295,12 +279,43 @@ class KeplerMiningPage extends Component {
           stateMutability: "nonpayable",
           type: "function",
         },
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          name: "gachas",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "counter",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
       ],
       miningCA
     );
 
-    const useItem = await miningContract.methods
-      .usePickaxe(account, currentIdx, 1)
+    await miningContract.methods
+      .usePickaxe(account, currentIdx, num[0], num[1])
       .send({
         from: account,
         gas: 7500000,
@@ -310,11 +325,9 @@ class KeplerMiningPage extends Component {
       })
       .on("receipt", (receipt) => {
         console.log("receipt", receipt);
-        this.setState({ use: true });
       })
       .on("error", (error) => {
         console.log("error", error);
-        this.setState({ use: false });
         alert("믹스스톤 채굴이 취소되었습니다.");
       });
   };
@@ -335,33 +348,34 @@ class KeplerMiningPage extends Component {
     const miningContract = new caver.klay.Contract(
       [
         {
-          constant: false,
+          constant: true,
           inputs: [
             {
               internalType: "uint256",
-              name: "_id",
+              name: "",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          name: "gachas",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
               type: "uint256",
             },
             {
               internalType: "uint256",
-              name: "_mixId",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "_mixCount",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "_getBackCount",
+              name: "counter",
               type: "uint256",
             },
           ],
-          name: "mining",
-          outputs: [],
           payable: false,
-          stateMutability: "nonpayable",
+          stateMutability: "view",
           type: "function",
         },
         {
@@ -390,6 +404,26 @@ class KeplerMiningPage extends Component {
           stateMutability: "view",
           type: "function",
         },
+        {
+          constant: false,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_getBackCount",
+              type: "uint256",
+            },
+          ],
+          name: "mining",
+          outputs: [],
+          payable: false,
+          stateMutability: "nonpayable",
+          type: "function",
+        },
       ],
       miningCA
     );
@@ -400,43 +434,46 @@ class KeplerMiningPage extends Component {
 
     if (!payer) await this.sendTxUse();
 
-    const { use, gachaItem, counter, getBack } = this.state;
+    const gacha = await miningContract.methods
+      .gachas(currentIdx, account)
+      .call();
 
-    if (use) {
-      await new Promise((resolve) => {
-        setTimeout(async () => {
-          await miningContract.methods
-            .mining(currentIdx, gachaItem[0], counter, getBack)
-            .send({
-              from: account,
-              gas: 7500000,
-            })
-            .on("transactionHash", (transactionHash) => {
-              console.log("txHash", transactionHash);
-              this.setState({ txHash: transactionHash });
-            })
-            .on("receipt", (receipt) => {
-              console.log("receipt", receipt);
-              this.setBalance(currentIdx);
-              this.setState({
-                receipt: JSON.stringify(receipt),
-                modalOpen: true,
-                use: false,
-              });
-            })
-            .on("error", (error) => {
-              console.log("error", error);
-              alert("믹스스톤 채굴이 취소되었습니다.");
-              this.setState({
-                error: error.message,
-              });
+    console.log(gacha);
+
+    const { getBack } = this.state;
+
+    await new Promise((resolve) => {
+      setTimeout(async () => {
+        await miningContract.methods
+          .mining(currentIdx, getBack)
+          .send({
+            from: account,
+            gas: 7500000,
+          })
+          .on("transactionHash", (transactionHash) => {
+            console.log("txHash", transactionHash);
+            this.setState({ txHash: transactionHash });
+          })
+          .on("receipt", (receipt) => {
+            console.log("receipt", receipt);
+            this.setBalance(currentIdx);
+            this.setState({
+              receipt: JSON.stringify(receipt),
+              modalOpen: true,
+              gachaItems: gacha[0],
+              counter: gacha[1],
             });
-          resolve();
-        }, 500);
-      });
-    } else {
-      alert("믹스스톤 채굴이 취소되었습니다.");
-    }
+          })
+          .on("error", (error) => {
+            console.log("error", error);
+            alert("믹스스톤 채굴이 취소되었습니다.");
+            this.setState({
+              error: error.message,
+            });
+          });
+        resolve();
+      }, 200);
+    });
   };
 
   closeModal = () => {
@@ -448,7 +485,6 @@ class KeplerMiningPage extends Component {
     }
     this.setState({
       modalOpen: false,
-      use: false,
     });
   };
 
@@ -458,8 +494,8 @@ class KeplerMiningPage extends Component {
       pickaxe,
       isLoading,
       currentIdx,
-      destroy,
-      gachaItem,
+      gachaItems,
+      counter,
       modalOpen,
     } = this.state;
     const boxs = ["하급 곡괭이", "중급 곡괭이", "상급 곡괭이"];
@@ -507,8 +543,8 @@ class KeplerMiningPage extends Component {
                   <ModalMining
                     open={modalOpen}
                     currentIdx={currentIdx}
-                    gachaItem={gachaItem}
-                    destroy={destroy}
+                    gachaItems={gachaItems}
+                    counter={counter}
                     close={this.closeModal}
                   />
                   <span className="prev">

@@ -8,12 +8,23 @@ const ModalMining = ({
   close,
   header,
   currentIdx,
-  destory,
-  gachaItem,
+  gachaItems,
+  counter,
 }) => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
 
   const mining_Type = ["mining_normal", "mining_rare", "mining_unique"];
+
+  console.log(gachaItems);
+  const gachaItem = [35, 35, 35];
+  const gacha = () => {
+    for (let i = 0; i < counter; i++) {
+      gachaItem[i] = gachaItems;
+    }
+  };
+
+  gacha();
+  console.log(gachaItem);
 
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
@@ -33,8 +44,7 @@ const ModalMining = ({
                 <video
                   muted="muted"
                   autoPlay="autoPlay"
-                  poster={`../video/mining.png`}
-                >
+                  poster={`../video/mining.png`}>
                   <source src={`../video/${mining_Type[currentIdx]}.mov`} />
                 </video>
                 <p>믹스스톤 채굴 중 입니다...</p>
