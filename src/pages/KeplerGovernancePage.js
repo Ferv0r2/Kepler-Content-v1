@@ -1,39 +1,35 @@
 import React, { Component } from "react";
 import { Link, useHistory } from "react-router-dom";
 import caver from "klaytn/caver";
-import keplerContract from "klaytn/KeplerContract";
 // import fetch from "node-fetch";
 
 import Layout from "../components/Layout";
 import Nav from "components/Nav";
 
 import "./KeplerGovernancePage.scss";
-import { data } from "jquery";
 
-const ipfs = "https://ipfs.infura.io/ipfs/";
-const govCA = "0x336511B5505935d7edB3CbC04a50C7fEc06caFe2";
+const govCA = "0x8ee0Be3319D99E15EB7Ec69DF68b010948bb17B4";
 
 class KeplerGovernancePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       account: "",
-      balance: 0,
       network: null,
       isLoading: true,
       tokenURI: "",
-      proposalCount: 0,
       proposals: [],
+      status: [],
       agree: 0,
       degree: 0,
       result: "",
-      blockNumber: 0,
     };
   }
 
   componentDidMount() {
     this.loadAccountInfo();
     this.setNetworkInfo();
+    this.setProposal();
   }
 
   loadAccountInfo = async () => {
@@ -62,25 +58,11 @@ class KeplerGovernancePage extends Component {
     if (klaytn === undefined) return;
 
     const account = klaytn.selectedAddress;
-    const balance = await keplerContract.methods.balanceOf(account).call();
 
     this.setState({
       account,
-      balance: balance,
     });
   };
-
-  // setBlockNumber = async () => {
-  //   const { proposal } = this.state;
-  //   const bn = await caver.klay.getBlockNumber();
-  //   let time =
-  //     parseInt(proposal.blockNumber) + parseInt(proposal.votePeriod) - bn;
-
-  //   if (time <= 0) time = 0;
-  //   this.setState({
-  //     blockNumber: time,
-  //   });
-  // };
 
   setProposal = async () => {
     const govContract = new caver.klay.Contract(
@@ -112,6 +94,11 @@ class KeplerGovernancePage extends Component {
           name: "proposals",
           outputs: [
             {
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+            {
               internalType: "address",
               name: "proposer",
               type: "address",
@@ -123,12 +110,12 @@ class KeplerGovernancePage extends Component {
             },
             {
               internalType: "string",
-              name: "summary",
+              name: "content",
               type: "string",
             },
             {
               internalType: "string",
-              name: "content",
+              name: "summary",
               type: "string",
             },
             {
@@ -156,21 +143,46 @@ class KeplerGovernancePage extends Component {
           stateMutability: "view",
           type: "function",
         },
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_proposalId",
+              type: "uint256",
+            },
+          ],
+          name: "status",
+          outputs: [
+            {
+              internalType: "uint8",
+              name: "",
+              type: "uint8",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
       ],
       govCA
     );
 
     const proposals = [];
+    const status = [];
     const proposalCount = await govContract.methods.proposalCount().call();
 
     for (let i = 0; i < proposalCount; i++) {
       const proposal = await govContract.methods.proposals(i).call();
       proposals.push(proposal);
+
+      const stat = await govContract.methods.status(i).call();
+      status.push(stat);
     }
+
     this.setState({
-      proposalCount,
       proposals,
-      // isLoading: false,
+      status,
     });
   };
 
@@ -185,13 +197,26 @@ class KeplerGovernancePage extends Component {
   };
 
   render() {
-    const { account, isLoading, proposalCount, proposals } = this.state;
-    // const ids = [1, 2];
+    const { account, isLoading, proposals, status } = this.state;
 
-    const ids = proposals.map((k, v) => <li>{k}</li>);
+    const result = ["투표중", "투표 완료", "투표 취소"];
+    const ids = proposals.map((id) => (
+      <li key={id.id}>
+        <Link to={`/governance/${parseInt(id.id) + 1}`}>
+          {parseInt(id.id) + 1}
+        </Link>
+      </li>
+    ));
+    const titles = proposals.map((id) => (
+      <li key={id.id}>
+        <Link to={`/governance/${parseInt(id.id) + 1}`}>{id.title}</Link>
+      </li>
+    ));
 
-    console.log(proposals);
-    console.log(ids);
+    const stats = status.map((stat, index) => (
+      <li key={index}>{result[stat]}</li>
+    ));
+
     return (
       <Layout>
         <div className="KeplerGovernancePage">
@@ -223,30 +248,16 @@ class KeplerGovernancePage extends Component {
               <div className="List__contents">
                 <div className="List__proposals">
                   <div className="List__numbers">
-                    <ul>
-                      {ids}
-                      {/* <li>2</li>
-                      <li>1</li> */}
-                    </ul>
+                    <ul>{ids}</ul>
                   </div>
                   <div className="List__titles">
-                    <ul>
-                      <li>
-                        <Link to={`/governance/${ids[1]}`}>
-                          인스타툰 골닷님 고정 출현
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to={`/governance/${ids[0]}`}>
-                          Kepler-452b 프로젝트 거버넌스 홈페이지 안내문
-                        </Link>
-                      </li>
-                    </ul>
+                    <ul>{titles}</ul>
                   </div>
                   <div className="List__result">
                     <ul>
-                      <li>투표중</li>
-                      <li>찬성</li>
+                      {stats}
+                      {/* <li>투표중</li>
+                      <li>찬성</li> */}
                     </ul>
                   </div>
                 </div>

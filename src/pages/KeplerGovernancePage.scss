@@ -134,7 +134,7 @@
     > ul {
       text-align: center;
 
-      > li:hover {
+      > li > a:hover {
         cursor: pointer;
         color: #988bd4;
       }
