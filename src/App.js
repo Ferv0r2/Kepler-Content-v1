@@ -24,7 +24,6 @@ const App = () => {
           <Route path="/shop" element={<KeplerShopPage />} />
           <Route path="/governance" element={<ErrorPage />} />
           <Route path="/governance/proposal" element={<ErrorPage />} />
-          {/* <Route path="/governance" element={<Proposal />} /> */}
           {/* <Route path="/governance" element={<KeplerGovernancePage />} />
           <Route path="/governance/*" element={<Proposal />} />
           <Route path="/proposal" element={<KeplerProposalPage />} /> */}

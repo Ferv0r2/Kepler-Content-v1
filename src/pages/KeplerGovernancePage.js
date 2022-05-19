@@ -8,9 +8,10 @@ import Layout from "../components/Layout";
 import Nav from "components/Nav";
 
 import "./KeplerGovernancePage.scss";
+import { data } from "jquery";
 
 const ipfs = "https://ipfs.infura.io/ipfs/";
-const govCA = "0xC423E1f75C3676AE3b52BA55F72b1d2b8F44b3AD";
+const govCA = "0x336511B5505935d7edB3CbC04a50C7fEc06caFe2";
 
 class KeplerGovernancePage extends Component {
   constructor(props) {
@@ -21,7 +22,8 @@ class KeplerGovernancePage extends Component {
       network: null,
       isLoading: true,
       tokenURI: "",
-      proposal: {},
+      proposalCount: 0,
+      proposals: [],
       agree: 0,
       degree: 0,
       result: "",
@@ -80,6 +82,98 @@ class KeplerGovernancePage extends Component {
   //   });
   // };
 
+  setProposal = async () => {
+    const govContract = new caver.klay.Contract(
+      [
+        {
+          constant: true,
+          inputs: [],
+          name: "proposalCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "proposals",
+          outputs: [
+            {
+              internalType: "address",
+              name: "proposer",
+              type: "address",
+            },
+            {
+              internalType: "string",
+              name: "title",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "summary",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "content",
+              type: "string",
+            },
+            {
+              internalType: "uint256",
+              name: "blockNumber",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "proposenft",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "votePeriod",
+              type: "uint256",
+            },
+            {
+              internalType: "bool",
+              name: "canceled",
+              type: "bool",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      govCA
+    );
+
+    const proposals = [];
+    const proposalCount = await govContract.methods.proposalCount().call();
+
+    for (let i = 0; i < proposalCount; i++) {
+      const proposal = await govContract.methods.proposals(i).call();
+      proposals.push(proposal);
+    }
+    this.setState({
+      proposalCount,
+      proposals,
+      // isLoading: false,
+    });
+  };
+
   setNetworkInfo = async () => {
     const { klaytn } = window;
     if (klaytn === undefined) return;
@@ -91,9 +185,13 @@ class KeplerGovernancePage extends Component {
   };
 
   render() {
-    const { account, isLoading } = this.state;
-    const ids = [1, 2];
+    const { account, isLoading, proposalCount, proposals } = this.state;
+    // const ids = [1, 2];
 
+    const ids = proposals.map((k, v) => <li>{k}</li>);
+
+    console.log(proposals);
+    console.log(ids);
     return (
       <Layout>
         <div className="KeplerGovernancePage">
@@ -126,8 +224,9 @@ class KeplerGovernancePage extends Component {
                 <div className="List__proposals">
                   <div className="List__numbers">
                     <ul>
-                      <li>2</li>
-                      <li>1</li>
+                      {ids}
+                      {/* <li>2</li>
+                      <li>1</li> */}
                     </ul>
                   </div>
                   <div className="List__titles">
