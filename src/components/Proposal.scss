@@ -49,7 +49,7 @@
 .Proposal__title {
   padding: 1rem;
   font-family: "GmarketSansBold";
-  font-size: 2.4rem;
+  font-size: 2.6rem;
   font-style: italic;
   line-height: 4rem;
 }
@@ -69,6 +69,12 @@
     font-family: "GmarketSansBold";
     padding: 2.5rem;
   }
+}
+
+.Proposal__info {
+  color: #9d9d9d;
+  margin-top: -2rem;
+  padding-bottom: 2rem;
 }
 
 .Proposal__status {
@@ -91,6 +97,15 @@
   .Proposal__period {
     flex: 3;
     border-right: 2px solid #616165;
+
+    > div {
+      display: flex;
+      width: 100%;
+
+      > p {
+        flex: 1;
+      }
+    }
   }
   .Proposal__vote {
     display: flex;
@@ -120,6 +135,7 @@
 .Proposal__detail {
   color: #afafaf;
   padding-bottom: 2rem;
+  min-height: 200px;
 
   > p {
     font-size: 1.5rem;
@@ -173,13 +189,13 @@
   width: 100%;
   display: flex;
 
-  div {
+  > div {
     flex: 1;
     width: 100%;
+    margin: 1rem;
+    justify-items: baseline;
   }
-
   img {
     width: 90%;
-    margin: 2rem auto;
   }
 }

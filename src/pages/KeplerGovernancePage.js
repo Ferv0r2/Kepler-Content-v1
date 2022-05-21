@@ -254,11 +254,7 @@ class KeplerGovernancePage extends Component {
                     <ul>{titles}</ul>
                   </div>
                   <div className="List__result">
-                    <ul>
-                      {stats}
-                      {/* <li>투표중</li>
-                      <li>찬성</li> */}
-                    </ul>
+                    <ul>{stats}</ul>
                   </div>
                 </div>
               </div>

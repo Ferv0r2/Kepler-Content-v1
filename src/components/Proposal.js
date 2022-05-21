@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import Nav from "components/Nav";
+import NFTBox from "./NFTBox";
 
 // import keplerContract from "klaytn/KeplerContract";
 
@@ -16,6 +17,9 @@ const Proposal = () => {
   const [network, setNetwork] = useState(null);
   const [status, setStatus] = useState(0);
   const [proposal, setProposal] = useState({});
+  const [blockNum, setBlockNumber] = useState(0);
+  const [times, setTimer] = useState("");
+  const [tkURI, setTokenURIs] = useState([]);
   const params = useParams();
   const proposal_id = parseInt(params.id) - 1;
   // const location = useLocation();
@@ -24,6 +28,10 @@ const Proposal = () => {
   useEffect(() => {
     loadAccountInfo();
     setNetworkInfo();
+    setProposalInfo();
+  }, []);
+
+  useEffect(() => {
     setProposalInfo();
   });
 
@@ -75,14 +83,84 @@ const Proposal = () => {
           stateMutability: "view",
           type: "function",
         },
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "index",
+              type: "uint256",
+            },
+          ],
+          name: "tokenOfOwnerByIndex",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "tokenURI",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
       ],
       nftCA
     );
 
     const accounts = klaytn.selectedAddress;
-    const balances = keplerContract.methods.balanceOf(account).call();
+    const balances = await keplerContract.methods.balanceOf(accounts).call();
+
+    const tokenURIs = [];
+
+    const promises = [];
+    for (let id = 0; id < balances; id++) {
+      if (id > 4) {
+        break;
+      }
+      const promise = async (index) => {
+        const tokenId = await keplerContract.methods
+          .tokenOfOwnerByIndex(accounts, index)
+          .call();
+
+        const url = await keplerContract.methods.tokenURI(tokenId).call();
+        const res = await fetch(url);
+        const post = await res.json();
+        tokenURIs.push(post.image);
+      };
+      promises.push(promise(id));
+    }
+    await Promise.all(promises);
+
     setAccount(accounts);
     setBalance(balances);
+    setTokenURIs(tokenURIs);
     setLoading(false);
   };
 
@@ -182,67 +260,62 @@ const Proposal = () => {
       ],
       govCA
     );
-    console.log(params);
-    console.log(proposal_id);
-    console.log(typeof proposal_id);
 
     const stat = await govContract.methods.status(proposal_id).call();
     const propose = await govContract.methods.proposals(proposal_id).call();
+
+    const bn = await caver.klay.getBlockNumber();
+    let time =
+      parseInt(propose.blockNumber) + parseInt(propose.votePeriod) - bn;
+    if (time <= 0) time = 0;
+
+    let hour =
+      parseInt(time / 3600) < 10
+        ? "0" + parseInt(time / 3600)
+        : parseInt(time / 3600);
+    let min =
+      parseInt((time % 3600) / 60) < 10
+        ? "0" + parseInt((time % 3600) / 60)
+        : parseInt((time % 3600) / 60);
+    let sec = time % 60 < 10 ? "0" + (time % 60) : time % 60;
+
+    const result = hour + ":" + min + ":" + sec;
     setStatus(stat);
     setProposal(propose);
+    setBlockNumber(time);
+    setTimer(result);
   };
 
-  // const setBlockNumber = async () => {
-  //   const { proposal } = this.state;
-  //   const bn = await caver.klay.getBlockNumber();
-  //   let time =
-  //     parseInt(proposal.blockNumber) + parseInt(proposal.votePeriod) - bn;
+  const signTransaction = async () => {
+    const message = `투표에 참여해주셔서 감사합니다.
 
-  //   if (time <= 0) time = 0;
-  //   this.setState({
-  //     blockNumber: time,
-  //   });
-  // };
+    ${proposal_id + 1}번 제안
+    ${proposal.title}에 대한 투표입니다.
 
-  // const signTransaction = async () => {
-  //   const { title, content, summary } = this.state;
-  //   const { address } = this.props;
+    보유 수량만큼 투표됩니다. 한 번 투표하면 재투표가 불가합니다.
+    
+    본 메세지는 블록체인 거래를 발생시키거나 트랜잭션 비용(수수료)이 발생하지 않습니다.
 
-  //   const suggestArray = [];
-
-  //   // for문으로 여러개 O
-  //   const suggestToken = await nftContract.methods
-  //     .tokenOfOwnerByIndex(address, 0)
-  //     .call();
-
-  //   suggestArray.push(suggestToken);
-
-  //   console.log(title);
-  //   console.log(content);
-  //   console.log(summary);
-  //   console.log(suggestArray);
-
-  //   const sendTx = await govContract.methods
-  //     .propose(title, summary, content, "", 86400, nftCA, suggestArray)
-  //     .send({
-  //       from: address,
-  //       gas: 7500000,
-  //     })
-  //     .on("transactionHash", (transactionHash) => {
-  //       console.log("txHash", transactionHash);
-  //       this.setState({ txHash: transactionHash });
-  //     })
-  //     .on("receipt", (receipt) => {
-  //       console.log("receipt", receipt);
-  //       alert("신청이 정상적으로 완료되었습니다.");
-  //       this.setState({ receipt: JSON.stringify(receipt) });
-  //     })
-  //     .on("error", (error) => {
-  //       console.log("error", error);
-  //       alert("신청 에러.");
-  //       this.setState({ error: error.message });
-  //     });
-  // };
+    해당 서명이 공식 홈페이지 URI가 맞는지 여러 번 확인해주세요 :)
+    
+    Wallet address:
+    ${account}
+    
+    Official Contents WebSite:
+    https://nft-kepler-452b.shop
+    `;
+    try {
+      await caver.klay.sign(message, account);
+      const apiURI = `http://localhost:3000/governance/${proposal_id}/${account}`;
+      console.log(apiURI);
+      const res = await fetch(apiURI);
+      const post = await res.json();
+      alert(post);
+      // alert("투표가 완료되었습니다.");
+    } catch {
+      alert("투표가 취소되었습니다.");
+    }
+  };
 
   return (
     <Layout>
@@ -261,8 +334,14 @@ const Proposal = () => {
             <div className="Proposal__title">{proposal.title}</div>
             <div className="Proposal__status">
               <div className="Proposal__period">
-                <p>투표 기간</p>
-                <p>22.03.07 ~ 22.05.09</p>
+                <div className="blockNumber_label">
+                  <p>시작 블록넘버</p>
+                  <p>남은 블록넘버</p>
+                </div>
+                <div className="blockNumber">
+                  <p>{proposal.blockNumber}</p>
+                  <p>{blockNum}</p>
+                </div>
               </div>
               <div className="Proposal__vote">
                 <div className="vote__type">
@@ -279,44 +358,33 @@ const Proposal = () => {
                 </div>
               </div>
             </div>
+            <div className="Proposal__info">
+              블록이 밀리지 않았다는 가정 하에 {times} 만큼 남았습니다.
+            </div>
             <div className="Proposal__proposer">
               <h2 className="sub_title">작성자</h2>
               <p>{account}</p>
             </div>
             <div className="Proposal__detail">
               <h2 className="sub_title">세부 내용</h2>
-              <p>
-                많은 내용이 들어있다.많은 내용이 들어있다.많은 내용이
-                들어있다.많은 내용이 들어있다.많은 내용이 들어있다.많은 내용이
-                들어있다.많은 내용이 들어있다.많은 내용이 들어있다. 많은 내용이
-                들어있다.많은 내용이 들어있다.많은 내용이 들어있다.많은 내용이
-                들어있다.많은 내용이 들어있다.많은 내용이 들어있다.많은 내용이
-                들어있다.많은 내용이 들어있다.
-              </p>
+              <p>{proposal.content}</p>
             </div>
             <div className="Proposal__detail">
               <h2 className="sub_title">요약</h2>
-              <p>
-                많은 내용이 들어있다.많은 내용이 들어있다.많은 내용이
-                들어있다.많은 내용이 들어있다.많은 내용이 들어있다.많은 내용이
-                들어있다.많은 내용이 들어있다.많은 내용이 들어있다. 많은 내용이
-                들어있다.많은 내용이 들어있다.많은 내용이 들어있다.많은 내용이
-                들어있다.많은 내용이 들어있다.많은 내용이 들어있다.많은 내용이
-                들어있다.많은 내용이 들어있다.
-              </p>
+              <p>{proposal.summary}</p>
             </div>
             <div className="Proposal__btn">
               <div
                 type="submit"
                 className="btn-suggest"
-                // onClick={signTransaction}
+                onClick={signTransaction}
               >
                 찬성하기
               </div>
               <div
                 type="submit"
                 className="btn-suggest"
-                // onClick={signTransaction}
+                onClick={signTransaction}
               >
                 반대하기
               </div>
@@ -327,21 +395,17 @@ const Proposal = () => {
                 <p>수량: {balance}개</p>
               </div>
               <div className="nft">
-                <div>
-                  <img src="images/logo.png" />
-                </div>
-                <div>
-                  <img src="images/logo.png" />
-                </div>
-                <div>
-                  <img src="images/logo.png" />
-                </div>
-                <div>
-                  <img src="images/logo.png" />
-                </div>
-                <div>
-                  <img src="images/logo.png" />
-                </div>
+                {tkURI.length != 0 ? (
+                  tkURI.map((v, i) => {
+                    return (
+                      <>
+                        <NFTBox tokenURI={tkURI[i]}></NFTBox>
+                      </>
+                    );
+                  })
+                ) : (
+                  <h2>NFT가 없습니다</h2>
+                )}
               </div>
             </div>
           </div>
