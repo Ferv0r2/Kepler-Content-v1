@@ -221,45 +221,47 @@ class KeplerGovernancePage extends Component {
       <Layout>
         <div className="KeplerGovernancePage">
           <Nav address={account} load={isLoading} />
-          <div className="KeplerGovernancePage__header">
-            <div className="KeplerGovernanacePage__title">
-              <h3>Kepler-452b</h3>
-              <h2>GOVERNANCE</h2>
+          <>
+            <div className="KeplerGovernancePage__header">
+              <div className="KeplerGovernanacePage__title">
+                <h3>Kepler-452b</h3>
+                <h2>GOVERNANCE</h2>
+              </div>
+              <img src="images/governance/gove_icon.png" />
             </div>
-            <img src="images/governance/gove_icon.png" />
-          </div>
-          <div className="KeplerGovernancePage__proposal">
-            <div className="btn_proposal">
-              <Link to="/proposal">제안 작성하기</Link>
+            <div className="KeplerGovernancePage__proposal">
+              <div className="btn_proposal">
+                <Link to="/proposal">제안 작성하기</Link>
+              </div>
             </div>
-          </div>
-          <div className="KeplerGovernancePage__main">
-            <div className="KeplerGovernancePage__infoBox">
-              <p>
-                케플러 식물 NFT를 소유중이라면 투표를 진행하고 제안을 작성할 수
-                있습니다.
-              </p>
-              <p>
-                더 나은 Kepler-452b 프로젝트를 위해 여러분의 의견을 보여주세요
-              </p>
-            </div>
-            <div className="KeplerGovernancePage__contents">
-              <div className="KeplerProposalList__title">LIST</div>
-              <div className="List__contents">
-                <div className="List__proposals">
-                  <div className="List__numbers">
-                    <ul>{ids}</ul>
-                  </div>
-                  <div className="List__titles">
-                    <ul>{titles}</ul>
-                  </div>
-                  <div className="List__result">
-                    <ul>{stats}</ul>
+            <div className="KeplerGovernancePage__main">
+              <div className="KeplerGovernancePage__infoBox">
+                <p>
+                  케플러 식물 NFT를 소유중이라면 투표를 진행하고 제안을 작성할
+                  수 있습니다.
+                </p>
+                <p>
+                  더 나은 Kepler-452b 프로젝트를 위해 여러분의 의견을 보여주세요
+                </p>
+              </div>
+              <div className="KeplerGovernancePage__contents">
+                <div className="KeplerProposalList__title">LIST</div>
+                <div className="List__contents">
+                  <div className="List__proposals">
+                    <div className="List__numbers">
+                      <ul>{ids}</ul>
+                    </div>
+                    <div className="List__titles">
+                      <ul>{titles}</ul>
+                    </div>
+                    <div className="List__result">
+                      <ul>{stats}</ul>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </>
         </div>
       </Layout>
     );

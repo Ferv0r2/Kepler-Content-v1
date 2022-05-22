@@ -63,18 +63,59 @@
   background-color: #06050c;
   font-family: "GmarketSansMedium";
 
-  #gove-title {
-    padding: 1rem;
+  > form {
+    > div {
+      padding: 1rem;
+
+      > label,
+      > input,
+      > textarea {
+        padding: 1.5rem;
+      }
+
+      > label {
+        font-size: 1.8rem;
+      }
+      > input {
+        text-align: left;
+        font-size: 1.5rem;
+
+        &::placeholder {
+          font-family: "NanumSquareBold";
+          font-size: 1.3rem;
+        }
+      }
+
+      &:nth-child(1),
+      &:nth-child(2) {
+        display: flex;
+        > label {
+          width: 20rem;
+        }
+        padding: 1rem;
+      }
+    }
+    > p {
+      color: #b3b3b3;
+
+      > a:hover {
+        color: #988bd4;
+      }
+    }
+
+    .detail {
+      padding-top: 3rem;
+    }
   }
 
-  #gove-contents {
-    height: 20rem;
-    padding: 1rem;
+  .gove-contents {
+    min-height: 350px;
+    font-size: 1.5rem;
   }
 
-  #gove-summary {
-    height: 20rem;
-    padding: 1rem;
+  .gove-summary {
+    min-height: 200px;
+    font-size: 1.5rem;
   }
 
   .btn-suggest {
