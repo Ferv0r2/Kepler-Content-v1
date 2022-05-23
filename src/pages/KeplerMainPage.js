@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import caver from "klaytn/caver";
-import keplerContract from "klaytn/KeplerContract";
 
 import Nav from "components/Nav";
-import Layout from "../components/Layout";
+import Layout from "components/Layout";
 
 import "./KeplerMainPage.scss";
 

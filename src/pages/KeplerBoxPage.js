@@ -1,7 +1,7 @@
 import React, { Component, useRef } from "react";
 import caver from "klaytn/caver";
 
-import Layout from "../components/Layout";
+import Layout from "components/Layout";
 import Nav from "components/Nav";
 import Modal from "components/Modal";
 

@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
+import { Link, useParams } from "react-router-dom";
+import Layout from "components/Layout";
 import Nav from "components/Nav";
-import NFTBox from "./NFTBox";
+import NFTBox from "components/NFTBox";
 
-// import keplerContract from "klaytn/KeplerContract";
+import keplerContract from "klaytn/KeplerContract";
 
 import "./Proposal.scss";
 
+// const baseUri = "http://localhost:4000/governance/";
+const baseUri = "https://governance.api.kepler-452b.net/governance/";
 const nftCA = "0x1C7FeD12d753D8a14aAfD223E87905B1Fe31B2Af";
 const govCA = "0x8ee0Be3319D99E15EB7Ec69DF68b010948bb17B4";
+
 const Proposal = () => {
   const [account, setAccount] = useState("");
   const [balance, setBalance] = useState(0);
@@ -17,6 +20,7 @@ const Proposal = () => {
   const [network, setNetwork] = useState(null);
   const [status, setStatus] = useState(0);
   const [proposal, setProposal] = useState({});
+  const [vote, setVote] = useState("0");
   const [blockNum, setBlockNumber] = useState(0);
   const [times, setTimer] = useState("");
   const [tkURI, setTokenURIs] = useState([]);
@@ -29,6 +33,7 @@ const Proposal = () => {
     loadAccountInfo();
     setNetworkInfo();
     setProposalInfo();
+    setAPI();
   }, []);
 
   useEffect(() => {
@@ -280,13 +285,157 @@ const Proposal = () => {
     let sec = time % 60 < 10 ? "0" + (time % 60) : time % 60;
 
     const result = hour + ":" + min + ":" + sec;
+
     setStatus(stat);
     setProposal(propose);
     setBlockNumber(time);
     setTimer(result);
   };
 
-  const signTransaction = async () => {
+  const setAPI = async () => {
+    const url = baseUri + `${proposal_id}`;
+    const response = await fetch(url).then((res) => res.json());
+    console.log(response);
+    setVote(response);
+  };
+
+  const getTokenIds = async () => {
+    const voted = vote.totalTokenIds;
+    const keplerContract = new caver.klay.Contract(
+      [
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+          ],
+          name: "balanceOf",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "index",
+              type: "uint256",
+            },
+          ],
+          name: "tokenOfOwnerByIndex",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          constant: true,
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "tokenURI",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          payable: false,
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      nftCA
+    );
+
+    const tokenIds = [];
+    const expect = [];
+
+    if (balance < 150) {
+      const promises = [];
+      for (let id = 0; id < balance; id++) {
+        const promise = async (index) => {
+          const tokenId = await keplerContract.methods
+            .tokenOfOwnerByIndex(account, index)
+            .call();
+
+          if (voted.includes(tokenId)) {
+            expect.push(tokenId);
+          } else {
+            tokenIds.push(tokenId);
+          }
+        };
+
+        promises.push(promise(id));
+      }
+      await Promise.all(promises);
+    } else {
+      for (let i = 0; i < balance; i++) {
+        const tokenId = await keplerContract.methods
+          .tokenOfOwnerByIndex(account, i)
+          .call();
+
+        if (voted.includes(tokenId)) {
+          expect.push(tokenId);
+        } else {
+          tokenIds.push(tokenId);
+        }
+      }
+    }
+
+    if (tokenIds.length == 0) {
+      return false;
+    }
+
+    return [tokenIds, expect];
+  };
+
+  const postAPI = async (uri) => {
+    try {
+      const response = await fetch(uri, {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+        "Access-Control-Allow-Headers": "X-PINGOTHER, Content-Type",
+        "Access-Control-Max-Age": 86400,
+      }).then((res) => res.json());
+      return response;
+    } catch {
+      return false;
+    }
+  };
+
+  const signTransaction = async (voteType, e) => {
+    if (status != 0) {
+      alert("해당 제안의 투표는 종료되었습니다.");
+      return;
+    }
     const message = `투표에 참여해주셔서 감사합니다.
 
     ${proposal_id + 1}번 제안
@@ -306,14 +455,35 @@ const Proposal = () => {
     `;
     try {
       await caver.klay.sign(message, account);
-      const apiURI = `http://localhost:3000/governance/${proposal_id}/${account}`;
-      console.log(apiURI);
-      const res = await fetch(apiURI);
-      const post = await res.json();
-      alert(post);
-      // alert("투표가 완료되었습니다.");
     } catch {
       alert("투표가 취소되었습니다.");
+      return;
+    }
+    const getData = await getTokenIds();
+
+    if (!getData) {
+      alert("투표를 이미 하셨거나 투표할 수 있는 NFT가 없습니다.");
+      return;
+    }
+    const postURI =
+      baseUri + `${proposal_id}/${account}/${voteType}/` + String(getData[0]);
+    const postData = await postAPI(postURI);
+
+    if (postData) {
+      if (getData[1].length != 0) {
+        alert(
+          `${getData[1]}\n 위 NFT는 이미 투표된 상태입니다. 제외된 상태로 투표가 진행됩니다.`
+        );
+      }
+
+      if (voteType == 1) {
+        alert(`${getData[0].length}개 만큼 찬성 투표가 완료되었습니다.`);
+      } else if (voteType == 1) {
+        alert(`${getData[0].length}개 만큼 반대 투표가 완료되었습니다.`);
+      }
+      setVote(postData);
+    } else {
+      alert("투표중 에러가 발생하였습니다. 다시 시도해주세요.");
     }
   };
 
@@ -352,8 +522,8 @@ const Proposal = () => {
                 </div>
                 <div className="vote__count">
                   <ul>
-                    <li>50</li>
-                    <li>3000</li>
+                    <li>{vote.voteAgree}</li>
+                    <li>{vote.voteDegree}</li>
                   </ul>
                 </div>
               </div>
@@ -377,14 +547,14 @@ const Proposal = () => {
               <div
                 type="submit"
                 className="btn-suggest"
-                onClick={signTransaction}
+                onClick={(e) => signTransaction(1, e)}
               >
                 찬성하기
               </div>
               <div
                 type="submit"
                 className="btn-suggest"
-                onClick={signTransaction}
+                onClick={(e) => signTransaction(0, e)}
               >
                 반대하기
               </div>
@@ -396,15 +566,15 @@ const Proposal = () => {
               </div>
               <div className="nft">
                 {tkURI.length != 0 ? (
-                  tkURI.map((v, i) => {
+                  tkURI.map((k, i) => {
                     return (
                       <>
-                        <NFTBox tokenURI={tkURI[i]}></NFTBox>
+                        <NFTBox key={k} tokenURI={tkURI[i]}></NFTBox>
                       </>
                     );
                   })
                 ) : (
-                  <h2>NFT가 없습니다</h2>
+                  <h2>NFT가 없습니다. 투표할 수 없습니다.</h2>
                 )}
               </div>
             </div>

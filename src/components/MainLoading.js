@@ -1,11 +1,11 @@
 import React from "react";
 
-import "./Loading.scss";
+import "./MainLoading.scss";
 
-const Loading = () => (
+const MainLoading = () => (
   <div className="Loading">
     <img src="images/loading.png" className="Loading__spinner" alt="loading" />
   </div>
 );
 
-export default Loading;
+export default MainLoading;

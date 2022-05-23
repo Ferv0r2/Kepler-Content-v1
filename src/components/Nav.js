@@ -1,7 +1,6 @@
 import React from "react";
 import Loading from "components/Loading";
-import KeplerMainPage from "pages/KeplerMainPage";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Nav.scss";
 
 const Nav = ({ address }) => (

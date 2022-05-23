@@ -6,7 +6,7 @@ import fetch from "node-fetch";
 // import evol from "./evol-log.json";
 import mix from "./mix.json";
 import Loading from "components/Loading";
-import Layout from "../components/Layout";
+import Layout from "components/Layout";
 import Nav from "components/Nav";
 import TotalEvolTable from "components/TotalEvolTable";
 import EvolTable from "components/EvolTable";

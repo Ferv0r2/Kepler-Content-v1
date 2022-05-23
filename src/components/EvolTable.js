@@ -1,5 +1,5 @@
 import React from "react";
-import NFTBox from "./NFTBox";
+import NFTBox from "components/NFTBox";
 
 import "./EvolTable.scss";
 

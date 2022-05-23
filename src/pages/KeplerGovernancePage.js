@@ -3,8 +3,9 @@ import { Link, useHistory } from "react-router-dom";
 import caver from "klaytn/caver";
 // import fetch from "node-fetch";
 
-import Layout from "../components/Layout";
+import Layout from "components/Layout";
 import Nav from "components/Nav";
+import Loading from "components/MainLoading";
 
 import "./KeplerGovernancePage.scss";
 
@@ -17,8 +18,10 @@ class KeplerGovernancePage extends Component {
       account: "",
       network: null,
       isLoading: true,
+      isProposalLoading: true,
       tokenURI: "",
       proposals: [],
+      section: 0,
       status: [],
       agree: 0,
       degree: 0,
@@ -171,18 +174,65 @@ class KeplerGovernancePage extends Component {
     const proposals = [];
     const status = [];
     const proposalCount = await govContract.methods.proposalCount().call();
+    // for (let i = 0; i < proposalCount; i++) {
+    //   const proposal = await govContract.methods
+    //     .proposals(proposalCount - 1 - i)
+    //     .call();
+    //   proposals.push(proposal);
 
+    //   const stat = await govContract.methods
+    //     .status(proposalCount - 1 - i)
+    //     .call();
+    //   status.push(stat);
+    // }
+    const promises = [];
     for (let i = 0; i < proposalCount; i++) {
-      const proposal = await govContract.methods.proposals(i).call();
-      proposals.push(proposal);
+      const promise = async (index) => {
+        const proposal = await govContract.methods.proposals(index).call();
+        proposals.push(proposal);
 
-      const stat = await govContract.methods.status(i).call();
-      status.push(stat);
+        const stat = await govContract.methods.status(index).call();
+        status.push(stat);
+      };
+      promises.push(promise(i));
     }
+    await Promise.all(promises);
+
+    proposals.sort((a, b) => {
+      if (parseInt(a.id) > parseInt(b.id)) {
+        return -1;
+      } else if (parseInt(a.id) < parseInt(b.id)) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
 
     this.setState({
       proposals,
       status,
+      isProposalLoading: false,
+    });
+  };
+
+  setSectionPrev = async () => {
+    const { section } = this.state;
+    if (section == 0) {
+      alert("첫번째 페이지입니다.");
+      return;
+    }
+    this.setState({
+      section: section - 1,
+    });
+  };
+  setSectionNext = async () => {
+    const { section, proposals } = this.state;
+    if (proposals.length - section * 5 <= 5) {
+      alert("마지막 페이지입니다.");
+      return;
+    }
+    this.setState({
+      section: section + 1,
     });
   };
 
@@ -197,25 +247,37 @@ class KeplerGovernancePage extends Component {
   };
 
   render() {
-    const { account, isLoading, proposals, status } = this.state;
+    const {
+      account,
+      isLoading,
+      isProposalLoading,
+      proposals,
+      section,
+      status,
+    } = this.state;
+
+    if (isProposalLoading) {
+      <Loading />;
+    }
 
     const result = ["투표중", "투표 완료", "투표 취소"];
-    const ids = proposals.map((id) => (
+    const ids = proposals.slice(section * 5, section * 5 + 5).map((id) => (
       <li key={id.id}>
         <Link to={`/governance/${parseInt(id.id) + 1}`}>
           {parseInt(id.id) + 1}
         </Link>
       </li>
     ));
-    const titles = proposals.map((id) => (
+
+    const titles = proposals.slice(section * 5, section * 5 + 5).map((id) => (
       <li key={id.id}>
         <Link to={`/governance/${parseInt(id.id) + 1}`}>{id.title}</Link>
       </li>
     ));
 
-    const stats = status.map((stat, index) => (
-      <li key={index}>{result[stat]}</li>
-    ));
+    const stats = status
+      .slice(section * 5, section * 5 + 5)
+      .map((stat, index) => <li key={index}>{result[stat]}</li>);
 
     return (
       <Layout>
@@ -259,6 +321,15 @@ class KeplerGovernancePage extends Component {
                     </div>
                   </div>
                 </div>
+              </div>
+              <div className="KeplerGovernancePage__section">
+                <span className="prev" onClick={this.setSectionPrev}>
+                  <img src="images/governance/prev.png" />
+                </span>
+                <p>{section + 1}</p>
+                <span className="next" onClick={this.setSectionNext}>
+                  <img src="images/governance/next.png" />
+                </span>
               </div>
             </div>
           </>

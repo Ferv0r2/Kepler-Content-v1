@@ -2,7 +2,7 @@ import React, { Component, useRef } from "react";
 import caver from "klaytn/caver";
 // import fetch from "node-fetch";
 
-import Layout from "../components/Layout";
+import Layout from "components/Layout";
 import Nav from "components/Nav";
 import ModalMining from "components/ModalMining";
 

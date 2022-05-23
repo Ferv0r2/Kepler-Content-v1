@@ -105,6 +105,34 @@
   color: $white;
 }
 
+.KeplerGovernancePage__section {
+  display: flex;
+  text-align: center;
+  width: 15rem;
+  margin: 0 auto;
+  justify-content: space-between;
+  p {
+    font-size: 1.8rem;
+    padding: 0.5rem;
+    color: #cacaca;
+
+    @media screen and (max-width: 720px) {
+      width: 12rem;
+    }
+  }
+  span {
+    border-radius: 1rem;
+    padding: 0.5rem;
+    &:hover {
+      cursor: pointer;
+      // border: 1px solid #fff;
+    }
+    img {
+      width: 2rem;
+    }
+  }
+}
+
 .List__contents {
   border-radius: 3rem;
   background-color: #0f0c1b;

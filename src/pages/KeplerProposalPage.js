@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Layout from "../components/Layout";
+import Layout from "components/Layout";
 import Nav from "components/Nav";
-import nftContract from "../klaytn/KeplerContract";
+import nftContract from "klaytn/KeplerContract";
 
 import "./KeplerProposalPage.scss";
 

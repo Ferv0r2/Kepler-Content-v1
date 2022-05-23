@@ -3,7 +3,7 @@ import caver from "klaytn/caver";
 import keplerContract from "klaytn/KeplerContract";
 import fetch from "node-fetch";
 
-import Layout from "../components/Layout";
+import Layout from "components/Layout";
 import Nav from "components/Nav";
 import Modal from "components/ModalNFT";
 
