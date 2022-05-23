@@ -302,7 +302,9 @@ class KeplerProposalPage extends Component {
           return;
         });
     } else {
-      alert("에러 발생! 다시 시도해주세요");
+      alert(
+        "에러 발생! 다시 시도해주세요.\n 반복된다면 개발자에게 1:1 메시지를 남겨주세요!"
+      );
       return;
     }
 
@@ -310,7 +312,7 @@ class KeplerProposalPage extends Component {
       .propose(title, summary, content, period, nftCA)
       .send({
         from: account,
-        gas: 2500000,
+        gas: 75000000,
       })
       .on("transactionHash", (transactionHash) => {
         console.log("txHash", transactionHash);
