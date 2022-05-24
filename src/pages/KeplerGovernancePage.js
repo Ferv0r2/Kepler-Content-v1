@@ -296,10 +296,7 @@ class KeplerGovernancePage extends Component {
 
     const stats = status
       .slice(section * 5, section * 5 + 5)
-      .map((stat, index) => {
-        console.log(stat);
-        return <li key={index}>{result[stat]}</li>;
-      });
+      .map((stat, index) => <li key={index}>{result[stat]}</li>);
 
     return (
       <Layout>
