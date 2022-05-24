@@ -282,31 +282,31 @@ class KeplerProposalPage extends Component {
       return;
     }
 
-    const allow = await kluContract.methods.allowance(ownerA, govCA);
-    if (allow) {
-      await kluContract.methods
-        .approve(ownerA, proposePrice)
-        .send({
-          from: account,
-          gas: "2500000",
-        })
-        .on("transactionHash", (transactionHash) => {
-          console.log("txHash", transactionHash);
-        })
-        .on("receipt", (receipt) => {
-          console.log("receipt", receipt);
-        })
-        .on("error", (error) => {
-          console.log("error", error);
-          alert("클루 토큰 사용이 취소되었습니다.");
-          return;
-        });
-    } else {
-      alert(
-        "에러 발생! 다시 시도해주세요.\n 반복된다면 개발자에게 1:1 메시지를 남겨주세요!"
-      );
-      return;
-    }
+    // const allow = await kluContract.methods.allowance(ownerA, govCA);
+    // if (allow) {
+    //   await kluContract.methods
+    //     .approve(ownerA, proposePrice)
+    //     .send({
+    //       from: account,
+    //       gas: "2500000",
+    //     })
+    //     .on("transactionHash", (transactionHash) => {
+    //       console.log("txHash", transactionHash);
+    //     })
+    //     .on("receipt", (receipt) => {
+    //       console.log("receipt", receipt);
+    //     })
+    //     .on("error", (error) => {
+    //       console.log("error", error);
+    //       alert("클루 토큰 사용이 취소되었습니다.");
+    //       return;
+    //     });
+    // } else {
+    //   alert(
+    //     "에러 발생! 다시 시도해주세요.\n 반복된다면 개발자에게 1:1 메시지를 남겨주세요!"
+    //   );
+    //   return;
+    // }
 
     await govContract.methods
       .propose(title, summary, content, period, nftCA)

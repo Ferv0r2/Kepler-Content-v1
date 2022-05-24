@@ -9,6 +9,7 @@ import Loading from "components/MainLoading";
 
 import "./KeplerGovernancePage.scss";
 
+const baseUri = "https://governance.api.kepler-452b.net/governance/";
 const govCA = "0x8ee0Be3319D99E15EB7Ec69DF68b010948bb17B4";
 
 class KeplerGovernancePage extends Component {
@@ -65,6 +66,31 @@ class KeplerGovernancePage extends Component {
     this.setState({
       account,
     });
+  };
+
+  setStatus = async (array) => {
+    const resultStatus = [];
+
+    const len = array.length; // 13
+    for (let id = 0; id < len; id++) {
+      if (array[id] == 0) {
+        resultStatus.push("0");
+        continue;
+      }
+
+      const response = await fetch(baseUri + (len - 1 - id)).then((res) =>
+        res.json()
+      );
+      if (response.voteAgree > response.voteDegree) {
+        resultStatus.push("3");
+      } else if (response.voteAgree < response.voteDegree) {
+        resultStatus.push("4");
+      } else if (response.voteAgree == response.voteDegree) {
+        resultStatus.push("5");
+      }
+    }
+
+    return resultStatus;
   };
 
   setProposal = async () => {
@@ -174,17 +200,7 @@ class KeplerGovernancePage extends Component {
     const proposals = [];
     const status = [];
     const proposalCount = await govContract.methods.proposalCount().call();
-    // for (let i = 0; i < proposalCount; i++) {
-    //   const proposal = await govContract.methods
-    //     .proposals(proposalCount - 1 - i)
-    //     .call();
-    //   proposals.push(proposal);
 
-    //   const stat = await govContract.methods
-    //     .status(proposalCount - 1 - i)
-    //     .call();
-    //   status.push(stat);
-    // }
     const promises = [];
     for (let i = 0; i < proposalCount; i++) {
       const promise = async (index) => {
@@ -208,9 +224,11 @@ class KeplerGovernancePage extends Component {
       }
     });
 
+    status.sort();
+    const result = await this.setStatus(status);
     this.setState({
       proposals,
-      status,
+      status: result,
       isProposalLoading: false,
     });
   };
@@ -225,6 +243,7 @@ class KeplerGovernancePage extends Component {
       section: section - 1,
     });
   };
+
   setSectionNext = async () => {
     const { section, proposals } = this.state;
     if (proposals.length - section * 5 <= 5) {
@@ -260,7 +279,7 @@ class KeplerGovernancePage extends Component {
       <Loading />;
     }
 
-    const result = ["투표중", "투표 완료", "투표 취소"];
+    const result = ["투표중", "투표 완료", "투표 취소", "찬성", "반대", "동률"];
     const ids = proposals.slice(section * 5, section * 5 + 5).map((id) => (
       <li key={id.id}>
         <Link to={`/governance/${parseInt(id.id) + 1}`}>
@@ -277,7 +296,10 @@ class KeplerGovernancePage extends Component {
 
     const stats = status
       .slice(section * 5, section * 5 + 5)
-      .map((stat, index) => <li key={index}>{result[stat]}</li>);
+      .map((stat, index) => {
+        console.log(stat);
+        return <li key={index}>{result[stat]}</li>;
+      });
 
     return (
       <Layout>
