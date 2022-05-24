@@ -1376,7 +1376,7 @@ class KeplerShopPage extends Component {
 
               <div className="check">
                 <p>
-                  6 Klay 이상 소유해야 트랜잭션이 에러를 발생시키지 않습니다
+                  2 Klay 이상 소유해야 트랜잭션이 에러를 발생시키지 않습니다
                 </p>
                 <p>(최대 가스비 인상 때문)</p>
               </div>

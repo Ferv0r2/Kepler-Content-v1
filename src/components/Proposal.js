@@ -8,10 +8,8 @@ import keplerContract from "klaytn/KeplerContract";
 
 import "./Proposal.scss";
 
-// const baseUri = "http://localhost:4000/governance/";
 const baseUri = "https://governance.api.kepler-452b.net/governance/";
-const nftCA = "0x1C7FeD12d753D8a14aAfD223E87905B1Fe31B2Af";
-const govCA = "0x8ee0Be3319D99E15EB7Ec69DF68b010948bb17B4";
+const govCA = "0x71296B11a5E298d65B6cA395c469e7b5A908B5c4";
 
 const Proposal = () => {
   const [account, setAccount] = useState("");
@@ -21,8 +19,8 @@ const Proposal = () => {
   const [status, setStatus] = useState(0);
   const [proposal, setProposal] = useState({});
   const [vote, setVote] = useState("0");
-  const [blockNum, setBlockNumber] = useState(0);
-  const [times, setTimer] = useState("");
+  const [blockNum, setBlockNumber] = useState("0");
+  const [times, setTimer] = useState("0");
   const [tkURI, setTokenURIs] = useState([]);
   const params = useParams();
   const proposal_id = parseInt(params.id) - 1;
@@ -37,7 +35,9 @@ const Proposal = () => {
   }, []);
 
   useEffect(() => {
-    setProposalInfo();
+    setTimeout(async () => {
+      setProposalInfo();
+    }, 10000);
   });
 
   const loadAccountInfo = async () => {
@@ -64,80 +64,6 @@ const Proposal = () => {
   const setAccountInfo = async () => {
     const { klaytn } = window;
     if (klaytn === undefined) return;
-
-    const keplerContract = new caver.klay.Contract(
-      [
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "address",
-              name: "owner",
-              type: "address",
-            },
-          ],
-          name: "balanceOf",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "address",
-              name: "owner",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "index",
-              type: "uint256",
-            },
-          ],
-          name: "tokenOfOwnerByIndex",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-          ],
-          name: "tokenURI",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      nftCA
-    );
 
     const accounts = klaytn.selectedAddress;
     const balances = await keplerContract.methods.balanceOf(accounts).call();
@@ -300,106 +226,27 @@ const Proposal = () => {
   };
 
   const getTokenIds = async () => {
+    await setAPI();
     const voted = vote.totalTokenIds;
-    const keplerContract = new caver.klay.Contract(
-      [
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "address",
-              name: "owner",
-              type: "address",
-            },
-          ],
-          name: "balanceOf",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "address",
-              name: "owner",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "index",
-              type: "uint256",
-            },
-          ],
-          name: "tokenOfOwnerByIndex",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          constant: true,
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-          ],
-          name: "tokenURI",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-          ],
-          payable: false,
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      nftCA
-    );
+    let accountVote;
+    try {
+      accountVote = vote["addresses"][account]["balance"];
+    } catch {
+      accountVote = 0;
+    }
 
     const tokenIds = [];
     const expect = [];
 
-    if (balance < 150) {
-      const promises = [];
-      for (let id = 0; id < balance; id++) {
-        const promise = async (index) => {
-          const tokenId = await keplerContract.methods
-            .tokenOfOwnerByIndex(account, index)
-            .call();
-
-          if (voted.includes(tokenId)) {
-            expect.push(tokenId);
-          } else {
-            tokenIds.push(tokenId);
-          }
-        };
-
-        promises.push(promise(id));
+    const promises = [];
+    for (let id = accountVote; id < accountVote + 100; id++) {
+      if (balance - id == 0) {
+        console.log("ALL IN");
+        break;
       }
-      await Promise.all(promises);
-    } else {
-      for (let i = 0; i < balance; i++) {
+      const promise = async (index) => {
         const tokenId = await keplerContract.methods
-          .tokenOfOwnerByIndex(account, i)
+          .tokenOfOwnerByIndex(account, index)
           .call();
 
         if (voted.includes(tokenId)) {
@@ -407,8 +254,11 @@ const Proposal = () => {
         } else {
           tokenIds.push(tokenId);
         }
-      }
+      };
+
+      promises.push(promise(id));
     }
+    await Promise.all(promises);
 
     if (tokenIds.length == 0) {
       return false;
@@ -462,7 +312,8 @@ const Proposal = () => {
     const getData = await getTokenIds();
 
     if (!getData) {
-      alert("투표를 이미 하셨거나 투표할 수 있는 NFT가 없습니다.");
+      const accountVote = vote["addresses"][account]["balance"];
+      alert(`투표할 수 있는 NFT가 없습니다.\n 앞선 투표 수 : ${accountVote}`);
       return;
     }
     const postURI =
@@ -472,13 +323,13 @@ const Proposal = () => {
     if (postData) {
       if (getData[1].length != 0) {
         alert(
-          `${getData[1]}\n 위 NFT는 이미 투표된 상태입니다. 제외된 상태로 투표가 진행됩니다.`
+          `${getData[1].length}개의 NFT는 이미 투표된 상태입니다. 제외된 상태로 투표가 진행됩니다.`
         );
       }
 
       if (voteType == 1) {
         alert(`${getData[0].length}개 만큼 찬성 투표가 완료되었습니다.`);
-      } else if (voteType == 1) {
+      } else if (voteType == 0) {
         alert(`${getData[0].length}개 만큼 반대 투표가 완료되었습니다.`);
       }
       setVote(postData);

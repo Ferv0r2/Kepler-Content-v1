@@ -1,7 +1,7 @@
 {
   "homepage": "https://nft-kepler-452b.shop",
   "scripts": {
-    "build": "webpack --config ./webpack.prod.js",
+    "build": "webpack --config ./webpack.prod.js && copy CNAME docs",
     "start": "serve ./docs -p 5555",
     "local": "webpack-dev-server --config webpack.dev.js",
     "deploy": "npm run build && gh-pages -d docs"

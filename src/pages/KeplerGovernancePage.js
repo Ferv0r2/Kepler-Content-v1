@@ -10,7 +10,7 @@ import Loading from "components/MainLoading";
 import "./KeplerGovernancePage.scss";
 
 const baseUri = "https://governance.api.kepler-452b.net/governance/";
-const govCA = "0x8ee0Be3319D99E15EB7Ec69DF68b010948bb17B4";
+const govCA = "0x71296B11a5E298d65B6cA395c469e7b5A908B5c4";
 
 class KeplerGovernancePage extends Component {
   constructor(props) {
@@ -279,7 +279,7 @@ class KeplerGovernancePage extends Component {
       <Loading />;
     }
 
-    const result = ["투표중", "투표 완료", "투표 취소", "찬성", "반대", "동률"];
+    const result = ["투표중", "투표 완료", "투표 취소", "찬성", "반대", "보류"];
     const ids = proposals.slice(section * 5, section * 5 + 5).map((id) => (
       <li key={id.id}>
         <Link to={`/governance/${parseInt(id.id) + 1}`}>

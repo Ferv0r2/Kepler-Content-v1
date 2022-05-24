@@ -516,7 +516,7 @@ class KeplerBoxPage extends Component {
               <div className="check">
                 <p>트랜잭션은 2번 발생합니다 (예상 수수료 예측 때문)</p>
                 <p>
-                  6 Klay 이상 소유해야 트랜잭션이 에러를 발생시키지 않습니다
+                  2 Klay 이상 소유해야 트랜잭션이 에러를 발생시키지 않습니다
                   (최대 가스비 인상 때문)
                 </p>
               </div>

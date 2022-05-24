@@ -198,8 +198,6 @@ class KeplerMiningPage extends Component {
     const itemGacha = Math.random() * 100; // 0 ~ 99 실수
     const itemNum = Math.floor(Math.random() * 5) + 30; // 0 ~ 4
 
-    console.log(itemGacha);
-
     if (currentIdx == 2) {
       if (destruct < 40) {
         status = 0;
@@ -438,8 +436,6 @@ class KeplerMiningPage extends Component {
       .gachas(currentIdx, account)
       .call();
 
-    console.log(gacha);
-
     const { getBack } = this.state;
 
     await new Promise((resolve) => {
@@ -513,7 +509,7 @@ class KeplerMiningPage extends Component {
                 <img src="video/mining.png" />
                 <p>트랜잭션은 2번 발생합니다 (예상 수수료 예측 때문)</p>
                 <p>
-                  6 Klay 이상 소유해야 트랜잭션이 에러를 발생시키지 않습니다
+                  2 Klay 이상 소유해야 트랜잭션이 에러를 발생시키지 않습니다
                   (최대 가스비 인상 때문)
                 </p>
               </div>

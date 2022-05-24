@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+
 import Layout from "components/Layout";
 import Nav from "components/Nav";
-import nftContract from "klaytn/KeplerContract";
 
 import "./KeplerProposalPage.scss";
 
 const ownerA = "0x33365F518A0F333365b7FF53BEAbf1F5b1247b5C";
-const nftCA = "0x1C7FeD12d753D8a14aAfD223E87905B1Fe31B2Af";
-const govCA = "0x8ee0Be3319D99E15EB7Ec69DF68b010948bb17B4";
-const kluCA = "0x735df65eA8436A198704DeA8007B44F6e3772255";
+const nftCA = "0x928267E7dB3d173898553Ff593A78719Bb16929F";
+const govCA = "0x71296B11a5E298d65B6cA395c469e7b5A908B5c4";
+const kluCA = "0x75dcAA3eb2403c7725Cc8e5E38f6949eBaB28aCC";
+const burnerCA = "0x571110c0FFc5cC3B325C2bc13355E0Aab422836F";
 class KeplerProposalPage extends Component {
   constructor(props) {
     super(props);
@@ -282,43 +283,35 @@ class KeplerProposalPage extends Component {
       return;
     }
 
-    // const allow = await kluContract.methods.allowance(ownerA, govCA);
-    // if (allow) {
-    //   await kluContract.methods
-    //     .approve(ownerA, proposePrice)
-    //     .send({
-    //       from: account,
-    //       gas: "2500000",
-    //     })
-    //     .on("transactionHash", (transactionHash) => {
-    //       console.log("txHash", transactionHash);
-    //     })
-    //     .on("receipt", (receipt) => {
-    //       console.log("receipt", receipt);
-    //     })
-    //     .on("error", (error) => {
-    //       console.log("error", error);
-    //       alert("클루 토큰 사용이 취소되었습니다.");
-    //       return;
-    //     });
-    // } else {
-    //   alert(
-    //     "에러 발생! 다시 시도해주세요.\n 반복된다면 개발자에게 1:1 메시지를 남겨주세요!"
-    //   );
-    //   return;
-    // }
+    const allow = await kluContract.methods.allowance(ownerA, govCA).call();
+    if (allow) {
+      await kluContract.methods
+        .approve(burnerCA, proposePrice)
+        .send({
+          from: account,
+          gas: 2500000,
+        })
+        .then((res) => console.log(res))
+        .catch((err) => {
+          console.log("error", err);
+          alert("클루 토큰 사용이 취소되었습니다.");
+          return;
+        });
+    } else {
+      alert(
+        "에러 발생! 다시 시도해주세요.\n 반복된다면 개발자에게 1:1 메시지를 남겨주세요!"
+      );
+      return;
+    }
 
     await govContract.methods
       .propose(title, summary, content, period, nftCA)
       .send({
         from: account,
-        gas: 75000000,
+        gas: 7500000,
       })
-      .on("transactionHash", (transactionHash) => {
-        console.log("txHash", transactionHash);
-      })
-      .on("receipt", (receipt) => {
-        console.log("receipt", receipt);
+      .then((res) => {
+        console.log(res);
         alert("제안이 정상적으로 완료되었습니다.");
         this.setState({
           title: "",
@@ -328,8 +321,8 @@ class KeplerProposalPage extends Component {
         });
         window.location.replace("/#/governance");
       })
-      .on("error", (error) => {
-        console.log("error", error);
+      .catch((err) => {
+        console.log("error", err);
         alert("제안 중에 에러가 발생하였습니다.");
       });
   };
@@ -386,6 +379,7 @@ class KeplerProposalPage extends Component {
                     type="text"
                     className="form-control gove-contents"
                     onChange={this.onEventContentChange}
+                    placeholder="여러 이슈를 대비해서 꼭 메모장 등에 먼저 작성해주세요."
                   />
                 </div>
                 <div className="mb-3">
@@ -396,6 +390,7 @@ class KeplerProposalPage extends Component {
                     type="text"
                     className="form-control gove-summary"
                     onChange={this.onEventSummaryChange}
+                    placeholder="간단한 3줄 요약, 하고 싶은 말 등 무엇이든 환영입니다."
                   />
                 </div>
                 <div className="mb-3">
@@ -412,6 +407,7 @@ class KeplerProposalPage extends Component {
                 >
                   완료하기
                 </div>
+                <p>* 제안에는 100 클루가 소각됩니다. </p>
               </form>
             </div>
           </div>
