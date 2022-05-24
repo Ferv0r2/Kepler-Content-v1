@@ -28,6 +28,9 @@
 
     img {
       width: 24rem;
+      @media screen and (max-width: 640px) {
+        width: 20rem;
+      }
     }
     p {
       position: absolute;
@@ -37,6 +40,11 @@
       color: #bdbbc0;
       font-size: 1.8rem;
       font-family: "GmarketSansMedium";
+
+      @media screen and (max-width: 640px) {
+        left: 28%;
+        font-size: 1.5rem;
+      }
 
       &:hover {
         cursor: pointer;
@@ -51,6 +59,11 @@
   font-family: "GmarketSansBold";
   font-size: 40px;
   font-style: italic;
+
+  @media screen and (max-width: 640px) {
+    font-size: 3.4rem;
+    padding: 3rem;
+  }
 }
 
 .KeplerProposalPage__contents {
@@ -71,6 +84,10 @@
       > input,
       > textarea {
         padding: 1.5rem;
+
+        @media screen and (max-width: 640px) {
+          padding: 1rem;
+        }
       }
 
       > label {
@@ -91,6 +108,10 @@
         display: flex;
         > label {
           width: 20rem;
+
+          @media screen and (max-width: 640px) {
+            width: 15rem;
+          }
         }
         padding: 1rem;
       }
@@ -98,8 +119,13 @@
     > p {
       color: #b3b3b3;
 
-      > a:hover {
-        color: #988bd4;
+      @media screen and (max-width: 640px) {
+        display: none;
+      }
+      > a {
+        &:hover {
+          color: #988bd4;
+        }
       }
     }
 
@@ -122,15 +148,26 @@
     background: #51408b;
     border-radius: 0.2em;
     margin: 5rem auto;
-    width: 22%;
+    width: 13rem;
     text-align: center;
     padding: 1.5rem;
     font-size: 2.2rem;
     font-style: italic;
     font-family: "GmarketSansBold";
 
+    @media screen and (max-width: 640px) {
+      width: 10rem;
+      font-size: 1.8rem;
+    }
+
     &:hover {
       background: #656565;
     }
   }
+}
+
+#account {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

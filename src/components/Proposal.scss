@@ -28,6 +28,9 @@
 
     img {
       width: 24rem;
+      @media screen and (max-width: 640px) {
+        width: 20rem;
+      }
     }
     p {
       position: absolute;
@@ -37,6 +40,11 @@
       color: #bdbbc0;
       font-size: 1.8rem;
       font-family: "GmarketSansMedium";
+
+      @media screen and (max-width: 640px) {
+        left: 28%;
+        font-size: 1.5rem;
+      }
 
       &:hover {
         cursor: pointer;
@@ -52,6 +60,10 @@
   font-size: 2.6rem;
   font-style: italic;
   line-height: 4rem;
+
+  @media screen and (max-width: 640px) {
+    font-size: 2.2rem;
+  }
 }
 
 .Proposal__contents {
@@ -65,10 +77,19 @@
   font-family: "GmarketSansMedium";
   white-space: pre-wrap;
 
+  @media screen and (max-width: 640px) {
+    padding: 5rem;
+  }
+
   .sub_title {
     font-size: 2rem;
     font-family: "GmarketSansBold";
     padding: 2.5rem;
+
+    @media screen and (max-width: 640px) {
+      font-size: 1.7rem;
+      padding: 2rem;
+    }
   }
 }
 
@@ -76,6 +97,10 @@
   color: #9d9d9d;
   margin-top: -2rem;
   padding-bottom: 2rem;
+
+  @media screen and (max-width: 640px) {
+    margin-top: 1rem;
+  }
 }
 
 .Proposal__status {
@@ -86,6 +111,10 @@
   text-align: center;
   margin: 3rem auto;
   font-family: "GmarketSansMedium";
+
+  @media screen and (max-width: 640px) {
+    display: initial;
+  }
 
   > div {
     margin: 1rem auto;
@@ -98,6 +127,10 @@
   .Proposal__period {
     flex: 3;
     border-right: 2px solid #616165;
+
+    @media screen and (max-width: 640px) {
+      border-right: 0;
+    }
 
     > div {
       display: flex;
@@ -130,6 +163,13 @@
 
   > p {
     font-size: 1.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @media screen and (max-width: 640px) {
+      font-size: 1.4rem;
+    }
   }
 }
 
@@ -149,16 +189,25 @@
   width: 80%;
   margin: 0 auto;
 
+  @media screen and (max-width: 640px) {
+    display: block;
+  }
+
   .btn-suggest {
     background: #51408b;
     border-radius: 0.2em;
     margin: 3rem auto;
-    width: 30%;
+    width: 13rem;
     text-align: center;
     padding: 1.5rem;
     font-size: 2.2rem;
     font-style: italic;
     font-family: "GmarketSansBold";
+
+    @media screen and (max-width: 640px) {
+      width: 10rem;
+      font-size: 1.8rem;
+    }
 
     &:hover {
       background: #656565;
@@ -185,6 +234,11 @@
     font-family: "GmarketSansMedium";
     padding: 0.5rem;
     border-radius: 0.3rem;
+
+    @media screen and (max-width: 640px) {
+      position: initial;
+      margin: 0 auto;
+    }
   }
 }
 
@@ -192,10 +246,21 @@
   width: 100%;
   display: flex;
 
+  // @media screen and (max-width: 640px) {
+  //   display: initial;
+  // }
+
   > div {
     margin: 1rem;
+
+    @media screen and (max-width: 640px) {
+      margin: 3rem auto;
+    }
   }
   img {
     width: 90%;
+    @media screen and (max-width: 640px) {
+      transform: scale(1.4);
+    }
   }
 }
