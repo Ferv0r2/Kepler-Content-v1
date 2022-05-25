@@ -13,7 +13,6 @@ import EvolTable from "components/EvolTable";
 
 import "./KeplerEvolPage.scss";
 
-const ipfs = "https://ipfs.infura.io/ipfs/";
 class KeplerEvolPage extends Component {
   constructor(props) {
     super(props);
@@ -62,35 +61,6 @@ class KeplerEvolPage extends Component {
       );
     }
   };
-
-  // setURI = async (array) => {
-  //   const promises = [];
-  //   const urls = [];
-
-  //   console.log(array);
-  //   const len = array.length;
-  //   for (let id = 0; id < len; id++) {
-  //     const promise = async (index) => {
-  //       const res = await fetch(array[index]["value"]);
-  //       const posts = await res.json();
-
-  //       const url = {};
-  //       url["key"] = index;
-  //       url["value"] = posts.image;
-
-  //       urls.push(posts.image);
-  //     };
-  //     promises.push(promise(id));
-  //   }
-  //   await Promise.all(promises);
-
-  //   urls.sort((a, b) => {
-  //     return a["key"] - b["key"];
-  //   });
-
-  //   console.log(urls);
-  //   return urls;
-  // };
 
   setTotal = async () => {
     const baseURI = "https://api.kepler-452b.net/evol/";
@@ -228,6 +198,14 @@ class KeplerEvolPage extends Component {
     // mix_owners.sort((a, b) => {
     //   return a - b;
     // });
+
+    for (let i = 5128; i < 5200; i++) {
+      const url = await keplerContract.methods.tokenURI(i).call();
+      const res = await fetch(url);
+      const post = await res.json();
+      owners.push(i);
+      ownerURI.push(post.image);
+    }
 
     this.setState({
       data: [...owners],
