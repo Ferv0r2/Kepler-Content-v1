@@ -277,6 +277,7 @@ const Proposal = () => {
       }).then((res) => res.json());
       return response;
     } catch {
+      alert(`서버에 접근하지 못했습니다. 개발자에게 문의해주세요.`);
       return false;
     }
   };
@@ -320,6 +321,7 @@ const Proposal = () => {
     }
     const postURI =
       baseUri + `${proposal_id}/${account}/${voteType}/` + String(getData[0]);
+
     const postData = await postAPI(postURI);
 
     if (postData) {
