@@ -199,14 +199,6 @@ class KeplerEvolPage extends Component {
     //   return a - b;
     // });
 
-    for (let i = 5128; i < 5200; i++) {
-      const url = await keplerContract.methods.tokenURI(i).call();
-      const res = await fetch(url);
-      const post = await res.json();
-      owners.push(i);
-      ownerURI.push(post.image);
-    }
-
     this.setState({
       data: [...owners],
       spawning: [...spawning_owners],
