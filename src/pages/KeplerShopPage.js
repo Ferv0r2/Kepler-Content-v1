@@ -232,8 +232,8 @@ class KeplerShopPage extends Component {
   sendTx = async (level) => {
     const { account, balance } = this.state;
 
-    if (balance < 6) {
-      alert("6 Klay 이상 소유해야 합니다 :)");
+    if (balance < 2) {
+      alert("2 Klay 이상 소유해야 합니다 :)");
       return;
     }
 
@@ -267,7 +267,7 @@ class KeplerShopPage extends Component {
       .useStone(account, level)
       .send({
         from: account,
-        gas: 7500000,
+        gas: 2500000,
       })
       .on("transactionHash", (transactionHash) => {
         console.log("txHash", transactionHash);
@@ -286,8 +286,8 @@ class KeplerShopPage extends Component {
   sendTxUp = async (level) => {
     const { account, balance, currentPotionIdx } = this.state;
 
-    if (balance < 6) {
-      alert("6 Klay 이상 소유해야 합니다 :)");
+    if (balance < 2) {
+      alert("2 Klay 이상 소유해야 합니다 :)");
       return;
     }
 
@@ -321,7 +321,7 @@ class KeplerShopPage extends Component {
       .upPotion(account, currentPotionIdx + level)
       .send({
         from: account,
-        gas: 7500000,
+        gas: 2500000,
       })
       .on("transactionHash", (transactionHash) => {
         console.log("txHash", transactionHash);
@@ -340,8 +340,8 @@ class KeplerShopPage extends Component {
   sendTxMix = async (level) => {
     const { account, balance, currentPotionIdx } = this.state;
 
-    if (balance < 6) {
-      alert("6 Klay 이상 소유해야 합니다 :)");
+    if (balance < 2) {
+      alert("2 Klay 이상 소유해야 합니다 :)");
       return;
     }
 
@@ -375,7 +375,7 @@ class KeplerShopPage extends Component {
       .mixPotion(account, currentPotionIdx + level)
       .send({
         from: account,
-        gas: 7500000,
+        gas: 2500000,
       })
       .on("transactionHash", (transactionHash) => {
         console.log("txHash", transactionHash);
@@ -438,7 +438,7 @@ class KeplerShopPage extends Component {
       .useNFT(tokenArray, level + 1)
       .send({
         from: account,
-        gas: 7500000,
+        gas: 2500000,
       })
       .on("transactionHash", (transactionHash) => {
         console.log("txHash", transactionHash);
@@ -490,8 +490,8 @@ class KeplerShopPage extends Component {
   setOpen = async (level) => {
     const { account, balance, num1, num2, num3 } = this.state;
 
-    if (balance < 6) {
-      alert("6 Klay 이상 소유해야 합니다 :)");
+    if (balance < 2) {
+      alert("2 Klay 이상 소유해야 합니다 :)");
       return;
     }
 

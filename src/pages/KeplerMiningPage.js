@@ -316,7 +316,7 @@ class KeplerMiningPage extends Component {
       .usePickaxe(account, currentIdx, num[0], num[1])
       .send({
         from: account,
-        gas: 7500000,
+        gas: 2500000,
       })
       .on("transactionHash", (transactionHash) => {
         console.log("txHash", transactionHash);
@@ -338,8 +338,8 @@ class KeplerMiningPage extends Component {
       return;
     }
 
-    if (balance < 6) {
-      alert("6 Klay 이상 소유해야 합니다 :)");
+    if (balance < 2) {
+      alert("2 Klay 이상 소유해야 합니다 :)");
       return;
     }
 
@@ -444,7 +444,7 @@ class KeplerMiningPage extends Component {
           .mining(currentIdx, getBack)
           .send({
             from: account,
-            gas: 7500000,
+            gas: 2500000,
           })
           .on("transactionHash", (transactionHash) => {
             console.log("txHash", transactionHash);

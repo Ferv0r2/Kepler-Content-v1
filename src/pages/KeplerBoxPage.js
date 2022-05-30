@@ -240,8 +240,8 @@ class KeplerBoxPage extends Component {
   sendTxItem = async () => {
     const { account, balance, currentIdx, key1, key2, key3 } = this.state;
 
-    if (balance < 6) {
-      alert("6 Klay 이상 소유해야 합니다 :)");
+    if (balance < 2) {
+      alert("2 Klay 이상 소유해야 합니다 :)");
       return;
     }
 
@@ -293,7 +293,7 @@ class KeplerBoxPage extends Component {
       .useKey(account, currentIdx, num)
       .send({
         from: account,
-        gas: 7500000,
+        gas: 2500000,
       })
       .on("transactionHash", (transactionHash) => {
         console.log("txHash", transactionHash);
@@ -312,8 +312,8 @@ class KeplerBoxPage extends Component {
   sendTxKey = async () => {
     const { account, currentIdx, balance } = this.state;
 
-    if (balance < 6) {
-      alert("6 Klay 이상 소유해야 합니다 :)");
+    if (balance < 2) {
+      alert("2 Klay 이상 소유해야 합니다 :)");
       return;
     }
     const minterContract = new caver.klay.Contract(
@@ -406,7 +406,7 @@ class KeplerBoxPage extends Component {
           .mintItem(currentIdx)
           .send({
             from: account,
-            gas: 7500000,
+            gas: 2500000,
           })
           .on("transactionHash", (transactionHash) => {
             console.log("txHash", transactionHash);
