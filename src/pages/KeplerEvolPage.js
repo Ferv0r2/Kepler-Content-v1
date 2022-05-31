@@ -67,14 +67,17 @@ class KeplerEvolPage extends Component {
 
     // GET DAILY EVOL
     const date = new Date();
+    const dateY = new Date(Date.now() - 86400000);
 
     const year = date.getFullYear();
     const month = ("0" + (date.getMonth() + 1)).slice(-2);
     const day = ("0" + date.getDate()).slice(-2);
-    const z_day = ("0" + (date.getDate() - 1)).slice(-2);
+
+    const monthY = ("0" + (dateY.getMonth() + 1)).slice(-2);
+    const dayY = ("0" + dateY.getDate()).slice(-2);
 
     const today = `${year}-${month}-${day}`;
-    const yesterday = `${year}-${month}-${z_day}`;
+    const yesterday = `${year}-${monthY}-${dayY}`;
 
     let evol;
     try {
